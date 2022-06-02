@@ -117,3 +117,7 @@ main {
     width: 80px;
     margin: 0 auto;
 }
+
+#contact-form .error-msgs {
+    display: none;
+}
