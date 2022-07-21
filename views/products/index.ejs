@@ -1,0 +1,15 @@
+<%- include('../partials/header'); %>
+
+<div id="page-products-list">
+    <ul>
+        <% products.forEach(item => { %>
+            <div>
+                <p><a href="/products/<%= item._id %>"><%= item.name %></a></p>
+                <p><%= item.img %></p>
+                <p><%= item.price %></p>
+            </div>
+        <% }) %> 
+    </ul>
+</div>
+
+<%- include('../partials/footer'); %>
