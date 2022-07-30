@@ -11,12 +11,12 @@ const controller = {
             res.send('validation error occurred')
             return
         }
-
+        //no error continue, validation using mongoose lib and its funtions
         const validatedResults = validationResults.value
-
+        //try to create with the passed validations
         try {
-            await productModel.create(validatedResults)
-        } catch(err) {
+            await productModel.create(validatedResults)//returns a promise so need the await
+        } catch (err) {
             console.log(err)
         }
 
@@ -27,13 +27,13 @@ const controller = {
     listProducts: async (req, res) => {
         const products = await productModel.find().exec()
 
-        res.render('products/index', {products})
+        res.render('products/index', { products })
     },
 
-    getProduct: async(req, res) => {
+    getProduct: async (req, res) => {
         const product = await productModel.findById(req.params.product_id)
 
-        res.render('products/show', {product})
+        res.render('products/show', { product })
     }
 
 }

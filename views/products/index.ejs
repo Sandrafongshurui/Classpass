@@ -1,15 +1,19 @@
 <%- include('../partials/header'); %>
 
-<div id="page-products-list">
-    <ul>
+<div id="page-products-list" class="container">
+    <div class="row my-5">
         <% products.forEach(item => { %>
-            <div>
-                <p><a href="/products/<%= item._id %>"><%= item.name %></a></p>
-                <p><%= item.img %></p>
-                <p><%= item.price %></p>
+            <div class="col-4">
+                <div class="card">
+                    <img src="/img/<%= item.img %>" class="card-img-top">
+                    <div class="card-body">
+                      <p class="card-text"><a href="/products/<%= item._id %>"><%= item.name %></a></p>
+                      <p class="card-text"><%= item.price %></p>
+                    </div>
+                </div>
             </div>
         <% }) %> 
-    </ul>
+    </div>
 </div>
 
 <%- include('../partials/footer'); %>

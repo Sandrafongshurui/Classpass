@@ -1,10 +1,27 @@
 <%- include('../partials/header'); %>
 
 <div id="page-product">
-    <div>
-        <p><%= product.name %></p>
-        <p><%= product.img %></p>
-        <p><%= product.price %></p>
+    <div class="container my-5">
+        <div class="row">
+
+            <div class="col-4">
+                <figure><img src="/img/<%= product.img %>" class="img-fluid" /></figure>
+            </div>
+
+            <div class="col-8">
+                <p><%= product.name %></p>
+                <p><%= product.price %></p>
+                
+                <h3>Ratings</h3>
+
+                <ul>
+                    <% ratings.forEach(r => { %>
+                        <li>Rating: <%= r.rating %> </li>
+                    <% }) %> 
+                </ul>
+            </div>
+
+        </div>
     </div>
 </div>
 

@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
+        unique: true,//not really a vlaidation, it will create a unique index in our dbs
     },
     hash: {
         type: String,
@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     },
 })
 
+//this creates the user collections
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
