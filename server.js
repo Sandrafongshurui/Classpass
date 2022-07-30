@@ -6,13 +6,13 @@ const session = require('express-session')
 
 const app = express()
 const port = 3000
-const connStr = "mongodb://localhost:27017"
+const connStr = "mongodb://172.17.21.14:27017"
 
 const pageController = require('./controllers/pages/page_controller')
-const productController = require('./controllers/products/products_controller')
+const studiosController = require('./controllers/studios/studios_controller')
 const userController = require('./controllers/users/users_controller')
-const productRatingController = require('./controllers/product_ratings/product_rating_controller')
-const authMiddleware = require('./middlewares/auth_middleware')// middleware for the authentication -----> cookies session
+// const lessonsRatingController = require('./controllers/product_ratings/product_rating_controller')
+// const authMiddleware = require('./middlewares/auth_middleware')// middleware for the authentication -----> cookies session
 
 // Set view engine
 app.set('view engine', 'ejs')
@@ -31,30 +31,49 @@ app.use(session({
     cookie: { secure: false, httpOnly: false }
 }))
 
+// //studios routes
+//shows the home page
 app.get('/', pageController.showHome)
-app.get('/contact', pageController.showContact)
+// //shows studios list
+app.get('/studios', studiosController.showListOfStudios)
+// //shows studio's classes
+//app.get('/studios/:studio_id/classes', pageController.showStudios)
 
-app.post('/products', productController.createProduct)
-app.get('/products', productController.listProducts)
-app.get('/products/:product_id', productController.getProduct)
-
-// Users Routes
-app.get('/users/register', userController.showRegistrationForm)
-app.post('/users/register', userController.register)
-app.get('/users/login', userController.showLoginForm)
-app.post('/users/login', userController.login)
-
-// Rating Routes
-app.post('/products/:product_id/ratings', authMiddleware.isAuthenticated, productRatingController.createRating)
+// //login Routes
+// //show login modal at home page
+app.get('/login', userController.showLoginForm)
+app.post('/login', userController.login)
+app.delete('/logout', userController.logout)
 
 
-//apply the middleware in the middle, for each rout that needs it, res.locals would only work for this request
-app.get('/users/dashboard', authMiddleware.isAuthenticated, userController.showDashboard)
-app.get('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
+//signup routes
+//show sign up modal
+app.get('/signup', userController.showRegistrationForm)
+app.post('/signup', userController.signUp)
+
+
+//profile routes
+// app.get('/users/:user_id/upcoming', userController.showUpcomingTab)
+// app.post('/users/:user_id/profile', userController.deleteLesson)
+// app.get('/users/:user_id/profile', userController.showProfileTab)
+// app.post('/users/:user_id/profile', userController.saveProfileTab)
+// app.get('/users/:user_id/history', userController.showHistoryTab)
+// app.post('/users/:user_id/history', userController.createReview)
+// app.get('/users/:user_id/shoppingcart', userController.showShoppingCartTab)
+
+
+// Reviews Routes
+// app.post('/studios/:studio_id/reviews', productRatingController.createRating)
+
+// //apply the middleware in the middle, for each rout that needs it, res.locals would only work for this request
+// app.get('/users/dashboard', authMiddleware.isAuthenticated, userController.showDashboard)
+// app.get('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
+
+app.post('/studios', studiosController.createStudio)
 
 app.listen(port, async () => {
     try {
-        await mongoose.connect(connStr, { dbName: 'biscoff_bakery'})
+        await mongoose.connect(connStr, { dbName: 'classpass'})
     } catch(err) {
         console.log(`Failed to connect to DB`)
         process.exit(1)

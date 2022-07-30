@@ -1,11 +1,15 @@
 const mongoose = require('mongoose')
 
-const productRatingSchema = new mongoose.Schema({
+const reviewSchema = new mongoose.Schema({
     user_id: {
-        type: String,//another way is to use a ref, with .populate 
+        type: String,
         required: true
     },
-    product_id: {
+    class_id: {
+        type: String,
+        required: true
+    },
+    review: {
         type: String,
         required: true
     },
@@ -16,6 +20,6 @@ const productRatingSchema = new mongoose.Schema({
 })
 
 //save a collection called Product Ratings
-const ProductRating = mongoose.model('ProductRatings', productRatingSchema)
+const Review = mongoose.model('Review', reviewSchema)
 
-module.exports = ProductRating
+module.exports = Review

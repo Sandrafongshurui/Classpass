@@ -1,0 +1,17 @@
+<%- include('../partials/header'); %>
+
+<div id="page-studios-list" class="container">
+    <div class="row my-5">
+        <% studios.forEach(item => { %>
+            <div class="col-4">
+                <div class="card">
+                    <img src="/img/<%= item.img %>" class="card-img-top">
+                    <div class="card-body">
+                      <p class="card-text"><a href="/studios/<%= item._id %>"><%= item.name %></a></p>
+                    </div>
+                </div>
+            </div>
+        <% }) %> 
+    </div>
+</div>
+<%- include('../partials/footer'); %>

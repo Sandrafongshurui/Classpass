@@ -4,12 +4,15 @@ const userValidators = require('../validators/users')
 
 const controller = {
 
+    //this is a modal
     showRegistrationForm: (req, res) => {
         res.render('pages/register')
     },
 
-    register: async (req, res) => {
-        // validations
+    signUp: async (req, res) => {
+        console.log(req.body)
+        // Joi validations in validators
+        //if pass joi
         const validationResults = userValidators.registerValidator.validate(req.body)
 
         if (validationResults.error) {
@@ -36,26 +39,34 @@ const controller = {
                 name: validatedResults.fullname,
                 email: validatedResults.email,
                 hash: hash,//put in the hash, not the plan text pass word
+                credits: 10,
+                role: "admin"
             })
         } catch (err) {
             console.log(err)
             res.send('failed to create user')
             return
         }
-
-        res.redirect('/users/login')
+        res.send("user created")
+        // res.redirect('/users/login')
     },
 
+    //this will need the modal
     showLoginForm: (req, res) => {
-        res.render('pages/login')
+        res.render(('pages/login'),{ 
+            errMsgName :"" 
+        })
+        //res.send("show login form")
     },
+
     //actual log in
     //type in username and pw, req sent to server, server create session, session id returned
     //browser will store the cookie 
     ///all subsequent request will contain the cookies
 
     login: async (req, res) => {
-        // validations here ...
+        // joi validations here ...
+        //req.body will get tform teh form or postman post
         const validatedResults = req.body
 
         let user = null
@@ -88,7 +99,7 @@ const controller = {
             }
 
             // store user information in session, typically a user id
-            req.session.user = user.email
+            req.session.user = user._id
 
             // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
             // front saves as cookie
@@ -101,7 +112,8 @@ const controller = {
                     return next(err)
                 }
 
-                res.redirect('/users/dashboard')
+                // res.redirect('/')
+                res.send("log in sucessfully")
             })
         })
     },
@@ -137,7 +149,7 @@ const controller = {
 
         res.render('users/profile', { user })
     },
-    
+
     logout: async (req, res) => {
         //invalidate the session, not clear, means theres still a session use no user saved inside
         req.session.user = null
@@ -155,8 +167,9 @@ const controller = {
                     res.redirect('/users/login')
                     return
                 }
-                
-                res.redirect('/')
+
+                // res.redirect('/')
+                res.send("logged out")
             })
         })
     }

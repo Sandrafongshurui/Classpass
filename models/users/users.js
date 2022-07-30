@@ -14,6 +14,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
+    credits: {
+        type: Number,
+        required: true
+    },
+
+    role: {
+        type: String,
+        required: true
+    },
 })
 
 //this creates the user collections

@@ -1,62 +1,74 @@
 <%- include('../partials/header'); %>
+    <%- include('../partials/home-main'); %>
+        <div class="modal" id="myModal">
 
-<div class="constrained-full-height">
-
-    <div id="page-register">
-
-        <div class="container">
-
-            <div class="row gx-5">
-
-                <div class="col">
-                    
-                    <div class="content-section">
-                        <div class="text-center mt-5">
-                            <h1 class="mb-3">Register</h1>
-                            <div class="hr"></div>
-                        </div>
-
-                        <form id="registration-form" class="mt-5" method="POST" action="/users/register">
-
-                            <ul class="error-msgs"></ul>
-
-                            <div class="mb-3">
-                              <label for="fullname" class="form-label">Name</label>
-                              <input type="text" class="form-control" id="fullname" name="fullname">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="confirm_password" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirm_password" name="confirm_password">
-                            </div>
-
-                            <div class="success-msg"></div>
-                
-                            <div class="mb-3 text-center">
-                                <button type="submit" class="btn btn-primary">Send</button>
-                            </div>
-
-                        </form>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
 
+                        <form>
+                            <div>
+                                <div class="form-outline mb-4">
+                                    <!-- <label class="form-label" for="form3Example1cg">Your Name</label> -->
+                                    <input type="text" id="form3Example1cg" class="form-control form-control-lg"
+                                        placeholder="Name" />
+                                    <p>
+                                        <%= errMsgName %>
+                                    </p>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="email" id="form3Example3cg" class="form-control form-control-lg"
+                                        placeholder="Email" />
+                                    <!-- <label class="form-label" for="form3Example3cg" >Your Email</label> -->
+
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="password" id="form3Example4cg" class="form-control form-control-lg"
+                                        placeholder="Password" />
+                                    <!-- <label class="form-label" for="form3Example4cg">Password</label> -->
+
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="password" id="form3Example4cdg" class="form-control form-control-lg"
+                                        placeholder="Confirm Password" />
+                                    <!-- <label class="form-label" for="form3Example4cdg">Repeat your password</label> -->
+
+                                </div>
+
+                                <div class="d-flex justify-content-center">
+                                    <button type="button"
+                                        class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Sign
+                                        Up</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
                 </div>
-
             </div>
-
         </div>
+        </main>
 
-    </div>
+        <footer id="page-footer">
+            <div class="container">
+                <p>Biscoff Bakery | 79 Anson Road, #20-01</p>
+            </div>
+        </footer>
 
-</main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+        <!-- <script src="/main.js"></script> -->
+        <script>
+            const myModal = new bootstrap.Modal(document.getElementById('myModal'), { keyboard: false })
+            myModal.toggle()
+        </script>
+        </body>
 
-<%- include('../partials/footer'); %>
+        </html>
