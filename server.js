@@ -13,8 +13,9 @@ const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PAS
 const pageController = require('./controllers/pages/page_controller')
 const studiosController = require('./controllers/studios/studios_controller')
 const userController = require('./controllers/users/users_controller')
-// const lessonsRatingController = require('./controllers/product_ratings/product_rating_controller')
-// const authMiddleware = require('./middlewares/auth_middleware')// middleware for the authentication -----> cookies session
+const lessonsController = require('./controllers/lessons/lessons_controller')
+const reviewsController = require('./controllers/reviews/reviews_controller')
+const authMiddleware = require('./middlewares/auth_middleware')// middleware for the authentication, to check if theres a session
 
 // Set view engine
 app.set('view engine', 'ejs')
@@ -61,18 +62,22 @@ app.post('/signup', userController.signUp)
 // app.get('/users/:user_id/profile', userController.showProfileTab)
 // app.post('/users/:user_id/profile', userController.saveProfileTab)
 // app.get('/users/:user_id/history', userController.showHistoryTab)
-// app.post('/users/:user_id/history', userController.createReview)
+//app.post('/users/:user_id/history/:lesson_id/review', userController.createReview)
 // app.get('/users/:user_id/shoppingcart', userController.showShoppingCartTab)
 
 
 // Reviews Routes
-// app.post('/studios/:studio_id/reviews', productRatingController.createRating)
+// app.post('/studios/:studio_id/reviews', authMiddleware.isAuthenticated, reviewsController.createReview)
+// app.post('/studios/:studio_id/classes/:class_id/reviews', authMiddleware.isAuthenticated, reviewsController.createReview)
+// app.post('/studios/:studio_id/classes/:class_id/reviews', authMiddleware.isAuthenticated, reviewsController.createReview)
 
 // //apply the middleware in the middle, for each rout that needs it, res.locals would only work for this request
 // app.get('/users/dashboard', authMiddleware.isAuthenticated, userController.showDashboard)
 // app.get('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
 
 app.post('/studios', studiosController.createStudio)
+app.post('/lessons', lessonsController.createLesson)
+//app.post('/reviews', reviewsController.createReview)
 
 app.listen(port, async () => {
     try {

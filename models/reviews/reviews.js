@@ -1,13 +1,18 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const reviewSchema = new mongoose.Schema({
     user_id: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'User'///the name it saved in the dbs
     },
-    class_id: {
-        type: String,
-        required: true
+    lesson_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Lesson'///the name it saved in the dbs
+    },
+    studio_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Studio'///the name it saved in the dbs
     },
     review: {
         type: String,
