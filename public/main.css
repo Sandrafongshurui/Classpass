@@ -121,3 +121,28 @@ body {
 #contact-form .error-msgs {
     display: none;
 }
+
+/* list studios */
+
+.studio-item-img{
+    flex: 1 1 0;
+}
+.studio-item-details{
+    flex: 1 1 0;
+}
+.studio-item-description{
+    flex: 3 1 0;
+}
+
+.view-studio img{
+
+    object-fit: cover;
+    width: 638px;
+    height: 408px;
+}
+
+
+/* info ans classes tabs */
+.active{
+border: #707070 solid;
+}

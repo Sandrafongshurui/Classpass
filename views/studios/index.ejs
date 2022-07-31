@@ -1,17 +1,26 @@
 <%- include('../partials/header'); %>
-
-<div id="page-studios-list" class="container">
-    <div class="row my-5">
-        <% studios.forEach(item => { %>
-            <div class="col-4">
-                <div class="card">
-                    <img src="/img/<%= item.img %>" class="card-img-top">
-                    <div class="card-body">
-                      <p class="card-text"><a href="/studios/<%= item._id %>"><%= item.name %></a></p>
+        <div class="row my-5 d-block">
+            
+            <% studios.forEach(item=> { %>
+                <div class="col card w-75 mx-auto">
+                    <div class=" d-flex">
+                        <div class="studio-item-img"><a href="/studios/<%= item._id %>">
+                        <img src="<%= item.img %>" class="card-img-top"></a>
+                        </div>
+                        <div class="card-body studio-item-details">
+                            <p class="card-text">
+                                    <%= item.name %>
+                                </a></p>
+                        </div>
+                        <div class="card-body studio-item-description">
+                            <p class="card-text">
+                                    <%= item.description %>
+                                </a></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <% }) %> 
+                <% }) %>
+            
+        </div>
     </div>
-</div>
-<%- include('../partials/footer'); %>
+    <%- include('../partials/footer'); %>

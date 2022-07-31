@@ -6,7 +6,9 @@ const session = require('express-session')
 
 const app = express()
 const port = 3000
-const connStr = "mongodb://172.17.21.14:27017"
+// const connStr = "mongodb://172.18.175.7:27017"
+const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@classpass.by0wzf8.mongodb.net/test`
+
 
 const pageController = require('./controllers/pages/page_controller')
 const studiosController = require('./controllers/studios/studios_controller')
@@ -36,8 +38,9 @@ app.use(session({
 app.get('/', pageController.showHome)
 // //shows studios list
 app.get('/studios', studiosController.showListOfStudios)
+app.get('/studios/:studio_id', studiosController.getStudio)
 // //shows studio's classes
-//app.get('/studios/:studio_id/classes', pageController.showStudios)
+// app.get('/studios/:studio_id/classes', pageController.showStudios)
 
 // //login Routes
 // //show login modal at home page

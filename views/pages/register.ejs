@@ -5,50 +5,69 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Login</h5>
+                        <h5 class="modal-title ">Sign Up</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
-                        <form>
-                            <div>
+                        <div>
+                            <form>
+                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <div class="row mb-4">
+                                  <div class="col">
+                                    <div class="form-outline">
+                                      <input type="text" class="form-control" name="first-name" />
+                                      <label class="form-label" >First name</label>
+                                    </div>
+                                  </div>
+                                  <div class="col">
+                                    <div class="form-outline">
+                                      <input type="text" class="form-control" name="last-name"/>
+                                      <label class="form-label" >Last name</label>
+                                    </div>
+                                  </div>
+                                </div>
+                              
+                                <!-- Email input -->
                                 <div class="form-outline mb-4">
-                                    <!-- <label class="form-label" for="form3Example1cg">Your Name</label> -->
-                                    <input type="text" id="form3Example1cg" class="form-control form-control-lg"
-                                        placeholder="Name" />
-                                    <p>
-                                        <%= errMsgName %>
-                                    </p>
+                                  <input type="email" class="form-control" name="email"/>
+                                  <label class="form-label" >Email address</label>
                                 </div>
-
+                              
+                                <!-- Password input -->
                                 <div class="form-outline mb-4">
-                                    <input type="email" id="form3Example3cg" class="form-control form-control-lg"
-                                        placeholder="Email" />
-                                    <!-- <label class="form-label" for="form3Example3cg" >Your Email</label> -->
-
+                                  <input type="password" class="form-control" name="password"/>
+                                  <label class="form-label" >Password</label>
                                 </div>
 
+                                <!-- Confirm Password input -->
                                 <div class="form-outline mb-4">
-                                    <input type="password" id="form3Example4cg" class="form-control form-control-lg"
-                                        placeholder="Password" />
-                                    <!-- <label class="form-label" for="form3Example4cg">Password</label> -->
+                                    <input type="password" class="form-control" name="confirm-password"/>
+                                    <label class="form-label" >Confirm Password</label>
+                                  </div>
 
+                                 <!-- Checkbox -->
+                                <div class=" row mb-4 form-check d-flex justify-content-center mb-4">
+                                <div class="col">
+                                    <input class="form-check-input me-2" type="radio" name="role" value="Admin" checked />
+                                    <label class="form-check-label">
+                                    Admin
+                                    </label>
                                 </div>
-                                <div class="form-outline mb-4">
-                                    <input type="password" id="form3Example4cdg" class="form-control form-control-lg"
-                                        placeholder="Confirm Password" />
-                                    <!-- <label class="form-label" for="form3Example4cdg">Repeat your password</label> -->
-
+                                <div class="col"> 
+                                    <input class="form-check-input me-2 " type="radio" name="role" value="Customer"/>
+                                    <label class="form-check-label">
+                                    Customer
+                                    </label>
+                                  
                                 </div>
+                                                            
+                                <!-- Submit button -->
+                                <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white">Sign Up</button>
+                               
 
-                                <div class="d-flex justify-content-center">
-                                    <button type="button"
-                                        class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Sign
-                                        Up</button>
-                                </div>
-                            </div>
-                        </form>
-
+                               
+                              </form>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@ module.exports = {
 //check theres user in the session, in the backend
     isAuthenticated: (req, res, next) => {
         if (!req.session.user) {
-            res.redirect('/users/login')
+            res.redirect('/login')
             return
         }
         

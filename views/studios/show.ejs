@@ -1,0 +1,33 @@
+<%- include('../partials/header'); %>
+<!-- <%- include ('../helper') %>  -->
+<div class="my-5 d-flex w-75 mx-auto">
+            
+   
+        <div class="view-studio ">
+            <div>
+                <figure><img src="<%= studio.img %>"/></figure>
+            </div>
+
+
+            <nav class="nav info-nav">
+                <a class="nav-link active"id="info-tab" onclick="addActiveClass(this.id)">Info</a>
+                <a class="nav-link" id="classes-tab" onclick="addActiveClass(this.id)">Classes</a>
+              </nav>
+                
+            <div>
+                <h2><%= studio.name %></h2>
+                <p><%= studio.description %></p>
+            </div>>
+
+        </div>
+        <div class=" ">
+            <p><%= studio.address %></p>
+        </div>
+      
+    
+</div>
+</div>
+
+
+
+<%- include('../partials/footer'); %>
