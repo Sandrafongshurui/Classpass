@@ -38,8 +38,11 @@ const controller = {
 
     res.render("studios/show", {
       studio,
+      tab: "info"
     });
   },
+
+ 
 };
 
 module.exports = controller;

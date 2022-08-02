@@ -19,6 +19,14 @@ const studiosSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId, //this would be the array of the students dbs
     ref: "User", ///the name it saved in the dbs
   },
+  lessonNames:[{
+    type: String,
+    required: true
+  }],
+  lessons: [{
+    type: Schema.Types.ObjectId, //this would be the array of the students dbs
+    ref: "Lesson", ///the name it saved in the dbs
+  }],
   reviews: [
     {
       type: Schema.Types.ObjectId, //this would be the array of the students dbs

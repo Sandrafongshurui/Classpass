@@ -26,7 +26,7 @@ const lessonsSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    date:{
+    dateOfLesson:{
         type: String,
         required: true
     },
@@ -35,8 +35,8 @@ const lessonsSchema = new mongoose.Schema({
         required: true
     },
     studio: {
-        type: Schema.Types.ObjectId,//this would be the array of the students dbs
-        ref: 'Studio'///the name it saved in the dbs
+        type: String,
+        required: true
     },
     reviews: [{
         type: Schema.Types.ObjectId,//this would be the array of the students dbs

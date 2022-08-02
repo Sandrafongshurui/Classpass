@@ -41,7 +41,7 @@ app.get('/', pageController.showHome)
 app.get('/studios', studiosController.showListOfStudios)
 app.get('/studios/:studio_id', studiosController.getStudio)
 // //shows studio's classes
-// app.get('/studios/:studio_id/classes', pageController.showStudios)
+app.get('/studios/:studio_id/lessons', lessonsController.getLessons)
 
 // //login Routes
 // //show login modal at home page
@@ -75,9 +75,11 @@ app.post('/signup', userController.signUp)
 // app.get('/users/dashboard', authMiddleware.isAuthenticated, userController.showDashboard)
 // app.get('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
 
+//for sandra
 app.post('/studios', studiosController.createStudio)
 app.post('/lessons', lessonsController.createLesson)
-//app.post('/reviews', reviewsController.createReview)
+app.post('/reviews', reviewsController.createReview)
+
 
 app.listen(port, async () => {
     try {
@@ -88,4 +90,5 @@ app.listen(port, async () => {
     }
 
     console.log(`Example app listening on port ${port}`)
+    
 })

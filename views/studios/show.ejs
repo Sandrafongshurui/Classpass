@@ -1,33 +1,178 @@
 <%- include('../partials/header'); %>
-<!-- <%- include ('../helper') %>  -->
-<div class="my-5 d-flex w-75 mx-auto justify-content-center flex-wrap">
-            
-   
-        <div class="view-studio ">
+    <!-- image and tabs, partial -->
+    <div class="my-5 d-flex w-75 mx-auto justify-content-center flex-wrap">
+        <section class="view-studio">
             <div>
-                <figure><img src="<%= studio.img %>"/></figure>
+                <div>
+                    <figure><img src="<%= studio.img %>" /></figure>
+                </div>
+                <nav class="nav info-nav">
+                    <%if(tab==="info" ){%>
+                        <a class="nav-link active" id="info-tab" href=" /studios/<%= studio._id %>">Info</a>
+                        <a class="nav-link" id="lessons-tab" href=" /studios/<%= studio._id %>/lessons">Lessons</a>
+                        <%}else{%>
+                            <a class="nav-link" id="info-tab" href=" /studios/<%= studio._id %>">Info</a>
+                            <a class="nav-link active" id="lessons-tab"
+                                href=" /studios/<%= studio._id %>/lessons">Lessons</a>
+                            <%}%>
+
+                </nav>
             </div>
+            <!-- tab contents (info or lessons)-->
+            <%if(tab==="info" ){%>
+                <div class="view-studio-tab border-top py-3">
+                    <div>
+                        <h2>
+                            <%= studio.name %>
+                        </h2>
+                        <p>
+                            <%= studio.description %>
+                        </p>
+                    </div>
+                    <div class="amenities border-top py-3">
+                        <div>
+                            <h2>Amenities</h2>
+                            <ul class="d-flex px-0">
+                                <li>
+                                    <figure><img src="../../public/img/logo.png">
+                                        <figure>
+                                </li>
+                                <li>
+                                    <figure><img src="../../public/img/logo.png">
+                                        <figure>
+                                </li>
+                                <li>
+                                    <figure><img src="../../public/img/logo.png">
+                                        <figure>
+                                </li>
+                                <li>
+                                    <figure><img src="../../public/img/logo.png">
+                                        <figure>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
+                    <!-- reviews sections -->
+                    <div class="border-top">
+                        <!-- rating -->
+                        <div class="py-3">
+                            <h2>Reviews</h2>
+                            <div class="ratings">
+                                <span class="rating-num">4.6</span>
+                                <div class="stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Actual REVIEWS -->
+                        <div class=" d-flex border-top py-3">
+                            <div class="reviews-content">
+                                <p class="reviews-content">
+                                    Knockout with shantelle
+                                </p>
+                                <div class="d-flex">
+                                    <div class="stars">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <p class="reviews-content mx-2 ">2 days ago</p>
+                                </div>
 
-            <nav class="nav info-nav">
-                <a class="nav-link active"id="info-tab" onclick="addActiveClass(this.id)">Info</a>
-                <a class="nav-link" id="classes-tab" onclick="addActiveClass(this.id)">Classes</a>
-              </nav>
-                
-            <div>
-                <h2><%= studio.name %></h2>
-                <p><%= studio.description %></p>
+                                <p class="reviews-content">
+                                    Instructor was really helpful and attentive! Workout was lots of fun and I liked
+                                    that it
+                                    was half boxing half hiit. Really felt like I got a full body workout!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <%}else{%>
+            <div class="view-studio-tab border-top py-3">
+                <div>
+                    <h2>
+                        All lessons at <%= studio.name %>
+                    </h2>
+                    <div>
+                        <!-- searach nar of lesson types pf the studios -->
+                        <form action="#">
+                            <select name="lesson-names">
+                                <%for(let i=0; i < numOfLessonNames; i++){%>
+                                    <option value="<%= lessonNames[i]%>">
+                                        <%= lessonNames[i]%>
+                                    </option>
+                                    <%}%>
+                            </select>
+                            <input type="submit" value="Submit" />
+                        </form>
+                    </div>
+                </div>
+                <div class="calander border-top py-3">
+                <!--Calander -->
+                    <div class="month">
+                      <ul>
+                        <li class="prev">&#10094;</li>
+                        <li class="next">&#10095;</li>
+                        <li>August<br><span style="font-size:18px">2021</span></li>
+                      </ul>
+                    </div>
+                    
+                    <ul class="weekdays">
+                      <li>Mo</li>
+                      <li>Tu</li>
+                      <li>We</li>
+                      <li>Th</li>
+                      <li>Fr</li>
+                      <li>Sa</li>
+                      <li>Su</li>
+                    </ul>
+                    
+                    <ul class="days">
+                      <li>1</li>
+                      <li>2</li>
+                      <li>3</li>
+                      <li>4</li>
+                      <li>5</li>
+                      <li>6</li>
+                      <li>7</li>
+                      <li>8</li>
+                      <li>9</li>
+                      <li><span class="active">10</span></li>
+                      <li>11</li>
+                      ...etc
+                    </ul>
+
+                <!-- lesson section -->
+                <div>
+                  <% lessons.forEach(item=> { %>
+                      <div class="border-bottom d-flex">
+                          <p><%= item.name %></p>
+                          <p><%= item.time%></p>
+                          <p><%= item.duration%></p>                      
+                        </div>
+                  <% }) %>
+              </div>
             </div>
-
-        </div>
-        <div class=" ">
-            <p><%= studio.address %></p>
-        </div>
-      
-    
-</div>
-</div>
+            </section>
 
 
-
-<%- include('../partials/footer'); %>
+            <%}%>
+                <!-- address contents, partial-->
+                <section>
+                    <div class=" ">
+                        <p>
+                            <%= studio.address %>
+                        </p>
+                    </div>
+                </section>
+    </div>
+    <%- include('../partials/footer'); %>
