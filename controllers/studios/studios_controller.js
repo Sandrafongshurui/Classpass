@@ -1,4 +1,5 @@
 const studioModel = require("../../models/studios/studios");
+const reviewModel = require("../../models/reviews/reviews");
 
 const controller = {
   createStudio: async (req, res) => {
@@ -29,20 +30,52 @@ const controller = {
   //the  studio_id would be in the index(showing list of studios, in the ahref link)
   //"/studios/studio_id"
   getStudio: async (req, res) => {
-    const studio = await studioModel.findById(req.params.studio_id);
-    console.log(studio);
-    console.log(studio.address);
-    //const ratings = await productRatingModel.find({product_id: req.params.product_id})
+    //lean makes it a plain js object, so i can add properties, mongoose obj cant add
+    const studio = await studioModel.findById(req.params.studio_id).lean().populate({
+      path: "lessons", //poppulate the lessons field
+      select: "reviews instructor name", // only get these fields for the lessons
+      populate: {
+        //populate again for the reviews,
+        path: "reviews",
+        populate: {
+          //populate again for the users, and only get the firstname lastname
+          path: "user",
+          select: "firstname lastname",
+        },
+      },
+    });
+
+    //filter the lessons with reviews
+    const lessonWithReviews = studio.lessons.filter(
+      (eachLesson) => eachLesson.reviews.length !== 0
+    );
+
+    //combine all reviews from each lesson
+    let totalReviews = [];
+    lessonWithReviews.forEach((eachLesson) => {
+      eachLesson.reviews.forEach((eachReview) => {
+        //add lesson anem adn instructor to each review
+        eachReview.name = eachLesson.name;
+        eachReview.instructor = eachLesson.instructor;
+        totalReviews.push(eachReview);
+      });
+    });
+
+    //sort the dates
+    const sortedTotalReviews= totalReviews.sort((a, b) => {
+      //-1 means first go before second, 1 means it goes after, 0 means the same
+      return (a.dateCreated < b.dateCreated) ? 1 : ((a.dateCreated > b.dateCreated) ? -1 : 0)
+    });
+    console.log("------>", sortedTotalReviews)
 
     // todo: aggregation of ratings
 
     res.render("studios/show", {
       studio,
-      tab: "info"
+      sortedTotalReviews,
+      tab: "info",
     });
   },
-
- 
 };
 
 module.exports = controller;

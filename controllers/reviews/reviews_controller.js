@@ -1,56 +1,43 @@
 const reviewModel = require("../../models/reviews/reviews");
-const reviewValidators = require("../validators/reviews");
-const userModel = require('../../models/users/users')
+const lessonModel = require("../../models/lessons/lessons");
+// const reviewValidators = require("../validators/reviews");
+// const userModel = require("../../models/users/users");
+// const { date } = require("joi");
 
 const controller = {
-    createReview: async (req, res) => {
-         // create the reviews
+  createReview: async (req, res) => {
+    let newReviewId = null;
     try {
-      await reviewModel.create({
-        user_id: user._id,
-        product_id: productID,
-        rating: validatedValues.rating,
+      const newReview = await reviewModel.create({
+        user: req.params.user_id,
+        lesson: req.params.lesson_id,
+        review: req.body.review,
+        rating: req.body.rating,
+        dateCreated: Date.now(),
       });
+
+      newReviewId = newReview._id;
     } catch (err) {
-      res.redirect("/users/login");
+      res.send("failed to create review");
       return;
     }
+
+    //add the review to the lesson
+    try {
+      console.log(newReviewId);
+      const doc = await lessonModel.findOneAndUpdate(
+        { _id: req.params.lesson_id },
+        { $push: { reviews: newReviewId } },
+        { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
+      );
+      console.log(doc.reviews);
+    } catch (err) {
+      console.log(err);
+      res.send("failed to add to lesson");
+      return;
     }
-//   createReview: async (req, res) => {
-//     // front end joi validations here ...
-//     const validationResults = reviewValidators.createReview.validate(req.body);
-//     const lessonId = req.params.lesson_id
-//     if (validationResults.error) {
-//       res.send(validationResults.error);
-//       console.log(validationResults.error);
-//       return;
-//     }
-//     // get user from DB
-//     const validatedResults = validationResults.value;
-//     let user = null;
-
-//     //find the user
-//     try {
-//       user = await userModel.findOne({ email: validatedResults.email });
-//     } catch (err) {
-//       res.redirect("/users/login");
-//       return;
-//     }
-
-//     // create the reviews
-//     try {
-//       await reviewModel.create({
-//         user_id: user._id,
-//         product_id: productID,
-//         rating: validatedValues.rating,
-//       });
-//     } catch (err) {
-//       res.redirect("/users/login");
-//       return;
-//     }
-
-//     res.redirect("/products");
-//   },
+    res.send("created review");
+  }
 };
 
 module.exports = controller;

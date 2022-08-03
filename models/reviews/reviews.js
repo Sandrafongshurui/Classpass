@@ -2,17 +2,13 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const reviewSchema = new mongoose.Schema({
-    user_id: {
+    user: {
         type: Schema.Types.ObjectId,
-        ref: 'User'///the name it saved in the dbs
+        ref: 'User'
     },
-    lesson_id: {
+    lesson: {
         type: Schema.Types.ObjectId,
-        ref: 'Lesson'///the name it saved in the dbs
-    },
-    studio_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Studio'///the name it saved in the dbs
+        ref: 'Lesson'
     },
     review: {
         type: String,
@@ -21,7 +17,14 @@ const reviewSchema = new mongoose.Schema({
     rating: {
         type: Number,
         required: true
+    },
+    dateCreated: {
+        type: Date,
+        default: Date.now,//pass the now() into this , passin g the returnred value, date .now() would captured a valuew when the schema is created
+        required: true
     }
+
+
 })
 
 //save a collection called Product Ratings

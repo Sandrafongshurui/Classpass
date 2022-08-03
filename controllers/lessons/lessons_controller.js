@@ -50,16 +50,16 @@ const controller = {
 
   getSelectedDate: (usersSelectedDate) => {},
 
-  getsTodaysDate: () => {
+  getsTodaysDate: function() {
     //get current date
-    const dateObj = new date();
+    const dateObj = new Date();
     let date = ("0" + dateObj.getDate()).slice(-2); //gets the day today, get the last 2 elements (010 get 10, 05 get 05)
     // current month
     let month = ("0" + (dateObj.getMonth() + 1)).slice(-2); //gets the month today (0-11 so must plus 1), get the last 2 elements (010 get 10, 05 get 05)
     // current year
     let year = dateObj.getFullYear(); //get the year in 4 digits
     let todaysDate = `17/${month}/${year}`;
-    console.log(todaysDate);
+    console.log("the date is", todaysDate);
     return todaysDate;
   },
 
@@ -69,13 +69,17 @@ const controller = {
     //   .populate("lessons");
     // console.log("----->", studio);
 
+    //problem
     //check if slected date is todays date
-    console.log(this.getsTodaysDate);
+    const newdDate = this.getsTodaysDate
+    console.log("------->",newdDate)
+    console.log(this.getsTodaysDate)
+
     const studio = await studioModel.findById(req.params.studio_id).populate({
       path: "lessons",
-      match: { dateOfLesson: "17/08/2022" },
+      match: { dateOfLesson: "18/08/2022" },
     });
-    console.log("----->", studio.lessons);
+    //console.log("----->", studio.lessons);
 
     res.render("studios/show", {
       studio,

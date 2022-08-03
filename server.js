@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 
 const app = express()
-const port = 3000
+const port = 3001
 // const connStr = "mongodb://172.18.175.7:27017"
 const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@classpass.by0wzf8.mongodb.net/test`
 
@@ -62,7 +62,7 @@ app.post('/signup', userController.signUp)
 // app.get('/users/:user_id/profile', userController.showProfileTab)
 // app.post('/users/:user_id/profile', userController.saveProfileTab)
 // app.get('/users/:user_id/history', userController.showHistoryTab)
-//app.post('/users/:user_id/history/:lesson_id/review', userController.createReview)
+app.post('/users/:user_id/history/:lesson_id/review', reviewsController.createReview)
 // app.get('/users/:user_id/shoppingcart', userController.showShoppingCartTab)
 
 
@@ -78,8 +78,8 @@ app.post('/signup', userController.signUp)
 //for sandra
 app.post('/studios', studiosController.createStudio)
 app.post('/lessons', lessonsController.createLesson)
-app.post('/reviews', reviewsController.createReview)
-
+//app.post('/reviews', reviewsController.createReview)
+lessonsController.getsTodaysDate()
 
 app.listen(port, async () => {
     try {
