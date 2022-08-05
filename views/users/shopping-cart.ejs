@@ -1,0 +1,70 @@
+<%- include('../partials/header'); %>
+
+    <section class="card shopping-cart d-flex align-items-center mx-auto">
+        <!-- navigation tabs -->
+        <div>
+            <nav id="page-header" class="navbar navbar-expand-lg ">
+                <div class="container">
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/products">Shopping Cart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/about">Upcoming</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/contact">History</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+        <div class="card-body w-100">
+            <!-- tab contents -->
+            <div>
+                <div class="border-bottom d-flex">
+                    <div class="d-flex view-lessons pt-3 pb-5">
+                        <div class="w-50">
+                            <p>
+                                <%= lesson.time %> <br><span>
+                                        <%= lesson.duration %> min
+                                    </span>
+                            </p>
+                        </div>
+                        <div class="w-100">
+                            <p>
+                                <%= lesson.name %> <br><span>
+                                        <%= lesson.instructor %>
+                                    </span>
+                            </p>
+                        </div>
+                        <div class="w-50"> <button type="button" class="w-100 btn btn-outline-warning"><a
+                                    href="/users/<%= user %>/shoppingcart/<%= lesson._id %>">
+                                    <%= lesson.credits %> credits
+                                </a></button></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white"><a
+                        href='/users/<%= user %>/shoppingcart/<%= lesson._id %>/message'>Confirm</a></button>
+            </div>
+        </div>
+    </section>
+
+
+    </div>
+    <%- include('../partials/footer'); %>

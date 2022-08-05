@@ -1,6 +1,7 @@
 const { date } = require("joi");
 const lessonModel = require("../../models/lessons/lessons");
 const studioModel = require("../../models/studios/studios");
+const dates = require( "../../utils/helper");
 
 const controller = {
   createLesson: async (req, res) => {
@@ -48,38 +49,19 @@ const controller = {
     res.send("lesson created");
   },
 
-  getSelectedDate: (usersSelectedDate) => {},
-
-  getsTodaysDate: function() {
-    //get current date
-    const dateObj = new Date();
-    let date = ("0" + dateObj.getDate()).slice(-2); //gets the day today, get the last 2 elements (010 get 10, 05 get 05)
-    // current month
-    let month = ("0" + (dateObj.getMonth() + 1)).slice(-2); //gets the month today (0-11 so must plus 1), get the last 2 elements (010 get 10, 05 get 05)
-    // current year
-    let year = dateObj.getFullYear(); //get the year in 4 digits
-    let todaysDate = `17/${month}/${year}`;
-    console.log("the date is", todaysDate);
-    return todaysDate;
-  },
-
   getLessons: async (req, res) => {
-    // const studio = await studioModel
-    //   .findById(req.params.studio_id)
-    //   .populate("lessons");
-    // console.log("----->", studio);
-
-    //problem
-    //check if slected date is todays date
-    const newdDate = this.getsTodaysDate
-    console.log("------->",newdDate)
-    console.log(this.getsTodaysDate)
-
+    //check if date queries is present
+    let selectedDate = dates.getTodaysDate()
+    let todaysDate = dates.getTodaysDate()
+    if(req.query.date){
+      selectedDate  = req.query.date
+    }
+    
+    //const selectedDate = dates.displayDate
     const studio = await studioModel.findById(req.params.studio_id).populate({
       path: "lessons",
-      match: { dateOfLesson: "18/08/2022" },
+      match: { dateOfLesson: selectedDate },
     });
-    //console.log("----->", studio.lessons);
 
     res.render("studios/show", {
       studio,
@@ -87,29 +69,11 @@ const controller = {
       numOfLessonNames: studio.lessonNames.length,
       lessonNames: studio.lessonNames,
       lessons: studio.lessons,
+      todaysDate,
+      selectedDate,
+      dates,
+      user : "62e5fbc02fadae2aaa65e636"
     });
-  },
-
-  // getSelectedDateLessons: (studio, selectedDate) => {
-  //   //get the lessons for todays date
-  //   let selectedDateLessons = [];
-  //   for (const lesson in studio.lessons) {
-  //     if (lesson.dateOfLesson === selectedDate) {
-  //       selectedDateLessons.push(lesson);
-  //     }
-  //   }
-  //   return getSelectedDateLessons;
-  // },
-
-  // renderLessonsSection: (selectedDate) => {
-  //   res.render("partials/lessons", {
-  //     selectedDateLessons: this.getSelectedDateLessons(selectedDate),
-  //   });
-  // },
-
-  //for sandra
-  renameField: async (req, res) => {
-    await lessonModel.updateMany({}, { $rename: { date: "dateOfLesson" } });
   },
 };
 

@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const userModel = require("../../models/users/users");
+const lessonModel = require("../../models/lessons/lessons");
 const userValidators = require("../validators/users");
 
 const controller = {
@@ -15,9 +16,7 @@ const controller = {
     console.log(req.body.role.value);
 
     // Front end Joi validations in validators
-    const validationResults = userValidators.register.validate(
-      req.body
-    );
+    const validationResults = userValidators.register.validate(req.body);
 
     if (validationResults.error) {
       res.send(validationResults.error);
@@ -65,16 +64,14 @@ const controller = {
 
   login: async (req, res) => {
     // front end joi validations here ...
-    const validationResults = userValidators.login.validate(
-      req.body
-    );
+    const validationResults = userValidators.login.validate(req.body);
 
     if (validationResults.error) {
       res.send(validationResults.error);
       //console.log(validationResults.error);
       return;
     }
-  
+
     //backend validation
     const validatedResults = validationResults.value;
     let user = null;
@@ -83,11 +80,11 @@ const controller = {
     try {
       user = await userModel.findOne({ email: validatedResults.email });
       //null is when is incorrect infomation
-      if (results === null){
+      if (results === null) {
         res.send("failed to get user");
         return;
       }
-      console.log(user)
+      console.log(user);
     } catch (err) {
       res.send("failed to get user");
       return;
@@ -134,6 +131,58 @@ const controller = {
   },
   //oncce cookies is stores, it will persist
   //subsequest request will conatin the cookies
+  showShoppingCartTab: async (req, res) => {
+    //empty shopping cart
+    console.log(req.params)
+   
+      //add the lesson to the shopping cart
+      const lesson = await lessonModel.findById({ _id: req.params.lesson_id });
+      res.render("users/shopping-cart", {
+        lesson,
+        user: "62e5fbc02fadae2aaa65e636",
+      });
+    
+  },
+  // showEmptyShoppingCartTab: async (req, res) => {
+  //   //empty shopping cart
+  //   console.log(req.params)
+   
+  //     //add the lesson to the shopping cart
+  //     const lesson = await lessonModel.findById({ _id: req.params.lesson_id });
+  //     res.render("users/shopping-cart", {
+  //       lesson,
+  //       user: "62e5fbc02fadae2aaa65e636",
+  //     });
+    
+  // },
+
+  showThankYouMessage: async (req, res) => {
+    //front end authentication is the auth middle ware, authen the cookies is avail
+    //add user to the students
+    //decrease lesson capacity
+    let user = null;
+    try {
+      const lesson = await lessonModel.findOneAndUpdate(
+        { _id: req.params.lesson_id },
+        { $push: { students: req.session.user } },
+        { $inc: { capacity: -1 } }
+      );
+      console.log(lesson);
+
+      user = await userModel.findOneAndUpdate(
+        { _id: req.session.user },
+        { $inc: { credits: -lesson.credits } },
+        { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
+      ); //depends on wad u save in your login for user
+      console.log(user);
+    } catch (err) {
+      console.log(err);
+      res.redirect("/login", { user });
+      return;
+    }
+
+    res.render("users/shopping-cart-message", {user: "62e5fbc02fadae2aaa65e636",});
+  },
   showDashboard: (rw, res) => {
     //verify that the session user exits, this is put in a aseparte middleware.js and inserted in teh server.js
     // if(!req.session.user){

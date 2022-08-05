@@ -45,7 +45,7 @@ const controller = {
       },
     });
 
-    //filter the lessons with reviews
+    //filter for lessons with reviews only
     const lessonWithReviews = studio.lessons.filter(
       (eachLesson) => eachLesson.reviews.length !== 0
     );
@@ -54,7 +54,7 @@ const controller = {
     let totalReviews = [];
     lessonWithReviews.forEach((eachLesson) => {
       eachLesson.reviews.forEach((eachReview) => {
-        //add lesson anem adn instructor to each review
+        //add lesson name and  instructor to each review
         eachReview.name = eachLesson.name;
         eachReview.instructor = eachLesson.instructor;
         totalReviews.push(eachReview);

@@ -4,6 +4,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const session = require('express-session')
 
+
 const app = express()
 const port = 3001
 // const connStr = "mongodb://172.18.175.7:27017"
@@ -21,6 +22,7 @@ const authMiddleware = require('./middlewares/auth_middleware')// middleware for
 app.set('view engine', 'ejs')
 
 // Apply middlewares, this is doing it globally, but no need on each one
+
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 //this is for cookies(browser) sessions(server), store the id of the session, so that when user returns to same website(same request to server),
@@ -43,6 +45,7 @@ app.get('/studios/:studio_id', studiosController.getStudio)
 // //shows studio's classes
 app.get('/studios/:studio_id/lessons', lessonsController.getLessons)
 
+
 // //login Routes
 // //show login modal at home page
 app.get('/login', userController.showLoginForm)
@@ -57,13 +60,15 @@ app.post('/signup', userController.signUp)
 
 
 //profile routes
-// app.get('/users/:user_id/upcoming', userController.showUpcomingTab)
+//app.get('/users/:user_id/upcoming', userController.showUpcomingTab)
 // app.post('/users/:user_id/profile', userController.deleteLesson)
 // app.get('/users/:user_id/profile', userController.showProfileTab)
 // app.post('/users/:user_id/profile', userController.saveProfileTab)
 // app.get('/users/:user_id/history', userController.showHistoryTab)
 app.post('/users/:user_id/history/:lesson_id/review', reviewsController.createReview)
-// app.get('/users/:user_id/shoppingcart', userController.showShoppingCartTab)
+app.get('/users/:user_id/shoppingcart/:lesson_id', userController.showShoppingCartTab)
+// app.get('/users/:user_id/shoppingcart', userController.showEmptyShoppingCartTab)
+app.get('/users/:user_id/shoppingcart/:lesson_id/message', userController.showThankYouMessage)
 
 
 // Reviews Routes
@@ -78,8 +83,6 @@ app.post('/users/:user_id/history/:lesson_id/review', reviewsController.createRe
 //for sandra
 app.post('/studios', studiosController.createStudio)
 app.post('/lessons', lessonsController.createLesson)
-//app.post('/reviews', reviewsController.createReview)
-lessonsController.getsTodaysDate()
 
 app.listen(port, async () => {
     try {

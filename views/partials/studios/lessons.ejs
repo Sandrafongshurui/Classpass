@@ -1,0 +1,43 @@
+<div>
+   <div> <p><%= selectedDate  %></p>
+    
+    <form>
+        <input type="hidden" value="<%= dates.getNextDay(selectedDate) %>" name="date">
+        <button type="submit">get next day</button>
+     
+    </form>
+    <% if(selectedDate === todaysDate){%>
+        <form>
+            <input type="hidden" value="<%= todaysDate %>" name="date">
+            <button type="submit" disabled>reset</button>
+         
+        </form>
+        <form>
+            <input type="hidden" value="<%= dates.getPreviousDay(selectedDate) %>" name="date">
+            <button type="submit" disabled>get prev day</button>       
+        </form>
+    <% }else{ %>
+        <form>
+            <input type="hidden" value="<%= todaysDate %>" name="date">
+            <button type="submit">reset</button>
+         
+        </form>
+        <form>
+            <input type="hidden" value="<%= dates.getPreviousDay(selectedDate) %>" name="date">
+            <button type="submit">get prev day</button>         
+        </form>
+    <% } %>
+   
+
+    
+   </div>
+    <% lessons.forEach(item=> { %>
+        <div class="border-bottom d-flex">
+            <div class="d-flex view-lessons pt-3 pb-5">
+                <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
+                <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
+                <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" ><a href = "/users/<%= user %>/shoppingcart/<%= item._id %>"><%= item.credits %> credits</a></button></div>
+            </div>         
+        </div>
+    <% }) %>
+</div>

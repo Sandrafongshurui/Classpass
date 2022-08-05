@@ -68,9 +68,7 @@
                         </div>
                         <!-- Actual REVIEWS -->
                         <div class="py-3">
-                            <!-- only get lesson with reviews -->
-                                                       
-                                                             
+                            <!-- only get lesson with reviews -->                                                                                     
                                      <% sortedTotalReviews.forEach(eachReview=> {%>
                                             <div class="reviews-content border-top py-3">
                                                 <p class="reviews-content">
@@ -95,9 +93,7 @@
                                             <p class="reviews-content">
                                                 <%= eachReview.review %>
                                             </p>
-                                    <%})%>
-                                                                  
-                           
+                                    <%})%>                                                                                          
                         </div>
                     </div>
             </div>
@@ -158,21 +154,8 @@
                     </ul>
                     </div>
                     <!-- lesson section -->
-                    <div>
-                        <% lessons.forEach(item=> { %>
-                            <div class="border-bottom d-flex">
-                                <p>
-                                    <%= item.name %>
-                                </p>
-                                <p>
-                                    <%= item.time%>
-                                </p>
-                                <p>
-                                    <%= item.duration%>
-                                </p>
-                            </div>
-                        <% }) %>
-                    </div>
+                    <%- include('../partials/studios/lessons'); %>
+         
                 </div>  
             </div>
         </section>    
