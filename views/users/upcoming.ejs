@@ -2,7 +2,7 @@
 
     <section class="card shopping-cart d-flex align-items-center mx-auto">
         <!-- navigation tabs -->
-        <div>
+        <div >
             <nav id="page-header" class="navbar navbar-expand-lg ">
                 <div class="container">
 
@@ -34,37 +34,38 @@
         </div>
         <div class="card-body w-100">
             <!-- tab contents -->
-            <div>
+            <div >
+            <% if (lessons.length > 0){%>
+                <% lessons.forEach(item=> { %>
                 <div class="border-bottom ">
                     <div class="text-center bg-light">
-                        <p><%= lesson.dateOfLesson %></p>
+                        <p><%= item.dateOfLesson %></p>
                     </div>                   
                     <div class="d-flex view-lessons pt-3 pb-5">
                         <div class="w-50">
                             <p>
-                                <%= lesson.time %> <br><span>
-                                        <%= lesson.duration %> min
+                                <%= item.time %> <br><span>
+                                        <%= item.duration %> min
                                     </span>
                             </p>
                         </div>
                         <div class="w-100">
-                            <p>
-                                <%= lesson.name %> <br><span>
-                                        <%= lesson.instructor %>
-                                    </span>
-                            </p>
-                        </div>
-                        <div class="w-50"> <button type="button" class="w-100 btn btn-outline-warning"><a
-                                    href="/users/<%= user %>/shoppingcart/<%= lesson._id %>">
-                                    <%= lesson.credits %> credits
-                                </a></button></div>
+                            <p> <%= item.name %> <br><span><%= item.instructor %></span></p>
+                        </div>                      
+                        <div class="w-50"> 
+                            <form action="/users/<%= user %>/upcoming/<%= item._id %>/cancel?_method=DELETE" method="POST">
+                                <input class="w-100 btn btn-outline-warning" type="submit" value="Cancel" >          
+                            </form>
                     </div>
                 </div>
+                <% }) %>
+            <% }else{ %>
+                <div>
+                    <p>You have no upcoming lessons</p>
+                </div>
+            <% } %>
             </div>
-            <div>
-                <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white"><a
-                        href='/users/<%= user %>/shoppingcart/<%= lesson._id %>/message'>Confirm</a></button>
-            </div>
+            
         </div>
     </section>
 

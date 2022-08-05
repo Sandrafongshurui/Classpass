@@ -129,48 +129,86 @@ const controller = {
       });
     });
   },
+  showUpcomingLessons: async (req, res) => {
+    //find student in the lessons model, they were added in when they booked class
+    let lessons = [];
+    try {
+      lessons = await lessonModel.find({ students: req.params.user_id });
+      console.log(lessons);
+    } catch (err) {
+      console.log(err);
+      res.redirect("/login", { user });
+      return;
+    }
+
+    res.render("users/upcoming", {
+      lessons,
+      user: "62e5fbc02fadae2aaa65e636",
+    });
+  },
+  deleteUpcomingLesson: async (req, res) => {
+    //remove student from lesson
+    //add back capacity to lesson
+    //add back credits to user
+    let lesson = null;
+    let user = null;
+    console.log(req.query.lesson)
+    try {
+      lesson = await lessonModel.findByIdAndUpdate(
+        { _id: req.params.lesson_id },
+        { $pull: { students: req.params.user_id } },
+        { $inc: { capacity: 1 } }
+      );
+
+      user = await userModel.findOneAndUpdate(
+        { _id: req.params.user_id },
+        { $inc: { credits: lesson.credits } },
+        { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
+      ); //depends on wad u save in your login for user
+    } catch (err) {
+      console.log(err);
+      // res.redirect("/login", { user });
+      return;
+    }
+
+    res.redirect(`/users/${req.params.user_id}/upcoming`);
+  },
   //oncce cookies is stores, it will persist
   //subsequest request will conatin the cookies
   showShoppingCartTab: async (req, res) => {
     //empty shopping cart
-    console.log(req.params)
-   
+    console.log(req.params);
+    let lesson = null;
+    try {
       //add the lesson to the shopping cart
-      const lesson = await lessonModel.findById({ _id: req.params.lesson_id });
+      lesson = await lessonModel.findById({ _id: req.params.lesson_id });
       res.render("users/shopping-cart", {
         lesson,
         user: "62e5fbc02fadae2aaa65e636",
       });
-    
+    } catch (err) {
+      console.log(err);
+      res.redirect("/login", { user });
+      return;
+    }
   },
-  // showEmptyShoppingCartTab: async (req, res) => {
-  //   //empty shopping cart
-  //   console.log(req.params)
-   
-  //     //add the lesson to the shopping cart
-  //     const lesson = await lessonModel.findById({ _id: req.params.lesson_id });
-  //     res.render("users/shopping-cart", {
-  //       lesson,
-  //       user: "62e5fbc02fadae2aaa65e636",
-  //     });
-    
-  // },
-
   showThankYouMessage: async (req, res) => {
     //front end authentication is the auth middle ware, authen the cookies is avail
     //add user to the students
     //decrease lesson capacity
     let user = null;
+    let lesson = null;
+
     try {
-      const lesson = await lessonModel.findOneAndUpdate(
+      lesson = await lessonModel.findOneAndUpdate(
         { _id: req.params.lesson_id },
-        { $push: { students: req.session.user } },
+        { $push: { students: req.params.user_id } },
         { $inc: { capacity: -1 } }
       );
       console.log(lesson);
 
       user = await userModel.findOneAndUpdate(
-        { _id: req.session.user },
+        { _id: req.params.user_id },
         { $inc: { credits: -lesson.credits } },
         { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
       ); //depends on wad u save in your login for user
@@ -181,7 +219,10 @@ const controller = {
       return;
     }
 
-    res.render("users/shopping-cart-message", {user: "62e5fbc02fadae2aaa65e636",});
+    res.render("users/shopping-cart-message", {
+      lesson,
+      user: "62e5fbc02fadae2aaa65e636",
+    });
   },
   showDashboard: (rw, res) => {
     //verify that the session user exits, this is put in a aseparte middleware.js and inserted in teh server.js

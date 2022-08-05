@@ -4,9 +4,11 @@ const express = require('express')
 const mongoose = require('mongoose')
 const session = require('express-session')
 
-
+//use this tpo fake th form(get post) to use as a put, cos the form will go to middleware, and sees _method and bring it to this method overi
+//include the method-override package
+const methodOverride = require('method-override');
 const app = express()
-const port = 3001
+const port = 3002
 // const connStr = "mongodb://172.18.175.7:27017"
 const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@classpass.by0wzf8.mongodb.net/test`
 
@@ -22,7 +24,8 @@ const authMiddleware = require('./middlewares/auth_middleware')// middleware for
 app.set('view engine', 'ejs')
 
 // Apply middlewares, this is doing it globally, but no need on each one
-
+//use methodOverride.  We'll be adding a query parameter to our edit form named _method
+app.use(methodOverride('_method'));
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 //this is for cookies(browser) sessions(server), store the id of the session, so that when user returns to same website(same request to server),
@@ -69,7 +72,9 @@ app.post('/users/:user_id/history/:lesson_id/review', reviewsController.createRe
 app.get('/users/:user_id/shoppingcart/:lesson_id', userController.showShoppingCartTab)
 // app.get('/users/:user_id/shoppingcart', userController.showEmptyShoppingCartTab)
 app.get('/users/:user_id/shoppingcart/:lesson_id/message', userController.showThankYouMessage)
-
+app.get('/users/:user_id/upcoming', userController.showUpcomingLessons)
+app.delete('/users/:user_id/upcoming/:lesson_id/cancel', userController.deleteUpcomingLesson)
+// app.delete('/users/:user_id/upcoming', userController.deleteUpcomingLesson)
 
 // Reviews Routes
 // app.post('/studios/:studio_id/reviews', authMiddleware.isAuthenticated, reviewsController.createReview)
