@@ -8,7 +8,7 @@ const session = require('express-session')
 //include the method-override package
 const methodOverride = require('method-override');
 const app = express()
-const port = 3002
+const port = 3000
 // const connStr = "mongodb://172.18.175.7:27017"
 const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@classpass.by0wzf8.mongodb.net/test`
 
@@ -18,6 +18,7 @@ const studiosController = require('./controllers/studios/studios_controller')
 const userController = require('./controllers/users/users_controller')
 const lessonsController = require('./controllers/lessons/lessons_controller')
 const reviewsController = require('./controllers/reviews/reviews_controller')
+const validationMiddleware = require('./middlewares/validation_middleware.js')
 const authMiddleware = require('./middlewares/auth_middleware')// middleware for the authentication, to check if theres a session
 
 // Set view engine
@@ -36,8 +37,9 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, httpOnly: false }
+    cookie: { secure: false, httpOnly: false,  maxAge: 24 * 60 * 60 * 1000 }// 24 hours  }
 }))
+app.use(authMiddleware.setAuthUserVar)
 
 // //studios routes
 //shows the home page
@@ -45,7 +47,7 @@ app.get('/', pageController.showHome)
 // //shows studios list
 app.get('/studios', studiosController.showListOfStudios)
 app.get('/studios/:studio_id', studiosController.getStudio)
-// //shows studio's classes
+// //shows studio's classes, need authetication then can
 app.get('/studios/:studio_id/lessons', lessonsController.getLessons)
 
 
@@ -62,19 +64,22 @@ app.get('/signup', userController.showRegistrationForm)
 app.post('/signup', userController.signUp)
 
 
-//profile routes
-//app.get('/users/:user_id/upcoming', userController.showUpcomingTab)
-// app.post('/users/:user_id/profile', userController.deleteLesson)
-// app.get('/users/:user_id/profile', userController.showProfileTab)
-// app.post('/users/:user_id/profile', userController.saveProfileTab)
-// app.get('/users/:user_id/history', userController.showHistoryTab)
-app.post('/users/:user_id/history/:lesson_id/review', reviewsController.createReview)
-app.get('/users/:user_id/shoppingcart/:lesson_id', userController.showShoppingCartTab)
-// app.get('/users/:user_id/shoppingcart', userController.showEmptyShoppingCartTab)
-app.get('/users/:user_id/shoppingcart/:lesson_id/message', userController.showThankYouMessage)
-app.get('/users/:user_id/upcoming', userController.showUpcomingLessons)
-app.delete('/users/:user_id/upcoming/:lesson_id/cancel', userController.deleteUpcomingLesson)
-// app.delete('/users/:user_id/upcoming', userController.deleteUpcomingLesson)
+//users routes
+app.get('/users/history', authMiddleware.isAuthenticated, userController.showHistory)
+//app.get('/users/:user_id/history', userController.showHistory)
+app.get('/users/history/:lesson_id/review', authMiddleware.isAuthenticated, reviewsController.showReviewForm)
+// app.get('/users/:user_id/history/:lesson_id/review', reviewsController.showReviewForm)
+app.post('/users/history/:lesson_id/review', validationMiddleware.reviewIsValidated, reviewsController.createReview)
+// app.post('/users/:user_id/history/:lesson_id/review', validationMiddleware.reviewIsValidated, reviewsController.createReview)
+app.get('/users/shoppingcart/:lesson_id', authMiddleware.isAuthenticated, userController.showShoppingCartTab)
+// app.get('/users/:user_id/shoppingcart/:lesson_id', userController.showShoppingCartTab)
+app.get('/users/shoppingcart/:lesson_id/message', authMiddleware.isAuthenticated, userController.showThankYouMessage)
+// app.get('/users/:user_id/shoppingcart/:lesson_id/message', userController.showThankYouMessage)
+app.get('/users/upcoming',authMiddleware.isAuthenticated, userController.showUpcomingLessons)
+// app.get('/users/:user_id/upcoming', userController.showUpcomingLessons)
+app.delete('/users/upcoming/:lesson_id/cancel', authMiddleware.isAuthenticated, userController.deleteUpcomingLesson)
+// app.delete('/users/:user_id/upcoming/:lesson_id/cancel', userController.deleteUpcomingLesson)
+
 
 // Reviews Routes
 // app.post('/studios/:studio_id/reviews', authMiddleware.isAuthenticated, reviewsController.createReview)
@@ -88,6 +93,8 @@ app.delete('/users/:user_id/upcoming/:lesson_id/cancel', userController.deleteUp
 //for sandra
 app.post('/studios', studiosController.createStudio)
 app.post('/lessons', lessonsController.createLesson)
+//app.get('/editLessons', lessonsController.editDateOfLesson)
+//app.get('/addStudents/:user_id', lessonsController.addStudents)
 
 app.listen(port, async () => {
     try {

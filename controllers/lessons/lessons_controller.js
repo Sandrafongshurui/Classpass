@@ -17,11 +17,12 @@ const controller = {
         time: req.body.time,
         duration: req.body.duration,
         dateOfLesson: req.body.dateOfLesson,
+        lessonDate: req.body.lessonDate,
         details: req.body.details,
         studio: req.body.studio,
         reviews: req.body.reviews,
         students: req.body.students,
-        createdBy: req.body.createdBy,
+        createdBy: req.body.createdBy,//shle be res.session.adminuser
         dateCreated: req.body.dateCreated,
       });
       newLessonId = newLesson._id;
@@ -34,12 +35,12 @@ const controller = {
     try {
       console.log(req.body.studio);
       console.log(newLessonId);
-      const doc = await studioModel.findOneAndUpdate(
+      const studio = await studioModel.findOneAndUpdate(
         { name: req.body.studio },
         { $push: { lessons: newLessonId } },
         { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
       );
-      console.log(doc.lessons);
+      console.log(studio.lessons);
     } catch (err) {
       console.log(err);
       res.send("failed to add to studio");
@@ -72,9 +73,31 @@ const controller = {
       todaysDate,
       selectedDate,
       dates,
-      user : "62e5fbc02fadae2aaa65e636"
+      // user : req.session.user
     });
   },
+
+  //for sandra
+  // editDateOfLesson: async (req, res) => {
+  //   const doc = await lessonModel.updateMany(
+  //     {},
+  //     {$set: { lessonDate: '2022-08-20'}},
+  //     { upsert: true } //new means it will return teh update doc, if not it will return doc b4 updates
+  //   )},
+
+    // addStudents: async (req, res) => {
+    //   try{
+    //     const doc = await lessonModel.updateMany(
+    //       {lessonDate: {$lte : Date.now()}},
+    //       {$push: {students: req.params.user_id }},
+    //       { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
+    //     )
+    //     console.log(doc)
+    //   }catch(err){
+    //     res.send(err)
+    //   }
+     
+    // }
 };
 
 module.exports = controller;

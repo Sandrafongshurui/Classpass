@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const userModel = require("../../models/users/users");
 const lessonModel = require("../../models/lessons/lessons");
 const userValidators = require("../validators/users");
+const dates = require( "../../utils/helper");
+const Review = require("../../models/reviews/reviews");
 
 const controller = {
   //this is a modal
@@ -10,10 +12,6 @@ const controller = {
   },
 
   signUp: async (req, res) => {
-    console.log(req.body);
-    //problem 1
-    //convert the body.role radio into a string
-    console.log(req.body.role.value);
 
     // Front end Joi validations in validators
     const validationResults = userValidators.register.validate(req.body);
@@ -38,19 +36,50 @@ const controller = {
         email: validatedResults.email,
         hash: hash, //put in the hash, not the plan text pass word
         credits: 10,
-        role: req.body.role,
+        role: validatedResults.role,
       });
     } catch (err) {
       console.log(err);
       res.send("failed to create user");
       return;
     }
-    res.send("user created");
-    // res.redirect('/users/login')
+
+     // log the user in by creating a session
+    //guard against sessions fixations
+    req.session.regenerate(function (err) {
+      if (err) {
+        res.send("unable to regenerate session");
+        return;
+      }
+
+      // store user information in session, typically a user id
+      req.session.user = user._id;
+      req.session.username = user.firstname;
+
+      // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
+      // front saves as cookie
+      // subsequent req. to backend -> included the cookie in request: s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
+
+      // save the session before redirection to ensure page
+      // load does not happen before session is saved
+      req.session.save(function (err) {
+        if (err) {
+          return next(err);
+        }
+        // console.log(req.session)
+        console.log("log in sucessfully");
+        //res.redirect('/')
+        res.send("im loged in");
+      });
+    });
+
+    
   },
 
   //this will need the modal
   showLoginForm: (req, res) => {
+    console.log(res.locals)
+    console.log(req.locals)
     res.render("pages/login", {
       errMsgName: "",
     });
@@ -63,6 +92,7 @@ const controller = {
   ///all subsequent request will contain the cookies
 
   login: async (req, res) => {
+    
     // front end joi validations here ...
     const validationResults = userValidators.login.validate(req.body);
 
@@ -80,10 +110,6 @@ const controller = {
     try {
       user = await userModel.findOne({ email: validatedResults.email });
       //null is when is incorrect infomation
-      if (results === null) {
-        res.send("failed to get user");
-        return;
-      }
       console.log(user);
     } catch (err) {
       res.send("failed to get user");
@@ -111,7 +137,7 @@ const controller = {
 
       // store user information in session, typically a user id
       req.session.user = user._id;
-
+      req.session.username = user.firstname;
       // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
       // front saves as cookie
       // subsequent req. to backend -> included the cookie in request: s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
@@ -122,28 +148,59 @@ const controller = {
         if (err) {
           return next(err);
         }
-        // console.log(req.session)
         console.log("log in sucessfully");
-        //res.redirect('/')
-        res.send("im loged in");
+        res.redirect('/')
       });
+    });
+  },
+
+  showHistory: async (req, res) => {
+    //show user past classes
+    //get todays date, check which lessons has pass the date of lessom, if pass
+    //it shld be in the history, sort accroding to lates class first
+    //populate reviews section to see if user has reviewed this class before
+    let lessons = []; 
+
+    console.log(req.session.user)
+
+    try {
+      lessons = await lessonModel.find(
+        { students: req.session.user, lessonDate: {$lte : Date.now()} }
+        ).sort({lessonDate:-1}).populate({
+          path: "reviews",
+          match: { user: req.session.user},
+        });
+      console.log(lessons);
+      console.log(lessons[lessons.length-1].reviews);
+      
+    } catch (err) {
+      console.log(err);
+      res.redirect("/");
+      return;
+    }
+
+    res.render("users/history", {    
+      isloggedin: true,
+      lessons,
+      // user: req.session.user,
     });
   },
   showUpcomingLessons: async (req, res) => {
     //find student in the lessons model, they were added in when they booked class
     let lessons = [];
+    console.log(req.session.user)
     try {
-      lessons = await lessonModel.find({ students: req.params.user_id });
+      lessons = await lessonModel.find({ students: req.session.user });
       console.log(lessons);
     } catch (err) {
       console.log(err);
-      res.redirect("/login", { user });
+      res.redirect("/login");
       return;
     }
 
     res.render("users/upcoming", {
       lessons,
-      user: "62e5fbc02fadae2aaa65e636",
+      // username: req.session.user
     });
   },
   deleteUpcomingLesson: async (req, res) => {
@@ -156,12 +213,12 @@ const controller = {
     try {
       lesson = await lessonModel.findByIdAndUpdate(
         { _id: req.params.lesson_id },
-        { $pull: { students: req.params.user_id } },
+        { $pull: { students: req.session.user } },
         { $inc: { capacity: 1 } }
       );
 
       user = await userModel.findOneAndUpdate(
-        { _id: req.params.user_id },
+        { _id: req.session.user },
         { $inc: { credits: lesson.credits } },
         { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
       ); //depends on wad u save in your login for user
@@ -171,7 +228,7 @@ const controller = {
       return;
     }
 
-    res.redirect(`/users/${req.params.user_id}/upcoming`);
+    res.redirect(`/users/upcoming`);
   },
   //oncce cookies is stores, it will persist
   //subsequest request will conatin the cookies
@@ -182,15 +239,16 @@ const controller = {
     try {
       //add the lesson to the shopping cart
       lesson = await lessonModel.findById({ _id: req.params.lesson_id });
-      res.render("users/shopping-cart", {
-        lesson,
-        user: "62e5fbc02fadae2aaa65e636",
-      });
+      
     } catch (err) {
       console.log(err);
-      res.redirect("/login", { user });
+      res.redirect("/login");
       return;
     }
+    res.render("users/shopping-cart", {
+      lesson,
+      // user: req.session.user
+    });
   },
   showThankYouMessage: async (req, res) => {
     //front end authentication is the auth middle ware, authen the cookies is avail
@@ -221,7 +279,7 @@ const controller = {
 
     res.render("users/shopping-cart-message", {
       lesson,
-      user: "62e5fbc02fadae2aaa65e636",
+      // user: req.session.user
     });
   },
   showDashboard: (rw, res) => {

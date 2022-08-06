@@ -30,6 +30,10 @@ const lessonsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    lessonDate:{
+        type: Date,
+        required: true
+    },
     details:{
         type: String,
         required: true

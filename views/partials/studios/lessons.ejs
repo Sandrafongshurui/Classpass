@@ -36,7 +36,7 @@
             <div class="d-flex view-lessons pt-3 pb-5">
                 <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
                 <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" ><a href = "/users/<%= user %>/shoppingcart/<%= item._id %>"><%= item.credits %> credits</a></button></div>
+                <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" ><a href = "/users/shoppingcart/<%= item._id %>"><%= item.credits %> credits</a></button></div>
             </div>         
         </div>
     <% }) %>

@@ -1,43 +1,43 @@
 const reviewModel = require("../../models/reviews/reviews");
 const lessonModel = require("../../models/lessons/lessons");
-// const reviewValidators = require("../validators/reviews");
+
 // const userModel = require("../../models/users/users");
 // const { date } = require("joi");
 
 const controller = {
   createReview: async (req, res) => {
-    let newReviewId = null;
+    let lesson = null
+    //create reviw add in in teh lessons
     try {
       const newReview = await reviewModel.create({
-        user: req.params.user_id,
+        user: req.session.user,
         lesson: req.params.lesson_id,
         review: req.body.review,
         rating: req.body.rating,
         dateCreated: Date.now(),
       });
+      console.log(newReview);
 
-      newReviewId = newReview._id;
+      lesson = await lessonModel.findOneAndUpdate(
+        { _id: req.params.lesson_id },
+        { $push: { reviews: newReview._id } },
+        { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
+      );
+      console.log(lesson .reviews);
     } catch (err) {
       res.send("failed to create review");
       return;
     }
 
-    //add the review to the lesson
-    try {
-      console.log(newReviewId);
-      const doc = await lessonModel.findOneAndUpdate(
-        { _id: req.params.lesson_id },
-        { $push: { reviews: newReviewId } },
-        { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
-      );
-      console.log(doc.reviews);
-    } catch (err) {
-      console.log(err);
-      res.send("failed to add to lesson");
-      return;
-    }
-    res.send("created review");
-  }
+    res.redirect(`/users/${req.session.user}/history`)
+  },
+
+  showReviewForm: async (req, res) => {
+    res.render("users/review-form", {
+      // user: req.session.user,
+      lesson: req.params.lesson_id
+    });
+  },
 };
 
 module.exports = controller;

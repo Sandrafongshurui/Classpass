@@ -1,0 +1,37 @@
+<%- include('../partials/header'); %>
+
+    <section class="card shopping-cart d-flex align-items-center mx-auto">
+        <!-- navigation tabs -->
+        <div >
+            <%- include('../partials/users/users-tabs.ejs'); %>
+        </div>
+        
+        <div class="card-body w-100">
+            <!-- tab contents -->
+            <div >
+                <form method="POST" action="/users/history/<%= lesson %>/review">
+                    <!-- star ratings input -->
+                    <span class="star-rating star-5">
+                        <input type="radio" name="rating" value="1"><i></i>
+                        <input type="radio" name="rating" value="2"><i></i>
+                        <input type="radio" name="rating" value="3"><i></i>
+                        <input type="radio" name="rating" value="4"><i></i>
+                        <input type="radio" name="rating" value="5"><i></i>
+                    </span>                    
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                      <input type="text"  class="form-control review-input-box" name= "review"/>
+                      <label class="form-label" >review</label>
+                    </div>                           
+                    <!-- Submit button -->
+                    <div>
+                    <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white">
+                        Submit</button>
+                    </div>                   
+                </form>
+            </div>
+            
+        </div>
+    </section>
+    
+    <%- include('../partials/footer'); %>

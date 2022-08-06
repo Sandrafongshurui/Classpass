@@ -10,18 +10,18 @@
                     </div>
                     <div class="modal-body">
                         <div>
-                            <form>
+                            <form method="POST" action="/signup">
                                 <!-- 2 column grid layout with text inputs for the first and last names -->
                                 <div class="row mb-4">
                                   <div class="col">
                                     <div class="form-outline">
-                                      <input type="text" class="form-control" name="first-name" />
+                                      <input type="text" class="form-control" name="firstname" />
                                       <label class="form-label" >First name</label>
                                     </div>
                                   </div>
                                   <div class="col">
                                     <div class="form-outline">
-                                      <input type="text" class="form-control" name="last-name"/>
+                                      <input type="text" class="form-control" name="lastname"/>
                                       <label class="form-label" >Last name</label>
                                     </div>
                                   </div>
@@ -41,7 +41,7 @@
 
                                 <!-- Confirm Password input -->
                                 <div class="form-outline mb-4">
-                                    <input type="password" class="form-control" name="confirm-password"/>
+                                    <input type="password" class="form-control" name="confirmpassword"/>
                                     <label class="form-label" >Confirm Password</label>
                                   </div>
 
