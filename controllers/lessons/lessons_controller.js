@@ -52,8 +52,9 @@ const controller = {
 
   getLessons: async (req, res) => {
     //check if date queries is present
-    let selectedDate = dates.getTodaysDate()
-    let todaysDate = dates.getTodaysDate()
+    //let selectedDate = dates.getTodaysDate()
+    let selectedDate = new Date()
+    let todaysDate = new Date()
     if(req.query.date){
       selectedDate  = req.query.date
     }
@@ -61,7 +62,7 @@ const controller = {
     //const selectedDate = dates.displayDate
     const studio = await studioModel.findById(req.params.studio_id).populate({
       path: "lessons",
-      match: { dateOfLesson: selectedDate },
+      match: { lessonDate: selectedDate },
     });
 
     res.render("studios/show", {

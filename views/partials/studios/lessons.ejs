@@ -1,19 +1,21 @@
 <div>
-   <div> <p><%= selectedDate  %></p>
+   <div> <p><%= selectedDate %></p>
     
     <form>
         <input type="hidden" value="<%= dates.getNextDay(selectedDate) %>" name="date">
         <button type="submit">get next day</button>
      
     </form>
-    <% if(selectedDate === todaysDate){%>
+    <!-- selected dat will be the rteurn string format, 
+    so need to iso it, to date string, so can compare without time -->
+    <% if(new Date(selectedDate).toDateString() === todaysDate.toDateString()){%>
         <form>
             <input type="hidden" value="<%= todaysDate %>" name="date">
             <button type="submit" disabled>reset</button>
          
         </form>
         <form>
-            <input type="hidden" value="<%= dates.getPreviousDay(selectedDate) %>" name="date">
+            <input type="hidden" value="<%= dates.getPreviousDay(selectedDate)%>" name="date">
             <button type="submit" disabled>get prev day</button>       
         </form>
     <% }else{ %>
