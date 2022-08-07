@@ -23,7 +23,8 @@
                 <!-- <img src="/img/logo.png" srcset="/img/logo.png 1x, /img/logo@2x.png 2x" /> -->
                 <figcaption><a class="navbar-brand" href="#">Classpass</a></figcaption>
             </figure>
-            <div>
+            <div class="d-flex justify-content-between w-50">
+                
                 <form>
                     <div class="dropdown ">
                         <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -40,8 +41,47 @@
                     
                     </div>
                 </form>
+            
+                <form>
+                    <div class="dropdown ">
+                        <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Amenities
+                        </a>
+                        <div class="dropdown-menu " id="filter-list"
+                            aria-labelledby="dropdownMenuButton">
+                            <div>
+                            <input type="checkbox" name="location" value="Showers">Showers
+                            <input type="checkbox" name="location" value="Lockers">Lockers
+                            <input type="checkbox" name="location" value="Mats">Mats
+                            <input type="checkbox" name="location" value="Parking">Parking
+                            </div>
+                            <button type="submit">Apply</button>    
+                        </div>
+                    
+                    </div>
+                </form>
+                <form>
+                    <div class="dropdown ">
+                        <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Activites
+                        </a>
+                        <div class="dropdown-menu " id="filter-list"
+                            aria-labelledby="dropdownMenuButton">
+                            <div>
+                            <input type="checkbox" name="location" value="Showers">Showers
+                            <input type="checkbox" name="location" value="Lockers">Lockers
+                            <input type="checkbox" name="location" value="Mats">Mats
+                            <input type="checkbox" name="location" value="Parking">Parking
+                            </div>
+                            <button type="submit">Apply</button>    
+                        </div>
+                    
+                    </div>
+                </form>
+            
             </div>
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">

@@ -20,7 +20,7 @@
         <!-- tab contents (info or lessons)-->
         <%if(tab==="info" ){%>
             <div class="view-studio-tab border-top py-3">
-                    <div>
+                    <div class="py-3">
                         <h2>
                             <%= studio.name %>
                         </h2>
@@ -30,32 +30,32 @@
                     </div>
                     <div class="amenities border-top py-3">
                         <div>
-                            <h2>Amenities</h2>
-                            <ul class="d-flex px-0">
-                                <li>
-                                    <figure><img src="../../public/img/logo.png">
-                                        <figure>
-                                </li>
-                                <li>
-                                    <figure><img src="../../public/img/logo.png">
-                                        <figure>
-                                </li>
-                                <li>
-                                    <figure><img src="../../public/img/logo.png">
-                                        <figure>
-                                </li>
-                                <li>
-                                    <figure><img src="../../public/img/logo.png">
-                                        <figure>
-                                </li>
-                            </ul>
+                            <h4>Amenities</h4>
+                         
+                                <ul class="d-flex w-75 justify-content-between p-0 text-muted mt-3">
+                                <% if (studio.amenities.length> 0 ){ %>
+                                    <% studio.amenities.forEach(item => { %>
+                                        <li> 
+                                            <figure><img src="/img/<%= item %>.png"/></figure>
+                                            <figure-caption><%= item %></figure-caption>
+                                        </li>
+        
+                                    <%})%>  
+                                <% }else{ %>
+                                    <li> 
+                                        
+                                    </li>
+
+                                <% } %>   
+                                </ul>   
+                           
                         </div>
                     </div>
                     <!-- reviews sections -->
                     <div class="border-top">
                         <!-- rating -->
                         <div class="py-3">
-                            <h2>Reviews</h2>
+                            <h4>Reviews</h4>
                             <div class="ratings">
                                 <span class="rating-num">4.6</span>
                                 <div class="stars">

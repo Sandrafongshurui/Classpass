@@ -90,10 +90,11 @@ const controller = {
 
     res.render("studios/show", {
       studio,
-      sortedTotalReviews,
+      sortedTotalReviews, 
       tab: "info",
     });
   },
+
 };
 
 module.exports = controller;

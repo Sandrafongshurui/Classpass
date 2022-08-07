@@ -12,13 +12,14 @@ const port = 3000
 // const connStr = "mongodb://172.18.175.7:27017"
 const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@classpass.by0wzf8.mongodb.net/test`
 
-
+const helperController = require('./controllers/helper/helper_controller')
 const pageController = require('./controllers/pages/page_controller')
 const studiosController = require('./controllers/studios/studios_controller')
 const userController = require('./controllers/users/users_controller')
 const lessonsController = require('./controllers/lessons/lessons_controller')
 const reviewsController = require('./controllers/reviews/reviews_controller')
 const validationMiddleware = require('./middlewares/validation_middleware.js')
+
 const authMiddleware = require('./middlewares/auth_middleware')// middleware for the authentication, to check if theres a session
 
 // Set view engine
@@ -93,8 +94,9 @@ app.delete('/users/upcoming/:lesson_id/cancel', authMiddleware.isAuthenticated, 
 //for sandra
 app.post('/studios', studiosController.createStudio)
 app.post('/lessons', lessonsController.createLesson)
-//app.get('/editLessons', lessonsController.editDateOfLesson)
-//app.get('/addStudents/:user_id', lessonsController.addStudents)
+app.get('/editLessons', helperController.editDateOfLesson)
+app.get('/editAmenities', helperController.editStudiosAmenities)
+app.get('/addStudents/:user_id', helperController.addStudents)
 
 app.listen(port, async () => {
     try {

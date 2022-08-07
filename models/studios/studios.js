@@ -42,9 +42,13 @@ const studiosSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  amenities: [{
+    type: String,
+    emnum: ["Showers", "Lockers", "Mats", "Parking"]
+  }],
   location:[{
     type: String,
-    enum: [
+    enum: [///at create, the location has to be one of these if not will erroor
       "Woodlands",
       "Yishun",
       "Ang Mo Kio",

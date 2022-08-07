@@ -146,10 +146,13 @@ body ul {
 
 /* icons */
 .amenities img {
-    object-fit: cover;
-    width: 15px;
-    height: 15px;
+    width: 25px;
+    height: 25px;
 }
+
+/* .amenities {
+  height: 160px;
+} */
 
 .view-studio {
     width: 638px;

@@ -59,10 +59,10 @@ const controller = {
       selectedDate = req.query.date;
     }
 
-    //lean makes it a plain js object, so i can add properties, mongoose obj cant add
+   
     const studio = await studioModel
       .findById(req.params.studio_id)
-      .lean()
+      .lean() //lean makes it a plain js object, so i can add properties, mongoose obj cant add
       .populate({
         path: "lessons",
         match: { lessonDate: selectedDate },
