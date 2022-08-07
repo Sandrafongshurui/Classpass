@@ -109,7 +109,7 @@
                         <!-- searach nar of lesson types pf the studios -->
                         <form action="#">
                             <select name="lesson-names">
-                                <%for(let i=0; i < numOfLessonNames; i++){%>
+                                <%for(let i = 0; i < lessonNames.length; i++){%>
                                     <option value="<%= lessonNames[i]%>">
                                         <%= lessonNames[i]%>
                                     </option>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="calander border-top py-3">
                     <!--Calander -->
-                    <div class="month">
+                    <!-- <div class="month">
                         <ul>
                             <li class="prev">&#10094;</li>
                             <li class="next">&#10095;</li>
@@ -153,7 +153,7 @@
                         <li>11</li>
                         ...etc
                     </ul>
-                    </div>
+                    </div> -->
                     <!-- lesson section -->
                     <%- include('../partials/studios/lessons'); %>
          

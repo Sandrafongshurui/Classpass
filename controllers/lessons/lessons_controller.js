@@ -1,7 +1,7 @@
 const { date } = require("joi");
 const lessonModel = require("../../models/lessons/lessons");
 const studioModel = require("../../models/studios/studios");
-const dates = require( "../../utils/helper");
+const dates = require("../../utils/helper");
 
 const controller = {
   createLesson: async (req, res) => {
@@ -22,7 +22,7 @@ const controller = {
         studio: req.body.studio,
         reviews: req.body.reviews,
         students: req.body.students,
-        createdBy: req.body.createdBy,//shle be res.session.adminuser
+        createdBy: req.body.createdBy, //shle be res.session.adminuser
         dateCreated: req.body.dateCreated,
       });
       newLessonId = newLesson._id;
@@ -53,22 +53,26 @@ const controller = {
   getLessons: async (req, res) => {
     //check if date queries is present
     //let selectedDate = dates.getTodaysDate()
-    let selectedDate = new Date()
-    let todaysDate = new Date()
-    if(req.query.date){
-      selectedDate  = req.query.date
+    let selectedDate = new Date();
+    let todaysDate = new Date();
+    if (req.query.date) {
+      selectedDate = req.query.date;
     }
-    
-    //const selectedDate = dates.displayDate
-    const studio = await studioModel.findById(req.params.studio_id).populate({
-      path: "lessons",
-      match: { lessonDate: selectedDate },
-    });
 
+    //lean makes it a plain js object, so i can add properties, mongoose obj cant add
+    const studio = await studioModel
+      .findById(req.params.studio_id)
+      .lean()
+      .populate({
+        path: "lessons",
+        match: { lessonDate: selectedDate },
+      });
+    //add all classes as the first item in lessonNames
+    studio.lessonNames.push("All Classes");
+    console.log(studio.lessonNames);
     res.render("studios/show", {
       studio,
       tab: "lessons",
-      numOfLessonNames: studio.lessonNames.length,
       lessonNames: studio.lessonNames,
       lessons: studio.lessons,
       todaysDate,
@@ -86,19 +90,19 @@ const controller = {
   //     { upsert: true } //new means it will return teh update doc, if not it will return doc b4 updates
   //   )},
 
-    // addStudents: async (req, res) => {
-    //   try{
-    //     const doc = await lessonModel.updateMany(
-    //       {lessonDate: {$lte : Date.now()}},
-    //       {$push: {students: req.params.user_id }},
-    //       { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
-    //     )
-    //     console.log(doc)
-    //   }catch(err){
-    //     res.send(err)
-    //   }
-     
-    // }
+  // addStudents: async (req, res) => {
+  //   try{
+  //     const doc = await lessonModel.updateMany(
+  //       {lessonDate: {$lte : Date.now()}},
+  //       {$push: {students: req.params.user_id }},
+  //       { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
+  //     )
+  //     console.log(doc)
+  //   }catch(err){
+  //     res.send(err)
+  //   }
+
+  // }
 };
 
 module.exports = controller;
