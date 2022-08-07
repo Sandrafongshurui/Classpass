@@ -68,12 +68,13 @@ const controller = {
         match: { lessonDate: selectedDate },
       });
     //add all classes as the first item in lessonNames
-    studio.lessonNames.push("All Classes");
+    console.log(studio.lessonNames);
+    studio.lessonNames.unshift("All Classes");
     console.log(studio.lessonNames);
     res.render("studios/show", {
       studio,
       tab: "lessons",
-      lessonNames: studio.lessonNames,
+      lessonNames : studio.lessonNames,
       lessons: studio.lessons,
       todaysDate,
       selectedDate,
