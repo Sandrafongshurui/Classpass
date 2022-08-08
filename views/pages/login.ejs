@@ -19,10 +19,10 @@
                       <!-- Email input -->
                       <div class="form-outline mb-4">
                         <% if(errorObject.email) {%>
-                          <input type="email" id="form2Example1" class="form-control my-border" name="email" placeholder="Email Adress">
+                          <input type="email" id="form2Example1" class="form-control my-border" name="email"  value="<%= email %>" placeholder="Email Address">
                           <label class="form-label errors" for="form2Example1"><%= errorObject.email %></label>
                         <% }else{ %>
-                          <input type="email" id="form2Example1" class="form-control" name="email" placeholder="Email Address">
+                          <input type="email" id="form2Example1" class="form-control" name="email" value="<%= email %>" placeholder="Email Address">
                         <% } %>
                       </div>
 
@@ -30,13 +30,13 @@
                       <div class="form-outline mb-4">
                         
                         <% if(errorObject.password) {%>
-                          <input type="password" id="form2Example2" class="form-control my-border" name="password" placeholder="Password"/>
+                          <input type="password" id="form2Example2" class="form-control my-border" name="password" value="<%= password %>"placeholder="Password"/>
                           <label class="form-label errors" for="form2Example1"><%= errorObject.password %></label>
                           <% }else{ %>
-                            <input type="email" id="form2Example1" class="form-control" name="email" placeholder="Password">
+                            <input type="password" id="form2Example1" class="form-control" name="password" value="<%= password %>" placeholder="Password">
                           <% } %>
                       </div>
-
+                
                       <!-- 2 column grid layout for inline styling -->
                       <div class="row mb-4">
                         <div class="col d-flex justify-content-center">

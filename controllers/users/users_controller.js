@@ -76,19 +76,21 @@ const controller = {
   login: async (req, res) => {
     // front end joi validations here ...
     const validationResults = userValidators.login.validate(req.body, {abortEarly : false});
-    console.log(req.path);
+    console.log(req.body);
+    let errorObject = {
+      email: null,
+      password: null,
+    }
     if (validationResults.error) {
 
-      let errorObject = {
-        email: null,
-        password: null,
-      }
+      
       //email = error message
       validationResults.error.details.forEach(detail => {
           errorObject[detail.context.key] = detail.message
       })
 
       res.render("pages/login",{
+        ...req.body,
         errorObject,
       });
       return;
@@ -101,26 +103,37 @@ const controller = {
     // get user with email from DB, user model is the mongoose lib to interact with db
     try {
       user = await userModel.findOne({ email: validatedResults.email });
-      //null is when is incorrect infomation
-      if(user === null){
-        res.send("failed to get user");
-        return;
-      }
+      //null is when is incorrect infomation   
+      
     } catch (err) {
-      res.send("failed to get user");
-      return;
+      console.log(err);
+     
     }
-
+    if(user === null){
+      errorObject.email = "The email you entered is incorrect" 
+      res.render("pages/login",{
+        ...req.body,
+        errorObject
+        });
+        return
+      }
+  
     // use bcrypt to compare the given password with the one store as has in DB
-
-    const pwMatches = await bcrypt.compare(
-      validatedResults.password,
-      user.hash
-    );
+  
+      const pwMatches = await bcrypt.compare(
+        validatedResults.password,
+        user.hash
+      );
+  
 
     if (!pwMatches) {
-      res.send("incorrect password");
-      return;
+      console.log(req.body)
+      errorObject.password= "The password you entered is incorrect"
+       res.render("pages/login",{
+        ...req.body,
+        errorObject
+        });
+        return
     }
     // log the user in by creating a session
     //guard against sessions fixations
@@ -133,7 +146,6 @@ const controller = {
       // store user information in session, typically a user id
       req.session.user = user._id;
       req.session.username = user.firstname;
-      req.app.locals.loginError = null;
       // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
       // front saves as cookie
       // subsequent req. to backend -> included the cookie in request: s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
