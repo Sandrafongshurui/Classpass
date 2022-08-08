@@ -6,18 +6,42 @@ const ajax = require("../../utils/helper");
 const Review = require("../../models/reviews/reviews");
 
 const controller = {
-  //this is a modal
-  showRegistrationForm: (req, res) => {
-    res.render("pages/register");
+  showSignUpForm: (req, res) => {
+    res.render("pages/signup", { 
+      errorObject: {},
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      confirmpassword: "",   
+    });
   },
 
   signUp: async (req, res) => {
     // Front end Joi validations in validators
-    const validationResults = userValidators.register.validate(req.body);
+    const validationResults = userValidators.register.validate(req.body, {
+      abortEarly: false,
+    });
 
+    console.log(req.body);
+    let errorObject = {
+      firstname: null,
+      lastname: null,
+      email: null,
+      password: null,
+      confirmpassword: null,
+    };
     if (validationResults.error) {
-      res.send(validationResults.error);
-      console.log(validationResults.error);
+      //email = error message
+      console.log(validationResults.error)
+      validationResults.error.details.forEach((detail) => {
+        errorObject[detail.context.key] = detail.message;
+      });
+
+      res.render("pages/signup", {
+        ...req.body,
+        errorObject,
+      });
       return;
     }
 
@@ -42,54 +66,55 @@ const controller = {
       res.send("failed to create user");
       return;
     }
+    res.redirect("/login");
 
-    // log the user in by creating a session
-    //guard against sessions fixations
-    req.session.regenerate(function (err) {
-      if (err) {
-        res.send("unable to regenerate session");
-        return;
-      }
+    // // log the user in by creating a session
+    // //guard against sessions fixations
+    // req.session.regenerate(function (err) {
+    //   if (err) {
+    //     res.send("unable to regenerate session");
+    //     return;
+    //   }
 
-      // store user information in session, typically a user id
-      req.session.user = user._id;
-      req.session.username = user.firstname;
+    //   // store user information in session, typically a user id
+    //   req.session.user = user._id;
+    //   req.session.username = user.firstname;
 
-      // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
-      // front saves as cookie
-      // subsequent req. to backend -> included the cookie in request: s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
+    //   // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
+    //   // front saves as cookie
+    //   // subsequent req. to backend -> included the cookie in request: s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
 
-      // save the session before redirection to ensure page
-      // load does not happen before session is saved
-      req.session.save(function (err) {
-        if (err) {
-          return next(err);
-        }
-        // console.log(req.session)
-        console.log("log in sucessfully");
-        //res.redirect('/')
-        res.send("im loged in");
-      });
-    });
+    //   // save the session before redirection to ensure page
+    //   // load does not happen before session is saved
+    //   req.session.save(function (err) {
+    //     if (err) {
+    //       return next(err);
+    //     }
+    //     // console.log(req.session)
+    //     console.log("log in sucessfully");
+    //     res.redirect("/");
+    //   });
+    // });
   },
 
   login: async (req, res) => {
     // front end joi validations here ...
-    const validationResults = userValidators.login.validate(req.body, {abortEarly : false});
+    const validationResults = userValidators.login.validate(req.body, {
+      abortEarly: false,
+    });
     console.log(req.body);
     let errorObject = {
       email: null,
       password: null,
-    }
+    };
     if (validationResults.error) {
-
-      
       //email = error message
-      validationResults.error.details.forEach(detail => {
-          errorObject[detail.context.key] = detail.message
-      })
+      validationResults.error.details.forEach((detail) => {
+        errorObject[detail.context.key] = detail.message;
+      });
 
-      res.render("pages/login",{
+      res.render("pages/login", {
+        signUpMsg: "",
         ...req.body,
         errorObject,
       });
@@ -103,37 +128,35 @@ const controller = {
     // get user with email from DB, user model is the mongoose lib to interact with db
     try {
       user = await userModel.findOne({ email: validatedResults.email });
-      //null is when is incorrect infomation   
-      
+      //null is when is incorrect infomation
     } catch (err) {
       console.log(err);
-     
     }
-    if(user === null){
-      errorObject.email = "The email you entered is incorrect" 
-      res.render("pages/login",{
+    if (user === null) {
+      errorObject.email = "The email you entered is incorrect";
+      res.render("pages/login", {
+        signUpMsg: "",
         ...req.body,
-        errorObject
-        });
-        return
-      }
-  
+        errorObject,
+      });
+      return;
+    }
+
     // use bcrypt to compare the given password with the one store as has in DB
-  
-      const pwMatches = await bcrypt.compare(
-        validatedResults.password,
-        user.hash
-      );
-  
+    const pwMatches = await bcrypt.compare(
+      validatedResults.password,
+      user.hash
+    );
 
     if (!pwMatches) {
-      console.log(req.body)
-      errorObject.password= "The password you entered is incorrect"
-       res.render("pages/login",{
+      console.log(req.body);
+      errorObject.password = "The password you entered is incorrect";
+      res.render("pages/login", {
+        signUpMsg: "",
         ...req.body,
-        errorObject
-        });
-        return
+        errorObject,
+      });
+      return;
     }
     // log the user in by creating a session
     //guard against sessions fixations
@@ -164,7 +187,10 @@ const controller = {
 
   showLoginForm: (req, res) => {
     res.render("pages/login", {
-      errorObject: {}
+      signUpMsg: "Your sign up is successfull, please log in to continue.",
+      email: "",
+      password: "",
+      errorObject: {},
     });
   },
 

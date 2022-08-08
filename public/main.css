@@ -3,9 +3,9 @@ body {
 }
 
 
-#page-header {
+/* #page-header {
     padding: 30px 0;
-}
+} */
 
 #page-header figure {
     margin: 0;
@@ -37,6 +37,7 @@ body {
 /* main {
     height: 500px;
 } */
+#signup-page-cover,
 #loginpage-cover, 
 #homepage-cover {
     height: 100%;
@@ -59,9 +60,10 @@ body {
     font-weight: 100;
     padding: 10px 20px;
 }
+#page-signup,
 #page-login, 
 #page-home {
-    height: calc(100vh - 188px);
+    height: 700px
 }
 
 .constrained-full-height {
@@ -453,6 +455,10 @@ a, u {
 
 .page-login-card{
   height: 522px;
+}
+
+.page-signup-card{
+  height: 570px;
 }
 
 

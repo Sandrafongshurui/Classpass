@@ -64,7 +64,7 @@ app.delete('/logout', userController.logout)
 
 //signup routes
 //show sign up modal
-app.get('/signup', userController.showRegistrationForm)
+app.get('/signup', userController.showSignUpForm)
 app.post('/signup', userController.signUp)
 
 

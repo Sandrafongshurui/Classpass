@@ -15,7 +15,8 @@
                   
                   <div class="card-body p-4 p-lg-5 text-black">
                     <form class="myForm" method="POST" action="/login">
-                      <h3>Login</h3>
+                      <h6 class="mb-5 text-warning text-center"><%= signUpMsg %></h6>
+                      <h3 class="text-center mb-3">Login</h3>
                       <!-- Email input -->
                       <div class="form-outline mb-4">
                         <% if(errorObject.email) {%>
@@ -55,12 +56,12 @@
                       </div>
                       <div class="text-center">
                         <!-- Submit button -->
-                        <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white">Sign
-                          in</button>
+                        <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white">Login
+                          </button>
                       </div>
                       <!-- Register buttons -->
                       <div class="text-center">
-                        <p>Not a member? <a href="#!">Register</a></p>
+                        <p>Not a member? <a href="/signup">Register</a></p>
                       </div>
                     </form>
 

@@ -1,0 +1,107 @@
+<%- include('../partials/header'); %>
+  <div id="page-signup">
+    <div id="signup-page-cover">
+
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-10">
+            <div class="card page-signup-card" style="border-radius: 1rem;">
+              <div class="row g-0 h-100">
+                <div class="col-md-6 col-lg-5 d-none d-md-block h-100">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+                    alt="login form" class="img-fluid h-100" style="border-radius: 1rem 0 0 1rem;" />
+                </div>
+                <div class="col-md-6 col-lg-7 d-flex align-items-center h-100">
+                  
+                  <div class="card-body p-4 p-lg-5 text-black h-100">
+                    <form method="POST" action="/signup">
+                      <h3 class="text-center mb-3">Sign Up</h3>
+                      <!-- 2 column grid layout with text inputs for the first and last names -->
+                      <div class="row mb-3">
+                        <div class="col">
+                          <div class="form-outline">
+                            <% if(errorObject.firstname) {%>
+                            <input type="text" class="form-control  my-border" name="firstname" value ="<%= firstname %>"placeholder="First Name"/>
+                            <label class="form-label errors" ><%= errorObject.firstname %></label>
+                            <% }else{ %>
+                              <input type="text" class="form-control" name="firstname" value ="<%= firstname %>"placeholder="First Name"/>
+                            <% } %>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-outline">
+                            <% if(errorObject.lastname) {%>
+                            <input type="text" class="form-control  my-border" name="lastname" value ="<%= lastname %>" placeholder="Last Name"/>
+                            <label class="form-label errors" ><%= errorObject.lastname %></label>
+                            <% }else{ %>
+                              <input type="text" class="form-control" name="lastname" value ="<%= lastname %>" placeholder="Last Name"/>
+                              <% } %>
+                          </div>
+                        </div>
+                      </div>
+                    
+                      <!-- Email input -->
+                      <div class="form-outline mb-3">
+                        <% if(errorObject.email) {%>
+                        <input type="email" class="form-control  my-border" name="email" value ="<%= email %>" placeholder="Email address"/>
+                        <label class="form-label errors" ><%= errorObject.email %></label>
+                        <% }else{ %>
+                          <input type="email" class="form-control" name="email" value ="<%= email %>" placeholder="Email address"/>
+                          <% } %>
+                      </div>
+                    
+                      <!-- Password input -->
+                      <div class="form-outline mb-3">
+                        <% if(errorObject.password) {%>
+                        <input type="password" class="form-control  my-border" name="password" value ="<%= password %>" placeholder="Password"/>
+                        <label class="form-label errors" ><%= errorObject.password%></label>
+                        <% }else{ %>
+                          <input type="password" class="form-control" name="password" value ="<%= password %>" placeholder="Password"/>
+                          <% } %>
+                      </div>
+
+                      <!-- Confirm Password input -->
+                      <div class="form-outline mb-3">
+                        <% if(errorObject.confirmpassword) {%>
+                          <input type="password" class="form-control  my-border" name="confirmpassword"  value ="<%= confirmpassword %>" placeholder="Confirm password"/>
+                          <label class="form-label errors" ><%= errorObject.confirmpassword %></label>
+                          <% }else{ %>
+                            <input type="password" class="form-control" name="confirmpassword"  value ="<%= confirmpassword %>" placeholder="Confirm password"/>
+                            <% } %>
+                        </div>
+
+                       <!-- Checkbox -->
+                      <div class="mb-3 form-check d-flex justify-content-center mb-3 ">
+                        <div class="col">
+                            <input class="form-check-input me-2" type="radio" name="role" value="Admin" checked />
+                            <label class="form-check-label">
+                            Admin
+                            </label>
+                        </div>
+                        <div class="col"> 
+                            <input class="form-check-input me-2 " type="radio" name="role" value="Customer"/>
+                            <label class="form-check-label">
+                            Customer
+                            </label>
+                          
+                        </div>
+                      </div>                            
+                      <!-- Submit button -->
+                      <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block text-white">Sign Up</button>
+                     
+
+                     
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <%- include('../partials/footer'); %>
