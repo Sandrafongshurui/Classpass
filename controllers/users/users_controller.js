@@ -73,31 +73,24 @@ const controller = {
     });
   },
 
-  //this will need the modal
-  showLoginForm: (req, res) => {
-    console.log(res.locals);
-    console.log(req.locals);
-    res.render("pages/login", {
-      errMsgName: "",
-    });
-    //res.send("show login form")
-  },
-
-  //actual log in
-  //type in username and pw, req sent to server, server create session, session id returned
-  //browser will store the cookie
-  ///all subsequent request will contain the cookies
-
   login: async (req, res) => {
     // front end joi validations here ...
-    const validationResults = userValidators.login.validate(req.body);
+    const validationResults = userValidators.login.validate(req.body, {abortEarly : false});
     console.log(req.path);
     if (validationResults.error) {
-      console.log(validationResults.error);
-      //set loginerror to true
-      req.app.locals.loginError = true;
-      //redirect to where it came from, could be any path
-      res.redirect(req.path);
+
+      let errorObject = {
+        email: null,
+        password: null,
+      }
+      //email = error message
+      validationResults.error.details.forEach(detail => {
+          errorObject[detail.context.key] = detail.message
+      })
+
+      res.render("pages/login",{
+        errorObject,
+      });
       return;
     }
 
@@ -109,7 +102,10 @@ const controller = {
     try {
       user = await userModel.findOne({ email: validatedResults.email });
       //null is when is incorrect infomation
-      console.log(user);
+      if(user === null){
+        res.send("failed to get user");
+        return;
+      }
     } catch (err) {
       res.send("failed to get user");
       return;
@@ -153,6 +149,99 @@ const controller = {
       });
     });
   },
+
+  showLoginForm: (req, res) => {
+    res.render("pages/login", {
+      errorObject: {}
+    });
+  },
+
+  //actual log in
+  //type in username and pw, req sent to server, server create session, session id returned
+  //browser will store the cookie
+  ///all subsequent request will contain the cookies
+
+  // login: async (req, res) => {
+  //   // front end joi validations here ...
+  //   const validationResults = userValidators.login.validate(req.body, {abortEarly : false});
+  //   console.log(req.path);
+  //   if (validationResults.error) {
+  //     console.log(validationResults.error.details);
+  //     console.log(validationResults.error.details[0].message);
+  //     console.log(validationResults.error.details[1].message);
+
+  //     let errorObject = {
+  //       email: null,
+  //       password: null,
+  //     }
+  //     //email = error message
+  //     error.details.forEach(detail => {
+  //         errorObject[detail.context.key] = detail.message
+  //     })
+
+  //     //set loginerror to true
+  //     req.app.locals.validationErrors = errorObject
+  //     req.app.locals.loginError = true;
+  //     //redirect to where it came from, could be any path
+  //     res.redirect(req.path);
+  //     return;
+  //   }
+
+  //   //backend validation
+  //   const validatedResults = validationResults.value;
+  //   let user = null;
+
+  //   // get user with email from DB, user model is the mongoose lib to interact with db
+  //   try {
+  //     user = await userModel.findOne({ email: validatedResults.email });
+  //     //null is when is incorrect infomation
+  //     if(user === null){
+  //       res.send("failed to get user");
+  //       return;
+  //     }
+  //   } catch (err) {
+  //     res.send("failed to get user");
+  //     return;
+  //   }
+
+  //   // use bcrypt to compare the given password with the one store as has in DB
+
+  //   const pwMatches = await bcrypt.compare(
+  //     validatedResults.password,
+  //     user.hash
+  //   );
+
+  //   if (!pwMatches) {
+  //     res.send("incorrect password");
+  //     return;
+  //   }
+  //   // log the user in by creating a session
+  //   //guard against sessions fixations
+  //   req.session.regenerate(function (err) {
+  //     if (err) {
+  //       res.send("unable to regenerate session");
+  //       return;
+  //     }
+
+  //     // store user information in session, typically a user id
+  //     req.session.user = user._id;
+  //     req.session.username = user.firstname;
+  //     req.app.locals.loginError = null;
+  //     // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
+  //     // front saves as cookie
+  //     // subsequent req. to backend -> included the cookie in request: s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
+
+  //     // save the session before redirection to ensure page
+  //     // load does not happen before session is saved
+  //     req.session.save(function (err) {
+  //       if (err) {
+  //         return next(err);
+  //       }
+  //       console.log("log in sucessfully");
+  //       res.redirect(req.path);
+  //     });
+  //   });
+  // },
 
   showHistory: async (req, res) => {
     //show user past classes

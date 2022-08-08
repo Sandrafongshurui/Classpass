@@ -45,10 +45,10 @@ app.use(authMiddleware.setAuthUserVar)
 // //studios routes
 //shows the home page
 app.get('/', pageController.showHome)
-app.post('/', userController.login)
+// app.post('/', userController.login)
 // //shows studios list
 app.get('/studios', studiosController.showListOfStudios)
-app.post('/studios', userController.login)
+// app.post('/studios', userController.login)
 app.get('/studios/:studio_id', studiosController.getStudio)
 // //shows studio's classes, need authetication then can
 app.get('/studios/:studio_id/lessons', lessonsController.getLessons)

@@ -37,13 +37,13 @@ body {
 /* main {
     height: 500px;
 } */
-
+#loginpage-cover, 
 #homepage-cover {
     height: 100%;
     background: url(./img/homepage-cover.png);
     background-repeat: no-repeat;
     background-size: cover;
-    padding-top: 80px;
+    /* padding-top: 80px; */
 }
 
 #homepage-cover h1 {
@@ -59,7 +59,7 @@ body {
     font-weight: 100;
     padding: 10px 20px;
 }
-
+#page-login, 
 #page-home {
     height: calc(100vh - 188px);
 }
@@ -440,10 +440,20 @@ a, u {
   height: 100%;
 }
 
+.errors{
+  color:#ff00007a;
+  font-size: smaller;
+
+}
+
+.my-border{
+  border: #ff0000a4 solid;
+}
 
 
-
-
+.page-login-card{
+  height: 522px;
+}
 
 
 
