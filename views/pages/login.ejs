@@ -1,8 +1,8 @@
 <%- include('../partials/header'); %>
     <%- include('../partials/home-main'); %>
-        <div class="modal" id="myModal">
+        <div class="modal show" id="myModal">
 
-            <div class="modal-dialog">
+            <div class="modal-dialog show">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Login</h5>
@@ -66,9 +66,67 @@
             crossorigin="anonymous"></script>
         <!-- <script src="/main.js"></script> -->
         <script>
-            const myModal = new bootstrap.Modal(document.getElementById('myModal'), { keyboard: false })
-            myModal.toggle()
+            // const myModal = new bootstrap.Modal(document.getElementById('myModal'), { keyboard: false })
+            // myModal.toggle()
         </script>
         </body>
 
         </html>
+
+
+        <% if (loginError === null){%>
+          <div class="modal fade" id="myLoginModal" data-bs-backdrop="static">
+          
+                 
+              <div class="modal-dialog modal-dialog-centered" >
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Login</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <div>
+                              <form method="POST" action="/studios">
+                                  <!-- Email input -->
+                                  <div class="form-outline mb-4">
+                                    <input type="email" id="form2Example1" class="form-control"  name= "email" />
+                                    <label class="form-label" for="form2Example1" >Email address</label>
+                                  </div>
+                                
+                                  <!-- Password input -->
+                                  <div class="form-outline mb-4">
+                                    <input type="password" id="form2Example2" class="form-control" name= "password"/>
+                                    <label class="form-label" for="form2Example2">Password</label>
+                                  </div>
+                                
+                                  <!-- 2 column grid layout for inline styling -->
+                                  <div class="row mb-4">
+                                    <div class="col d-flex justify-content-center">
+                                      <!-- Checkbox -->
+                                      <div class="form-check">
+                                        <input class="form-check-input
+                                        text-muted" type="checkbox" value="" id="form2Example34"  />
+                                        <label class="form-check-label" for="form2Example34"> Remember me </label>
+                                      </div>
+                                    </div>
+                                
+                                    <div class="col">
+                                      <!-- Simple link -->
+                                      <a href="#!" class="text-muted">Forgot password?</a>
+                                    </div>
+                                  </div>
+                                  <div class="text-center">
+                                  <!-- Submit button -->
+                                  <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white">Sign in</button>
+                                  </div>
+                                  <!-- Register buttons -->
+                                  <div class="text-center">
+                                    <p>Not a member? <a href="#!">Register</a></p>                            
+                                  </div>
+                                </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <% }else{ %>

@@ -8,7 +8,7 @@ const session = require('express-session')
 //include the method-override package
 const methodOverride = require('method-override');
 const app = express()
-const port = 3000
+const port = 3001
 // const connStr = "mongodb://172.18.175.7:27017"
 const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@classpass.by0wzf8.mongodb.net/test`
 
@@ -45,8 +45,10 @@ app.use(authMiddleware.setAuthUserVar)
 // //studios routes
 //shows the home page
 app.get('/', pageController.showHome)
+app.post('/', userController.login)
 // //shows studios list
 app.get('/studios', studiosController.showListOfStudios)
+app.post('/studios', userController.login)
 app.get('/studios/:studio_id', studiosController.getStudio)
 // //shows studio's classes, need authetication then can
 app.get('/studios/:studio_id/lessons', lessonsController.getLessons)
@@ -56,6 +58,7 @@ app.get('/studios/:studio_id/lessons', lessonsController.getLessons)
 // //show login modal at home page
 app.get('/login', userController.showLoginForm)
 app.post('/login', userController.login)
+
 app.delete('/logout', userController.logout)
 
 
@@ -92,7 +95,7 @@ app.delete('/users/upcoming/:lesson_id/cancel', authMiddleware.isAuthenticated, 
 // app.get('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
 
 //for sandra
-app.post('/studios', studiosController.createStudio)
+// app.post('/studios', studiosController.createStudio)
 app.post('/lessons', lessonsController.createLesson)
 app.get('/editLessons', helperController.editDateOfLesson)
 app.get('/editAmenities', helperController.editStudiosAmenities)

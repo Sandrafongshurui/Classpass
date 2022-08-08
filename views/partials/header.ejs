@@ -90,6 +90,10 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <!-- <div id="demo" >
+                        <p>Let AJAX change this text.</p>
+                        <button type="button" onclick="loadDoc()">Change Content</button>
+                    </div> -->
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="http://localhost:3000/studios">Find Classes</a>
                     </li>
@@ -111,9 +115,13 @@
                     </li>
                     <% } else { %>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="http://localhost:3000/login">Login</a>   
+                        <!-- <a class="nav-link" aria-current="page" href="http://localhost:3000/login">Login</a>    -->
+                        <button class="nav-link" type="button" onclick="openLoginModal()">Login</button>
+                        
+                    </div>
                     </li>
                     <% } %>
+
 
                 </ul>
 

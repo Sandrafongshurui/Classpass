@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const userModel = require("../../models/users/users");
 const lessonModel = require("../../models/lessons/lessons");
 const userValidators = require("../validators/users");
-const dates = require( "../../utils/helper");
+const ajax = require("../../utils/helper");
 const Review = require("../../models/reviews/reviews");
 
 const controller = {
@@ -12,7 +12,6 @@ const controller = {
   },
 
   signUp: async (req, res) => {
-
     // Front end Joi validations in validators
     const validationResults = userValidators.register.validate(req.body);
 
@@ -44,7 +43,7 @@ const controller = {
       return;
     }
 
-     // log the user in by creating a session
+    // log the user in by creating a session
     //guard against sessions fixations
     req.session.regenerate(function (err) {
       if (err) {
@@ -72,14 +71,12 @@ const controller = {
         res.send("im loged in");
       });
     });
-
-    
   },
 
   //this will need the modal
   showLoginForm: (req, res) => {
-    console.log(res.locals)
-    console.log(req.locals)
+    console.log(res.locals);
+    console.log(req.locals);
     res.render("pages/login", {
       errMsgName: "",
     });
@@ -92,13 +89,15 @@ const controller = {
   ///all subsequent request will contain the cookies
 
   login: async (req, res) => {
-    
     // front end joi validations here ...
     const validationResults = userValidators.login.validate(req.body);
-
+    console.log(req.path);
     if (validationResults.error) {
-      res.send(validationResults.error);
-      //console.log(validationResults.error);
+      console.log(validationResults.error);
+      //set loginerror to true
+      req.app.locals.loginError = true;
+      //redirect to where it came from, could be any path
+      res.redirect(req.path);
       return;
     }
 
@@ -138,6 +137,7 @@ const controller = {
       // store user information in session, typically a user id
       req.session.user = user._id;
       req.session.username = user.firstname;
+      req.app.locals.loginError = null;
       // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
       // front saves as cookie
       // subsequent req. to backend -> included the cookie in request: s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
@@ -149,7 +149,7 @@ const controller = {
           return next(err);
         }
         console.log("log in sucessfully");
-        res.redirect('/')
+        res.redirect(req.path);
       });
     });
   },
@@ -159,27 +159,27 @@ const controller = {
     //get todays date, check which lessons has pass the date of lessom, if pass
     //it shld be in the history, sort accroding to lates class first
     //populate reviews section to see if user has reviewed this class before
-    let lessons = []; 
+    let lessons = [];
 
-    console.log(req.session.user)
+    console.log(req.session.user);
 
     try {
-      lessons = await lessonModel.find(
-        { students: req.session.user, lessonDate: {$lte : Date.now()} }
-        ).sort({lessonDate:-1}).populate({
+      lessons = await lessonModel
+        .find({ students: req.session.user, lessonDate: { $lte: Date.now() } })
+        .sort({ lessonDate: -1 })
+        .populate({
           path: "reviews",
-          match: { user: req.session.user},
+          match: { user: req.session.user },
         });
       console.log(lessons);
-      console.log(lessons[lessons.length-1].reviews);
-      
+      console.log(lessons[lessons.length - 1].reviews);
     } catch (err) {
       console.log(err);
       res.redirect("/");
       return;
     }
 
-    res.render("users/history", {    
+    res.render("users/history", {
       isloggedin: true,
       lessons,
       // user: req.session.user,
@@ -188,7 +188,7 @@ const controller = {
   showUpcomingLessons: async (req, res) => {
     //find student in the lessons model, they were added in when they booked class
     let lessons = [];
-    console.log(req.session.user)
+    console.log(req.session.user);
     try {
       lessons = await lessonModel.find({ students: req.session.user });
       console.log(lessons);
@@ -209,7 +209,7 @@ const controller = {
     //add back credits to user
     let lesson = null;
     let user = null;
-    console.log(req.query.lesson)
+    console.log(req.query.lesson);
     try {
       lesson = await lessonModel.findByIdAndUpdate(
         { _id: req.params.lesson_id },
@@ -239,7 +239,6 @@ const controller = {
     try {
       //add the lesson to the shopping cart
       lesson = await lessonModel.findById({ _id: req.params.lesson_id });
-      
     } catch (err) {
       console.log(err);
       res.redirect("/login");

@@ -26,6 +26,11 @@ const controller = {
   },
 
   showListOfStudios: async (req, res) => {
+    console.log(req.app.locals.loginError)
+    if(!req.app.locals.loginError){
+      req.app.locals.loginError = null;
+    }
+   
     let studios = null
     try{
       if(!req.query.location){
@@ -36,18 +41,28 @@ const controller = {
         //find if the selected location is inside the array of locations of a studio
         studios = await studioModel.find({location : req.query.location});
        }
-       console.log(studios);
+      // console.log(studios);
     }catch(err){
       console.log(err)
       res.send(err)
       return
     }
-    res.render("studios/index", { studios });
+    if(req.app.locals.loginError){
+      console.log("error")
+      req.app.locals.loginError = null
+      res.render("studios/index", { studios,  myModalId: "myLoginModal-error", formAction: req.path});
+    }else{
+      console.log("noo-error")
+      res.render("studios/index", { studios,  myModalId: "myLoginModal", formAction: req.path});
+    }
+   
+
   },
 
   //the  studio_id would be in the index(showing list of studios, in the ahref link)
   //"/studios/studio_id"
   getStudio: async (req, res) => {
+
     //lean makes it a plain js object, so i can add properties, mongoose obj cant add
     const studio = await studioModel.findById(req.params.studio_id).lean().populate({
       path: "lessons", //poppulate the lessons field

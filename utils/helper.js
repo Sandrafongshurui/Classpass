@@ -1,7 +1,25 @@
+const XMLHttpRequest = require('xhr2');
+
 const modify = {
   modifyString: (currentDay, currentMonth, currentYear) => {
     return `${("0" + currentDay.toString()).slice(-2)}/${("0" + currentMonth.toString()).slice(-2)}/${currentYear}`;
   },
+
+}
+
+const ajax = {
+  openLoginModal : () => {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onLoad= function () {
+      document.getElementById("myLoginModal").innerHTML = "haha"
+    };
+
+    //method(get or post), file location
+    console.log("---->", "before open")
+    xhttp.open("GET", "http://localhost:3001/studios", true);
+    console.log("---->", "before send")
+    xhttp.send();     
+  }
 
 }
 
@@ -108,3 +126,4 @@ const dates = {
 };
 
 module.exports = dates;
+module.exports = ajax;
