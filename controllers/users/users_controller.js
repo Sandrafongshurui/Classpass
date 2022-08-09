@@ -2,18 +2,16 @@ const bcrypt = require("bcrypt");
 const userModel = require("../../models/users/users");
 const lessonModel = require("../../models/lessons/lessons");
 const userValidators = require("../validators/users");
-const ajax = require("../../utils/helper");
-const Review = require("../../models/reviews/reviews");
 
 const controller = {
   showSignUpForm: (req, res) => {
-    res.render("pages/signup", { 
+    res.render("pages/signup", {
       errorObject: {},
       firstname: "",
       lastname: "",
       email: "",
       password: "",
-      confirmpassword: "",   
+      confirmpassword: "",
     });
   },
 
@@ -33,7 +31,7 @@ const controller = {
     };
     if (validationResults.error) {
       //email = error message
-      console.log(validationResults.error)
+      console.log(validationResults.error);
       validationResults.error.details.forEach((detail) => {
         errorObject[detail.context.key] = detail.message;
       });
@@ -129,17 +127,17 @@ const controller = {
     try {
       user = await userModel.findOne({ email: validatedResults.email });
       //null is when is incorrect infomation
+      if (user === null) {
+        errorObject.email = "The email you entered is incorrect";
+        res.render("pages/login", {
+          signUpMsg: "",
+          ...req.body,
+          errorObject,
+        });
+        return;
+      }
     } catch (err) {
-      console.log(err);
-    }
-    if (user === null) {
-      errorObject.email = "The email you entered is incorrect";
-      res.render("pages/login", {
-        signUpMsg: "",
-        ...req.body,
-        errorObject,
-      });
-      return;
+      res.render("page/404", { title: "Sorry, page not found" });
     }
 
     // use bcrypt to compare the given password with the one store as has in DB
@@ -180,12 +178,14 @@ const controller = {
           return next(err);
         }
         console.log("log in sucessfully");
-        res.redirect(req.path);
+        console.log("redirect to", res.locals.redirect);
+        res.redirect(res.locals.redirect);
       });
     });
   },
 
   showLoginForm: (req, res) => {
+    console.log(req.path);
     res.render("pages/login", {
       signUpMsg: "Your sign up is successfull, please log in to continue.",
       email: "",
@@ -291,14 +291,12 @@ const controller = {
     console.log(req.session.user);
     try {
       lessons = await lessonModel
-        .find({ students: req.session.user, lessonDate : { $lte: Date.now() } })
+        .find({ students: req.session.user, lessonDate: { $lte: Date.now() } })
         .sort({ lessonDate: -1 })
         .populate({
           path: "reviews",
           match: { user: req.session.user },
         });
-      console.log(lessons);
-      console.log(lessons[lessons.length - 1].reviews);
     } catch (err) {
       console.log(err);
       res.redirect("/");
@@ -306,7 +304,6 @@ const controller = {
     }
 
     res.render("users/history", {
-      isloggedin: true,
       lessons,
       // user: req.session.user,
     });
@@ -375,6 +372,10 @@ const controller = {
       // user: req.session.user
     });
   },
+
+  showEmptyCart: async (req, res) => {
+    res.render("users/shopping-cart-empty", {});
+  },
   showThankYouMessage: async (req, res) => {
     //front end authentication is the auth middle ware, authen the cookies is avail
     //add user to the students
@@ -407,14 +408,6 @@ const controller = {
       // user: req.session.user
     });
   },
-  showDashboard: (rw, res) => {
-    //verify that the session user exits, this is put in a aseparte middleware.js and inserted in teh server.js
-    // if(!req.session.user){
-    //     res.send("you are not autheticated")
-    //     return
-    // }
-    res.send("welcome to your protected dashboard");
-  },
 
   showProfile: async (req, res) => {
     //verify that the session user exits, this is put in a aseparte middleware.js and inserted in teh server.js
@@ -443,7 +436,7 @@ const controller = {
     //so the currents session is invalid
     req.session.save(function (err) {
       if (err) {
-        res.redirect("/users/login");
+        res.redirect("/login");
         return;
       }
 
@@ -451,12 +444,11 @@ const controller = {
       // guard against forms of session fixation
       req.session.regenerate(function (err) {
         if (err) {
-          res.redirect("/users/login");
+          res.redirect("/login");
           return;
         }
 
-        // res.redirect('/')
-        res.send("logged out");
+        res.redirect("/");
       });
     });
   },

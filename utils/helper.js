@@ -22,11 +22,6 @@
 //   }
 
 // }
-const filterLesson = {
-  value:""
-  
-  }
-  
 
 const dates = {
   getTodaysDate: () => {
@@ -141,5 +136,5 @@ const dates = {
   // },
 };
 
-module.exports = {dates, filterLesson}
+module.exports = {dates}
 

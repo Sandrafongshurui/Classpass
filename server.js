@@ -20,8 +20,9 @@ const lessonsController = require('./controllers/lessons/lessons_controller')
 const reviewsController = require('./controllers/reviews/reviews_controller')
 const validationMiddleware = require('./middlewares/validation_middleware.js')
 
+//middlewares
 const authMiddleware = require('./middlewares/auth_middleware')// middleware for the authentication, to check if theres a session
-
+const redirectMiddleware = require('./middlewares/redirect_middleware')
 // Set view engine
 app.set('view engine', 'ejs')
 
@@ -44,14 +45,14 @@ app.use(authMiddleware.setAuthUserVar)
 
 // //studios routes
 //shows the home page
-app.get('/', pageController.showHome)
+app.get('/', pageController.showHome, redirectMiddleware.setRedirectPath)
 // app.post('/', userController.login)
 // //shows studios list
-app.get('/studios', studiosController.showListOfStudios)
+app.get('/studios', studiosController.showListOfStudios, redirectMiddleware.setRedirectPath)
 // app.post('/studios', userController.login)
-app.get('/studios/:studio_id', studiosController.getStudio)
+app.get('/studios/:studio_id', studiosController.getStudio, redirectMiddleware.setRedirectPath)
 // //shows studio's classes, need authetication then can
-app.get('/studios/:studio_id/lessons', lessonsController.getLessons)
+app.get('/studios/:studio_id/lessons', lessonsController.getLessons, redirectMiddleware.setRedirectPath)
 app.post('/studios/:studio_id/lessons', lessonsController.getLessons)
 
 
@@ -60,7 +61,7 @@ app.post('/studios/:studio_id/lessons', lessonsController.getLessons)
 app.get('/login', userController.showLoginForm)
 app.post('/login', userController.login)
 
-app.delete('/logout', userController.logout)
+app.get('/logout', authMiddleware.isAuthenticated, userController.logout)
 
 
 //signup routes
@@ -79,6 +80,7 @@ app.post('/users/history/:lesson_id/review', validationMiddleware.reviewIsValida
 app.get('/users/shoppingcart/:lesson_id', authMiddleware.isAuthenticated, userController.showShoppingCartTab)
 // app.get('/users/:user_id/shoppingcart/:lesson_id', userController.showShoppingCartTab)
 app.get('/users/shoppingcart/:lesson_id/message', authMiddleware.isAuthenticated, userController.showThankYouMessage)
+app.get('/users/shoppingcart', authMiddleware.isAuthenticated, userController.showEmptyCart)
 // app.get('/users/:user_id/shoppingcart/:lesson_id/message', userController.showThankYouMessage)
 app.get('/users/upcoming',authMiddleware.isAuthenticated, userController.showUpcomingLessons)
 // app.get('/users/:user_id/upcoming', userController.showUpcomingLessons)

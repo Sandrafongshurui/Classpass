@@ -1,12 +1,12 @@
 const { date } = require("joi");
 const lessonModel = require("../../models/lessons/lessons");
 const studioModel = require("../../models/studios/studios");
-const {dates}  = require("../../utils/helper");
-const {filterLesson}  = require("../../utils/helper");
+const { dates } = require("../../utils/helper");
 
-const storeSelection= {
-  filter:""
-}
+
+const storeSelection = {
+  filter: "All Classes",
+};
 
 const controller = {
   createLesson: async (req, res) => {
@@ -55,82 +55,63 @@ const controller = {
     res.send("lesson created");
   },
 
-  getLessons: async (req, res) => {
-    //check if date queries is present
-    //let selectedDate = dates.getTodaysDate()
-    
+  getLessons: async (req, res, next) => {
+   
     let selectedDate = new Date();
     let todaysDate = new Date();
-    let filterOptions = "All Classes"
-    let lessons = []
-    
+    let filterOptions = "All Classes";
+    let lessons = [];
 
-    if(req.body.options){
-      filterOptions = req.body.options
-      storeSelection.filter = req.body.options
-      console.log(filterOptions)
-    
-    }else{
-      
+    //check if user selected a lesson type, it is submited by a form
+    //if no body, means user went next date(page refresh), so we want to retain his previous filter
+    if (req.body.options) {
+      filterOptions = req.body.options;
+      storeSelection.filter = req.body.options;
+    } else {
+      filterOptions = storeSelection.filter;
     }
 
+    //check if date queries is present
     if (req.query.date) {
       selectedDate = req.query.date;
-      
     }
 
-    // const studio = await studioModel
-    //   .findById(req.params.studio_id)
-    //   .lean() //lean makes it a plain js object, so i can add properties, mongoose obj cant add
-    //   .populate({
-    //     path: "lessons",
-    //     match: { lessonDate: selectedDate},
-    //   });
-    //get filtered classes first
     const studio = await studioModel
       .findById(req.params.studio_id)
-      .lean() //lean makes it a plain js object, so i can add properties, mongoose obj cant add
+      .lean() //lean makes it a plain js object, so i can add properties, mongoose obj cant edit
       .populate({
         path: "lessons",
       });
+
+    //get lessons on the selected date, canot match in .populate cos iso timing is always diff
     const matchedLessons = [];
     studio.lessons.forEach((item) => {
       if (req.query.date) {
-        // console.log("today is not selected date");
-        // console.log("------->",item.lessonDate.toDateString());
-        // console.log("------->",dates.getDateFromDateString(selectedDate));
-        //slected date is the query
+        //selected date is the query,
+        //selected date will be in date string format, just get the date oyt with time
         if (item.lessonDate.toDateString() == dates.getDateFromDateString(selectedDate)) {
-          // console.log("------->",item.lessonDate.toDateString() )
-          // console.log("------->",selectedDate)
-          console.log("push item into array");
           matchedLessons.push(item);
         }
       } else {
         //if its todays date is not in datestring format
         if (item.lessonDate.toDateString() === selectedDate.toDateString()) {
           matchedLessons.push(item);
-         
         }
       }
-
     });
-    
-    if(filterOptions !== "All Classes"){
-      lessons = matchedLessons.filter(lesson=>  lesson.name === filterOptions )
-    }else{
-      lessons = matchedLessons
+
+    //check for filtered lessons, not the default means user has selected a lesson type
+    if (filterOptions !== "All Classes") {
+      lessons = matchedLessons.filter((lesson) => lesson.name === filterOptions);
+    } else {
+      lessons = matchedLessons;
     }
-    //console.log(matchedLessons)
-    //console.log("----->", studio.lessons);
-    //console.log(studio.lessons[0].lessonDate.toDateString());
-    //console.log(selectedDate.toDateString());
+
     //add all classes as the first item in lessonNames
-    
     studio.lessonNames.unshift("All Classes");
 
     res.render("studios/show", {
-      filterOptions : storeSelection.filter,
+      filterOptions,
       studio,
       tab: "lessons",
       lessonNames: studio.lessonNames,
@@ -140,6 +121,8 @@ const controller = {
       dates,
       // user : req.session.user
     });
+
+    next()
   },
 
   //for sandra
@@ -165,4 +148,4 @@ const controller = {
   // }
 };
 
-module.exports = controller
+module.exports = controller;

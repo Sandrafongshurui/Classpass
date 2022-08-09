@@ -25,7 +25,9 @@ const controller = {
     res.send("studio created");
   },
 
-  showListOfStudios: async (req, res) => {   
+  showListOfStudios: async (req, res, next) => {   
+   
+    console.log
     let studios = null
     try{
       if(!req.query.location){
@@ -47,16 +49,16 @@ const controller = {
       return
     }
   
-      res.render("studios/index", { studios});
+    res.render("studios/index", { studios});
    
-   
+   next()
 
   },
 
   //the  studio_id would be in the index(showing list of studios, in the ahref link)
   //"/studios/studio_id"
-  getStudio: async (req, res) => {
-
+  getStudio: async (req, res, next) => {
+    
     //lean makes it a plain js object, so i can add properties, mongoose obj cant add
     const studio = await studioModel.findById(req.params.studio_id).lean().populate({
       path: "lessons", //poppulate the lessons field
@@ -102,6 +104,8 @@ const controller = {
       sortedTotalReviews, 
       tab: "info",
     });
+
+    next()
   },
 
 };
