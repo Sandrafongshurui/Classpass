@@ -289,10 +289,9 @@ const controller = {
     let lessons = [];
 
     console.log(req.session.user);
-
     try {
       lessons = await lessonModel
-        .find({ students: req.session.user, lessonDate: { $lte: Date.now() } })
+        .find({ students: req.session.user, lessonDate : { $lte: Date.now() } })
         .sort({ lessonDate: -1 })
         .populate({
           path: "reviews",

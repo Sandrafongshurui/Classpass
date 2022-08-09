@@ -11,6 +11,18 @@
         integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/main.css" rel="stylesheet" />
+     <!-- Font Awesome -->
+     <link
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+   />
+   <!-- Google Fonts Roboto -->
+   <link
+     rel="stylesheet"
+     href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+   />
+   <!-- MDB -->
+   <link rel="stylesheet" href="css/mdb.min.css" />
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -23,65 +35,6 @@
                 <!-- <img src="/img/logo.png" srcset="/img/logo.png 1x, /img/logo@2x.png 2x" /> -->
                 <figcaption><a class="navbar-brand" href="/">Classpass</a></figcaption>
             </figure>
-            <div class="d-flex justify-content-between w-50">
-                
-                <form>
-                    <div class="dropdown ">
-                        <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Locations
-                        </a>
-                        <div class="dropdown-menu " id="filter-list"
-                            aria-labelledby="dropdownMenuButton">
-                            <div>
-                            <input type="checkbox" value="Ang Mo Kio" name="location">Ang Mo Kio
-                            </div>
-                            <button type="submit">Apply</button>    
-                        </div>
-                    
-                    </div>
-                </form>
-            
-                <form>
-                    <div class="dropdown ">
-                        <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Amenities
-                        </a>
-                        <div class="dropdown-menu " id="filter-list"
-                            aria-labelledby="dropdownMenuButton">
-                            <div>
-                            <input type="checkbox" name="location" value="Showers">Showers
-                            <input type="checkbox" name="location" value="Lockers">Lockers
-                            <input type="checkbox" name="location" value="Mats">Mats
-                            <input type="checkbox" name="location" value="Parking">Parking
-                            </div>
-                            <button type="submit">Apply</button>    
-                        </div>
-                    
-                    </div>
-                </form>
-                <form>
-                    <div class="dropdown ">
-                        <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Activites
-                        </a>
-                        <div class="dropdown-menu " id="filter-list"
-                            aria-labelledby="dropdownMenuButton">
-                            <div>
-                            <input type="checkbox" name="location" value="Showers">Showers
-                            <input type="checkbox" name="location" value="Lockers">Lockers
-                            <input type="checkbox" name="location" value="Mats">Mats
-                            <input type="checkbox" name="location" value="Parking">Parking
-                            </div>
-                            <button type="submit">Apply</button>    
-                        </div>
-                    
-                    </div>
-                </form>
-            
-            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -98,34 +51,33 @@
                         <a class="nav-link" aria-current="page" href="/studios">Find Classes</a>
                     </li>
                     <% if (authUser !==null) { %>
-                     <li class="nav-item">
-                        <div class="dropdown ">
+                        <li class="nav-item">
+                            <div class="dropdown ">
                                 <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <%= authUser %>
                                 </a>
-                                <div class="dropdown-menu " id="filter-list"
-                                    aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu " id="filter-list" aria-labelledby="dropdownMenuButton">
                                     <a type="button" class="dropdown-item">Profile</a>
                                     <a type="button" class="dropdown-item">Upcoming</a>
                                     <a type="button" class="dropdown-item">History</a>
                                     <a type="button" class="dropdown-item">Shopping Cart</a>
                                 </div>
-                        </div>
-                    </li>
-                    <% } else { %>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/login">Login</a>   
-                        <!-- <button class="nav-link" type="button" onclick="openLoginModal()">Login</button> -->
-                        
-                    </div>
-                    </li>
-                    <% } %>
+                            </div>
+                        </li>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/login">Login</a>
+                                <!-- <button class="nav-link" type="button" onclick="openLoginModal()">Login</button> -->
+
+            </div>
+            </li>
+            <% } %>
 
 
                 </ul>
 
-            </div>
+        </div>
 
 
         </div>

@@ -1,27 +1,32 @@
-const XMLHttpRequest = require('xhr2');
+// const XMLHttpRequest = require('xhr2');
 
-const modify = {
-  modifyString: (currentDay, currentMonth, currentYear) => {
-    return `${("0" + currentDay.toString()).slice(-2)}/${("0" + currentMonth.toString()).slice(-2)}/${currentYear}`;
-  },
+// const modify = {
+//   modifyString: (currentDay, currentMonth, currentYear) => {
+//     return `${("0" + currentDay.toString()).slice(-2)}/${("0" + currentMonth.toString()).slice(-2)}/${currentYear}`;
+//   },
 
-}
+// }
 
-const ajax = {
-  openLoginModal : () => {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onLoad= function () {
-      document.getElementById("myLoginModal").innerHTML = "haha"
-    };
+// const ajax = {
+//   openLoginModal : () => {
+//     const xhttp = new XMLHttpRequest();
+//     xhttp.onLoad= function () {
+//       document.getElementById("myLoginModal").innerHTML = "haha"
+//     };
 
-    //method(get or post), file location
-    console.log("---->", "before open")
-    xhttp.open("GET", "http://localhost:3001/studios", true);
-    console.log("---->", "before send")
-    xhttp.send();     
+//     //method(get or post), file location
+//     console.log("---->", "before open")
+//     xhttp.open("GET", "http://localhost:3001/studios", true);
+//     console.log("---->", "before send")
+//     xhttp.send();
+//   }
+
+// }
+const filterLesson = {
+  value:""
+  
   }
-
-}
+  
 
 const dates = {
   getTodaysDate: () => {
@@ -37,31 +42,42 @@ const dates = {
 
     return todaysDate;
   },
+  getDateFromDateString: (dateString) => {
+    const dateStringArray = dateString.split(" ");
+    let dateStringDay, dateStringMonth, dateStringNum, dateStringYear;
+    [dateStringDay, dateStringMonth, dateStringNum, dateStringYear] = [
+      dateStringArray[0],
+      dateStringArray[1],
+      dateStringArray[2],
+      dateStringArray[3],
+    ];
+
+    return `${dateStringDay} ${dateStringMonth} ${dateStringNum} ${dateStringYear}`;
+  },
   getNextDay: (currentDate) => {
-    const nextDay = new Date(currentDate)//get iso format
-    nextDay.setDate(nextDay.getDate()+1);
-    return nextDay
+    const nextDay = new Date(currentDate); //get iso format
+    nextDay.setDate(nextDay.getDate() + 1);
+    return nextDay;
   },
 
   getPreviousDay: (currentDate) => {
-    const prevDay = new Date(currentDate)//get iso format
-    prevDay.setDate(prevDay.getDate()-1);
-    return prevDay
+    const prevDay = new Date(currentDate); //get iso format
+    prevDay.setDate(prevDay.getDate() - 1);
+    return prevDay;
   },
 
   // getPreviousDay: (currentDate) => {
   //   const date = new Date();
   //   const currentDateArray =  currentDate.split("/")
-  //   let currentDay, currentMonth, currentYear 
-  //   [currentDay, currentMonth, currentYear ] = [parseInt(currentDateArray[0]), parseInt(currentDateArray[1]), parseInt(currentDateArray[2])] 
-    
+  //   let currentDay, currentMonth, currentYear
+  //   [currentDay, currentMonth, currentYear ] = [parseInt(currentDateArray[0]), parseInt(currentDateArray[1]), parseInt(currentDateArray[2])]
 
   //   //gets last day
   //   let lastDayOfPrevMonth = new Date(
   //     date.getFullYear(),
   //     date.getMonth(),
   //     0
-  //   ); 
+  //   );
   //   let lastDay = lastDayOfPrevMonth.toDateString().split(" ")[2];
 
   //   //check if reach first day
@@ -90,15 +106,15 @@ const dates = {
   // getNextDay: (currentDate) => {
   //   const date = new Date();
   //   const currentDateArray =  currentDate.split("/")
-  //   let currentMonth, currentDay, currentYear 
-  //   [currentMonth,currentDay,currentYear ] = [parseInt(currentDateArray[0]), parseInt(currentDateArray[1]), parseInt(currentDateArray[2])] 
+  //   let currentMonth, currentDay, currentYear
+  //   [currentMonth,currentDay,currentYear ] = [parseInt(currentDateArray[0]), parseInt(currentDateArray[1]), parseInt(currentDateArray[2])]
 
   //   //gets last day
   //   let lastDayOfTheMonth = new Date(
   //     date.getFullYear(),
   //     date.getMonth() + 2,
   //     0
-  //   ); 
+  //   );
   //   let lastDay = lastDayOfTheMonth.toDateString().split(" ")[2];
 
   //   //check if reach last day
@@ -125,5 +141,5 @@ const dates = {
   // },
 };
 
-module.exports = dates;
-module.exports = ajax;
+module.exports = {dates, filterLesson}
+

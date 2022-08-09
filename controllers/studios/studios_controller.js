@@ -25,12 +25,7 @@ const controller = {
     res.send("studio created");
   },
 
-  showListOfStudios: async (req, res) => {
-    console.log(req.app.locals.loginError)
-    if(!req.app.locals.loginError){
-      req.app.locals.loginError = null;
-    }
-   
+  showListOfStudios: async (req, res) => {   
     let studios = null
     try{
       if(!req.query.location){
@@ -39,7 +34,11 @@ const controller = {
        }else{
         //user slected location checkboxes, 
         //find if the selected location is inside the array of locations of a studio
-        studios = await studioModel.find({location : req.query.location});
+        console.log(req.query.location)
+        console.log(req.query)
+        //studios = await studioModel.find({location : {$all : req.query.location }});
+        studios = await studioModel.find({location : { $in: req.query.location }});
+        console.log(studios)
        }
       // console.log(studios);
     }catch(err){
@@ -47,14 +46,9 @@ const controller = {
       res.send(err)
       return
     }
-    if(req.app.locals.loginError){
-      console.log("error")
-      req.app.locals.loginError = null
-      res.render("studios/index", { studios,  myModalId: "myLoginModal-error", formAction: req.path});
-    }else{
-      console.log("noo-error")
-      res.render("studios/index", { studios,  myModalId: "myLoginModal", formAction: req.path});
-    }
+  
+      res.render("studios/index", { studios});
+   
    
 
   },

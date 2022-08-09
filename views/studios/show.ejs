@@ -1,5 +1,5 @@
 <%- include('../partials/header'); %>
-
+<%- include('../partials/filters'); %>
     <!-- image and tabs, partial -->
     <div class="my-5 d-flex w-75 mx-auto justify-content-center flex-wrap">
         <section class="view-studio">
@@ -107,56 +107,32 @@
                     </h2>
                     <div>
                         <!-- searach nar of lesson types pf the studios -->
-                        <form action="#">
-                            <select name="lesson-names">
-                                <%for(let i = 0; i < lessonNames.length; i++){%>
-                                    <option value="<%= lessonNames[i]%>">
-                                        <%= lessonNames[i]%>
-                                    </option>
+                        <%if(selectedDate!==todaysDate){%>
+                            <form id="filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/?date=<%= selectedDate %>">
+                        <% }else{ %>
+                            <form id="filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/">
+                        <% } %>
+                        
+                            <select id="lessons-select" name="options" onchange="submitForm()">
+                              
+                                    <% for(let i = 0; i < lessonNames.length; i++){%>
+                                        <% if(filterOptions !== lessonNames[i]) {%>  
+                                            <option  value="<%= lessonNames[i]%>" >
+                                                <%= lessonNames[i]%>
+                                            </option>
+                                        <%}else{%>                                          
+                                            <option selected value="<%= lessonNames[i]%>">
+                                                <%= lessonNames[i]%>
+                                            </option>
+                                        <%}%>
                                     <%}%>
-                            </select>
-                            <input type="submit" value="Submit" />
+                            </select>                          
                         </form>
                     </div>
                 </div>
-                <div class="calander border-top py-3">
-                    <!--Calander -->
-                    <!-- <div class="month">
-                        <ul>
-                            <li class="prev">&#10094;</li>
-                            <li class="next">&#10095;</li>
-                            <li>August<br><span style="font-size:18px">2021</span></li>
-                        </ul>
-                    </div>
-                    <div>
-                    <ul class="weekdays">
-                        <li>Mo</li>
-                        <li>Tu</li>
-                        <li>We</li>
-                        <li>Th</li>
-                        <li>Fr</li>
-                        <li>Sa</li>
-                        <li>Su</li>
-                    </ul>
-
-                    <ul class="days">
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
-                        <li>4</li>
-                        <li>5</li>
-                        <li>6</li>
-                        <li>7</li>
-                        <li>8</li>
-                        <li>9</li>
-                        <li><span class="active">10</span></li>
-                        <li>11</li>
-                        ...etc
-                    </ul>
-                    </div> -->
+                <div class="calander border-top py-3">               
                     <!-- lesson section -->
-                    <%- include('../partials/studios/lessons'); %>
-         
+                    <%- include('../partials/studios/lessons'); %>        
                 </div>  
             </div>
         </section>    
@@ -171,5 +147,5 @@
             </div>
         </section>
     </div>
-
+<script src="/show.js"></script>
 <%- include('../partials/footer'); %>

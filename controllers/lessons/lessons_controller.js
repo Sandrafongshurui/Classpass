@@ -1,7 +1,12 @@
 const { date } = require("joi");
 const lessonModel = require("../../models/lessons/lessons");
 const studioModel = require("../../models/studios/studios");
-const dates = require("../../utils/helper");
+const {dates}  = require("../../utils/helper");
+const {filterLesson}  = require("../../utils/helper");
+
+const storeSelection= {
+  filter:""
+}
 
 const controller = {
   createLesson: async (req, res) => {
@@ -53,29 +58,83 @@ const controller = {
   getLessons: async (req, res) => {
     //check if date queries is present
     //let selectedDate = dates.getTodaysDate()
+    
     let selectedDate = new Date();
     let todaysDate = new Date();
-    if (req.query.date) {
-      selectedDate = req.query.date;
+    let filterOptions = "All Classes"
+    let lessons = []
+    
+
+    if(req.body.options){
+      filterOptions = req.body.options
+      storeSelection.filter = req.body.options
+      console.log(filterOptions)
+    
+    }else{
+      
     }
 
-   
+    if (req.query.date) {
+      selectedDate = req.query.date;
+      
+    }
+
+    // const studio = await studioModel
+    //   .findById(req.params.studio_id)
+    //   .lean() //lean makes it a plain js object, so i can add properties, mongoose obj cant add
+    //   .populate({
+    //     path: "lessons",
+    //     match: { lessonDate: selectedDate},
+    //   });
+    //get filtered classes first
     const studio = await studioModel
       .findById(req.params.studio_id)
       .lean() //lean makes it a plain js object, so i can add properties, mongoose obj cant add
       .populate({
         path: "lessons",
-        match: { lessonDate: selectedDate },
       });
+    const matchedLessons = [];
+    studio.lessons.forEach((item) => {
+      if (req.query.date) {
+        // console.log("today is not selected date");
+        // console.log("------->",item.lessonDate.toDateString());
+        // console.log("------->",dates.getDateFromDateString(selectedDate));
+        //slected date is the query
+        if (item.lessonDate.toDateString() == dates.getDateFromDateString(selectedDate)) {
+          // console.log("------->",item.lessonDate.toDateString() )
+          // console.log("------->",selectedDate)
+          console.log("push item into array");
+          matchedLessons.push(item);
+        }
+      } else {
+        //if its todays date is not in datestring format
+        if (item.lessonDate.toDateString() === selectedDate.toDateString()) {
+          matchedLessons.push(item);
+         
+        }
+      }
+
+    });
+    
+    if(filterOptions !== "All Classes"){
+      lessons = matchedLessons.filter(lesson=>  lesson.name === filterOptions )
+    }else{
+      lessons = matchedLessons
+    }
+    //console.log(matchedLessons)
+    //console.log("----->", studio.lessons);
+    //console.log(studio.lessons[0].lessonDate.toDateString());
+    //console.log(selectedDate.toDateString());
     //add all classes as the first item in lessonNames
-    console.log(studio.lessonNames);
+    
     studio.lessonNames.unshift("All Classes");
-    console.log(studio.lessonNames);
+
     res.render("studios/show", {
+      filterOptions : storeSelection.filter,
       studio,
       tab: "lessons",
-      lessonNames : studio.lessonNames,
-      lessons: studio.lessons,
+      lessonNames: studio.lessonNames,
+      lessons,
       todaysDate,
       selectedDate,
       dates,
@@ -106,4 +165,4 @@ const controller = {
   // }
 };
 
-module.exports = controller;
+module.exports = controller

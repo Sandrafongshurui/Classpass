@@ -463,10 +463,15 @@ a, u {
 
 
 
+.studio-filters a{
+  border: black solid;
+  border-radius: 100px
+}
 
 
-
-
+.hidden{
+  display: block;
+}
 
 
 

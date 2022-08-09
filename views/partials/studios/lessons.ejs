@@ -8,7 +8,8 @@
     </form>
     <!-- selected dat will be the rteurn string format, 
     so need to iso it, to date string, so can compare without time -->
-    <% if(new Date(selectedDate).toDateString() === todaysDate.toDateString()){%>
+
+    <% if(new Date(selectedDate).toDateString() === todaysDate.toDateString() || selectedDate === todaysDate ){%>
         <form>
             <input type="hidden" value="<%= todaysDate %>" name="date">
             <button type="submit" disabled>reset</button>
