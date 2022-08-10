@@ -38,7 +38,7 @@ app.use(express.static('public'))
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false, httpOnly: false,  maxAge: 24 * 60 * 60 * 1000 }// 24 hours  }
 }))
 app.use(authMiddleware.setAuthUserVar)

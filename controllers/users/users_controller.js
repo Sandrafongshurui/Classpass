@@ -289,10 +289,14 @@ const controller = {
     //populate reviews section to see if user has reviewed this class before
     let lessons = [];
 
-    console.log(req.session.user);
+
+    const today = new Date();
+    const time = today.toLocaleString('en-US', { timeZone: 'Singapore' })
+    console.log(time)
+
     try {
       lessons = await lessonModel
-        .find({ students: req.session.user, lessonDate: { $lte: Date.now() } })
+        .find({ students: req.session.user, lessonDate: { $lte: new Date() } })
         .sort({ lessonDate: -1 })
         .populate({
           path: "reviews",
@@ -303,7 +307,8 @@ const controller = {
       res.redirect("/");
       return;
     }
-
+    console.log(new Date());
+    console.log(lessons[0]);
     res.render("users/history", {
       lessons,
       // user: req.session.user,
@@ -314,7 +319,7 @@ const controller = {
     let lessons = [];
     console.log(req.session.user);
     try {
-      lessons = await lessonModel.find({ students: req.session.user });
+      lessons = await lessonModel.find({ students: req.session.user, lessonDate: { $gte: new Date() }});
       console.log(lessons);
     } catch (err) {
       console.log(err);
@@ -338,7 +343,7 @@ const controller = {
       lesson = await lessonModel.findByIdAndUpdate(
         { _id: req.params.lesson_id },
         { $pull: { students: req.session.user } },
-        { $inc: { capacity: 1 } }
+        { $inc: { capacity: -1 } }
       );
 
       user = await userModel.findOneAndUpdate(
@@ -388,7 +393,7 @@ const controller = {
       lesson = await lessonModel.findOneAndUpdate(
         { _id: req.params.lesson_id },
         { $push: { students: req.session.user} },
-        { $inc: { capacity: -1 } }
+        { $inc: { capacity: 1 } }
       );
       console.log(lesson);
 

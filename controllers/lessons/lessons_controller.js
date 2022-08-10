@@ -108,16 +108,27 @@ const controller = {
     } else {
       lessons = matchedLessons;
     }
+
+    //add new filed to each lesson , check if user_id is inside the lesson.students
+   lessons.forEach(lesson => {
+    if(lesson.students.some((studentObj)=>{ return studentObj.equals(req.session.user)})){
+      lesson.hasBooked = true
+    }else{
+      lesson.hasBooked = false
+    }
+   
+   })
+    
     //check for capacity
     // if(res.locals.authUser !== null){
     //   user = req.session.user
     // }
-
+  
     //add all classes as the first item in lessonNames
     studio.lessonNames.unshift("All Classes");
 
     res.render("studios/show", {
-      user : req.session.user,
+      user: req.session.user,
       filterOptions,
       studio,
       tab: "lessons",

@@ -17,8 +17,8 @@ const controller = {
   editDateOfLesson: async (req, res) => {
     const doc = await lessonModel.updateMany(
       {},
-      { $set: { lessonDate: "2022-08-20" } },
-      { upsert: true } //new means it will return teh update doc, if not it will return doc b4 updates
+      { $set: { capacity: "0" } },
+      { upsert: true } 
     );
   },
 

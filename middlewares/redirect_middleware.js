@@ -6,9 +6,9 @@ module.exports = {
     },    
     setLocalsRedirectPath:(req, res, next) => {
         //incase user goes straight to login page without a previous path      
-        res.locals.redirect = "/login"
+        res.locals.redirect = "/"
           if (req.session.redirect) {
-              res.locals.redirect= req.session.redirect//this session is saved in login
+              res.locals.redirect= req.session.redirect
           }
   
           next()
