@@ -7,12 +7,14 @@ const controller = {
     //using mongoose lib auto creat and store in dbs
     try {
       await studioModel.create({
-        name: req.body.name,
-        img: req.body.img,
-        description: req.body.description,
-        location: req.body.location,
-        address: req.body.address,
+        ...req.body,
+        // name: req.body.name,
+        // img: req.body.img,
+        // description: req.body.description,
+        // location: req.body.location,
+        // address: req.body.address,
         lessonNames: req.body.lessonNames,
+        activities: req.body.activities,
         //put in the hash, not the plan text pass word
         // createdBy: req.body.createdBy,
         // reviews: req.body.reviews

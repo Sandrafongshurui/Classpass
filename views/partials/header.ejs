@@ -6,23 +6,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Classpass</title>
-
+ <!-- MDB -->
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.4.0/mdb.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/main.css" rel="stylesheet" />
-     <!-- Font Awesome -->
-     <link
-     rel="stylesheet"
-     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-   />
-   <!-- Google Fonts Roboto -->
-   <link
-     rel="stylesheet"
-     href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
-   />
-   <!-- MDB -->
-   <link rel="stylesheet" href="css/mdb.min.css" />
+   
+
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -30,11 +21,19 @@
     <nav id="page-header" class="navbar navbar-expand-lg bg-light">
 
         <div class="container">
-
-            <figure class="mr-3">
-                <!-- <img src="/img/logo.png" srcset="/img/logo.png 1x, /img/logo@2x.png 2x" /> -->
-                <figcaption><a class="navbar-brand" href="/">Classpass</a></figcaption>
-            </figure>
+            <div>
+                <figure class="mr-3 d-flex">
+                    <img class="circular-image"src="/img/logo.png" />
+                    <figcaption class="navbar-brand text-secondary my-auto">Classpass</figcaption>
+                </figure>
+            </div>
+          
+            <div class="input-group w-50">
+                <form class="d-flex" action="action_page.php">
+                    <input class="input-group search-bar" type="text" placeholder="Search.." name="search">
+                    <button class="background-none"type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div> 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -42,6 +41,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <!-- <div id="demo" >
                         <p>Let AJAX change this text.</p>
@@ -57,7 +57,7 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <%= authUser %>
                                 </a>
-                                <div class="dropdown-menu " id="filter-list" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
                                     <a type="button" href="/users/profile" class="dropdown-item">Profile</a>
                                     <a type="button" href="/users/upcoming" class="dropdown-item">Upcoming</a>
                                     <a type="button" href="/users/history" class="dropdown-item">History</a>
@@ -70,15 +70,10 @@
                             <li class="nav-item">
                                 <a class="nav-link" aria-current="page" href="/login">Login</a>
                                 <!-- <button class="nav-link" type="button" onclick="openLoginModal()">Login</button> -->
-
-            </div>
-            </li>
-            <% } %>
-
-
+                            </li>
+                            <% } %>
                 </ul>
-
-        </div>
+            </div>
 
 
         </div>

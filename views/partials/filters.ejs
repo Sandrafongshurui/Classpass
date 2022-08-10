@@ -6,14 +6,16 @@
                 data-bs-toggle="dropdown" aria-expanded="false">
                 Locations
             </a>
-            <div class="dropdown-menu " name="location" id="filter-list" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu " id="filter-list" aria-labelledby="dropdownMenuButton">
                 <div>
-                    <input type="checkbox" value="Ang Mo Kio" name="location">Ang Mo Kio
-                    <input type="checkbox" value="Yishun" name="location">Yishun
-                    <input type="checkbox" value="Woodlands" >Woodlands
-                    <input type="checkbox" value="Serangoon" >Serangoon
+                    <input id="location-filter" type="checkbox" value="North" name="location">North
+                    <input id="location-filter" type="checkbox" value="South" name="location">South
+                    <input id="location-filter" type="checkbox" value="East" name="location" >East
+                    <input id="location-filter" type="checkbox" value="West" name="location">West
+                    <input id="location-filter" type="checkbox" value="Central" name="location">Central
                 </div>
                 <button type="submit">Apply</button>
+                <button type="button" disabled id="location-clear-btn" onclick="clearFilters()"> Clear</button>
             </div>
 
         </div>

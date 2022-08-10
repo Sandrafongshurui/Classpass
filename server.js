@@ -38,8 +38,8 @@ app.use(express.static('public'))
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false, httpOnly: false,  maxAge: 24 * 60 * 60 * 1000 }// 24 hours  }
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly: false,  maxAge: 3600000 }// 1 hr  
 }))
 app.use(authMiddleware.setAuthUserVar)
 //so that the redirect path can be used for the login pages
