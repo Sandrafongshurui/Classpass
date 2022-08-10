@@ -21,7 +21,6 @@ const controller = {
         capacity: req.body.capacity,
         time: req.body.time,
         duration: req.body.duration,
-        dateOfLesson: req.body.dateOfLesson,
         lessonDate: req.body.lessonDate,
         details: req.body.details,
         studio: req.body.studio,
@@ -94,7 +93,10 @@ const controller = {
         }
       } else {
         //if its todays date is not in datestring format
+        console.log("todays date")
+        console.log(item.lessonDate.toDateString(), selectedDate.toDateString())
         if (item.lessonDate.toDateString() === selectedDate.toDateString()) {
+          
           matchedLessons.push(item);
         }
       }
@@ -106,11 +108,16 @@ const controller = {
     } else {
       lessons = matchedLessons;
     }
+    //check for capacity
+    // if(res.locals.authUser !== null){
+    //   user = req.session.user
+    // }
 
     //add all classes as the first item in lessonNames
     studio.lessonNames.unshift("All Classes");
 
     res.render("studios/show", {
+      user : req.session.user,
       filterOptions,
       studio,
       tab: "lessons",
@@ -122,7 +129,7 @@ const controller = {
       // user : req.session.user
     });
 
-    next()
+    
   },
 
   //for sandra

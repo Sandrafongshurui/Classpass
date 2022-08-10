@@ -26,10 +26,6 @@ const lessonsSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    dateOfLesson:{
-        type: String,
-        required: true
-    },
     lessonDate:{
         type: Date,
         required: true

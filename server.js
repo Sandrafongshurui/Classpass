@@ -42,17 +42,19 @@ app.use(session({
     cookie: { secure: false, httpOnly: false,  maxAge: 24 * 60 * 60 * 1000 }// 24 hours  }
 }))
 app.use(authMiddleware.setAuthUserVar)
+//so that the redirect path can be used for the login pages
+app.use(redirectMiddleware.setLocalsRedirectPath)
 
 // //studios routes
 //shows the home page
-app.get('/', pageController.showHome, redirectMiddleware.setRedirectPath)
+app.get('/', redirectMiddleware.setRedirectPath, pageController.showHome)
 // app.post('/', userController.login)
 // //shows studios list
-app.get('/studios', studiosController.showListOfStudios, redirectMiddleware.setRedirectPath)
+app.get('/studios', redirectMiddleware.setRedirectPath, studiosController.showListOfStudios)
 // app.post('/studios', userController.login)
-app.get('/studios/:studio_id', studiosController.getStudio, redirectMiddleware.setRedirectPath)
+app.get('/studios/:studio_id',redirectMiddleware.setRedirectPath, studiosController.getStudio)
 // //shows studio's classes, need authetication then can
-app.get('/studios/:studio_id/lessons', lessonsController.getLessons, redirectMiddleware.setRedirectPath)
+app.get('/studios/:studio_id/lessons', redirectMiddleware.setRedirectPath, lessonsController.getLessons)
 app.post('/studios/:studio_id/lessons', lessonsController.getLessons)
 
 

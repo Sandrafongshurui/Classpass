@@ -34,13 +34,57 @@
 
     
    </div>
-    <% lessons.forEach(item=> { %>
-        <div class="border-bottom d-flex">
-            <div class="d-flex view-lessons pt-3 pb-5">
-                <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
-                <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" ><a href = "/users/shoppingcart/<%= item._id %>"><%= item.credits %> credits</a></button></div>
-            </div>         
-        </div>
-    <% }) %>
+   <%if(authUser === null ){%>
+    <!-- not login dun see credits -->
+        <% lessons.forEach(item=> { %>            
+            <div class="border-bottom d-flex">
+                <div class="d-flex view-lessons pt-3 pb-5">
+                    <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
+                    <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
+                    <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" ><a href = "/login">Login To Book</a></button>
+            
+                    </div>
+                </div>         
+            </div>
+        <% }) %>
+        <!-- is log in -->
+    <% }else{ %>
+        <% lessons.forEach(item=> { %>
+           <!-- user had already booked this class-->
+            <% if (item.students.includes(user)){%>
+            <div class="border-bottom d-flex">
+                <div class="d-flex view-lessons pt-3 pb-5">
+                    <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
+                    <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
+                    <div class="w-50">  <button type="button" disable class="w-100 btn btn-outline-warning" >
+                        <a href = "/users/shoppingcart/<%= item._id %>" disabled><%= item.credits %> credits</a>
+                        <span>Booked</span>
+                    </button></div>
+                </div>         
+            </div>
+              <!-- class is full -->
+            <% }else if(item.capacity === 0 ){ %>
+                <div class="border-bottom d-flex">
+                    <div class="d-flex view-lessons pt-3 pb-5">
+                        <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
+                        <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
+                        <div class="w-50">  <button type="button" disable class="w-100 btn btn-outline-warning" >
+                            <a href = "/users/shoppingcart/<%= item._id %>" disabled><%= item.credits %> credits</a>
+                            <span>Full</span>
+                        </button></div>       
+                    </div>         
+                </div>
+            <% }else {%>
+                <div class="border-bottom d-flex">
+                    <div class="d-flex view-lessons pt-3 pb-5">
+                        <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
+                        <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
+                        <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" >
+                            <a href = "/users/shoppingcart/<%= item._id %>" ><%= item.credits %> credits</a>
+                        </button></div>       
+                    </div>         
+                </div>
+            <% }%>
+        <% }) %>
+    <% }%>
 </div>

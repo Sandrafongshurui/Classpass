@@ -14,15 +14,17 @@ module.exports = {
     },
     setAuthUserVar: (req, res, next) => {
         res.locals.authUser = null//res.locals make it availble to all the templates
-        res.locals.redirect = "/"
+       // res.locals.redirect = null
+        
         //if got session user, set the null = the user name
         //give the authUser which is made avil to this request the new user name, cos its been autheticated , means login 
         if (req.session.username) {
             res.locals.authUser = req.session.username//this session is saved in login
         }
-        if (req.session.redirect){
-            res.locals.redirect = req.session.redirect
-        }
+        // if (req.session.redirect){
+        //     res.locals.redirect = req.session.redirect
+        // }
+        // console.log(res.locals.redirect)
 
         next()
     },

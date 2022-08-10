@@ -95,7 +95,7 @@ const controller = {
     // });
   },
 
-  login: async (req, res) => {
+  login: async (req, res, next) => {
     // front end joi validations here ...
     const validationResults = userValidators.login.validate(req.body, {
       abortEarly: false,
@@ -167,6 +167,7 @@ const controller = {
       // store user information in session, typically a user id
       req.session.user = user._id;
       req.session.username = user.firstname;
+
       // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
       // front saves as cookie
       // subsequent req. to backend -> included the cookie in request: s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
@@ -356,7 +357,7 @@ const controller = {
   //oncce cookies is stores, it will persist
   //subsequest request will conatin the cookies
   showShoppingCartTab: async (req, res) => {
-    //empty shopping cart
+    
     console.log(req.params);
     let lesson = null;
     try {
@@ -386,13 +387,13 @@ const controller = {
     try {
       lesson = await lessonModel.findOneAndUpdate(
         { _id: req.params.lesson_id },
-        { $push: { students: req.params.user_id } },
+        { $push: { students: req.session.user} },
         { $inc: { capacity: -1 } }
       );
       console.log(lesson);
 
       user = await userModel.findOneAndUpdate(
-        { _id: req.params.user_id },
+        { _id: req.session.user },
         { $inc: { credits: -lesson.credits } },
         { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
       ); //depends on wad u save in your login for user
@@ -433,6 +434,7 @@ const controller = {
   logout: async (req, res) => {
     //invalidate the session, not clear, means theres still a session use no user saved inside
     req.session.user = null;
+    req.session.username = null;
     //so the currents session is invalid
     req.session.save(function (err) {
       if (err) {
