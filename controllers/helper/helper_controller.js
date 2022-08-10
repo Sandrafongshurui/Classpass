@@ -17,7 +17,7 @@ const controller = {
   editDateOfLesson: async (req, res) => {
     const doc = await lessonModel.updateMany(
       {},
-      { $set: { capacity: "0" } },
+      { $set: { time: "17:30 pm" } },
       { upsert: true } 
     );
   },

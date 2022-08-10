@@ -118,22 +118,31 @@ const controller = {
     }
    
    })
-    
-    //check for capacity
-    // if(res.locals.authUser !== null){
-    //   user = req.session.user
-    // }
-  
+
+ //sort accrouding to timing
+   let sortedLessons= lessons.sort((a, b) => {
+    //-1 means first go before second, 1 means it goes after, 0 means the same
+    return (a.time > b.time) ? 1 : ((a.time < b.time) ? -1 : 0)
+  });
+
+    //check if the timing of teh lesson is over
+    let timeNow = new Date().toTimeString()
+    console.log(timeNow)
+    timeNow =timeNow.split(":")[0] + ":" + timeNow.split(":")[1]
+    console.log(timeNow)
+    sortedLessons = sortedLessons.filter((lesson) => lesson.time > timeNow)
+
+
     //add all classes as the first item in lessonNames
     studio.lessonNames.unshift("All Classes");
 
     res.render("studios/show", {
-      user: req.session.user,
+      timeNow,
       filterOptions,
       studio,
       tab: "lessons",
       lessonNames: studio.lessonNames,
-      lessons,
+      lessons : sortedLessons,
       todaysDate,
       selectedDate,
       dates,

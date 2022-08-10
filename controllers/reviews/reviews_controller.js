@@ -29,7 +29,7 @@ const controller = {
       return;
     }
 
-    res.redirect(`/users/${req.session.user}/history`)
+    res.redirect(`/users/history`)
   },
 
   showReviewForm: async (req, res) => {

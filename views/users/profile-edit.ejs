@@ -7,8 +7,7 @@
     </div>
     <div class="card-body w-100">
         <!-- tab contents -->
-
-        <form method="POST" action="/users/profile-edit">
+        <form method="POST" action="/users/profile">
             <div class="card-body">
                 <!-- first name -->
                 <div class="row">
@@ -16,7 +15,7 @@
                     <p class="mb-0">First Name</p>
                 </div>
                 <div class="col-sm-9">
-                    <input type="hidden" name="firstname" value ="<%= user.firstname %>"class="text-muted mb-0"><%= user.firstname %></input>
+                    <input name="firstname" value="<%= user.firstname %>"class="text-muted mb-0"></input>
                 </div>
                 </div>
                 <hr>
@@ -26,7 +25,7 @@
                     <p class="mb-0">Last Name</p>
                     </div>
                     <div class="col-sm-9">
-                        <input type="hidden" name="lastname" value ="<%= user.lastname %>"class="text-muted mb-0"><%= user.lastname %></input>                    
+                    <input name="lastname" value="<%= user.lastname %>"class="text-muted mb-0"></input>
                     </div>
                 </div>
                 <hr>
@@ -36,7 +35,7 @@
                     <p class="mb-0">Email</p>
                 </div>
                 <div class="col-sm-9">
-                    <input type="hidden" name="email" value ="<%= user.email %>"class="text-muted mb-0"><%= user.email %></input>   
+                    <input name="email" value="<%= user.email %>"class="text-muted mb-0"></input>
                 </div>
                 </div>
                 <hr>
@@ -46,19 +45,16 @@
                     <p class="mb-0">Credits</p>
                 </div>
                 <div class="col-sm-9">
-                    <p class="text-muted mb-0"><%= user.credits %></p>
+                    <input name="credits" value="<%= user.credits %>"class="text-muted mb-0"></input>
                 </div>
                 </div>
                 <!-- edit button-->
                 <div>
-                    <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white"
-                     >Edit Profile</button>
+                    <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white">
+                        Save Profile</button>
                 </div>
             </div>
         </form>
-
-
-        
    
     </div>
 </section>

@@ -74,6 +74,10 @@ app.post('/signup', userController.signUp)
 
 //users routes
 app.get('/users/history', authMiddleware.isAuthenticated, userController.showHistory)
+app.get('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
+app.post('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
+app.post('/users/profile-edit', authMiddleware.isAuthenticated, userController.editProfile)
+
 //app.get('/users/:user_id/history', userController.showHistory)
 app.get('/users/history/:lesson_id/review', authMiddleware.isAuthenticated, reviewsController.showReviewForm)
 // app.get('/users/:user_id/history/:lesson_id/review', reviewsController.showReviewForm)

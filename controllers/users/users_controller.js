@@ -289,10 +289,9 @@ const controller = {
     //populate reviews section to see if user has reviewed this class before
     let lessons = [];
 
-
     const today = new Date();
-    const time = today.toLocaleString('en-US', { timeZone: 'Singapore' })
-    console.log(time)
+    const time = today.toLocaleString("en-US", { timeZone: "Singapore" });
+    console.log(time);
 
     try {
       lessons = await lessonModel
@@ -319,7 +318,10 @@ const controller = {
     let lessons = [];
     console.log(req.session.user);
     try {
-      lessons = await lessonModel.find({ students: req.session.user, lessonDate: { $gte: new Date() }});
+      lessons = await lessonModel.find({
+        students: req.session.user,
+        lessonDate: { $gte: new Date() },
+      });
       console.log(lessons);
     } catch (err) {
       console.log(err);
@@ -362,7 +364,6 @@ const controller = {
   //oncce cookies is stores, it will persist
   //subsequest request will conatin the cookies
   showShoppingCartTab: async (req, res) => {
-    
     console.log(req.params);
     let lesson = null;
     try {
@@ -392,7 +393,7 @@ const controller = {
     try {
       lesson = await lessonModel.findOneAndUpdate(
         { _id: req.params.lesson_id },
-        { $push: { students: req.session.user} },
+        { $push: { students: req.session.user } },
         { $inc: { capacity: 1 } }
       );
       console.log(lesson);
@@ -416,24 +417,42 @@ const controller = {
   },
 
   showProfile: async (req, res) => {
-    //verify that the session user exits, this is put in a aseparte middleware.js and inserted in teh server.js
-    // if(!req.session.user){
-    //     res.send("you are not autheticated")
-    //     return
-    // }
-
-    // get user data from db using session user
     let user = null;
-
     try {
-      user = await userModel.findOne({ email: req.session.user }); //use mongoose library to find
+      if (req.body){
+        user = await userModel.findByIdAndUpdate(
+          { _id: req.session.user },
+          { $set: { ...req.body } },
+          {new: true}
+        );
+        req.session.username = user.firstname;
+      }else{
+        user = await userModel.findById({ _id: req.session.user });
+      }
     } catch (err) {
       console.log(err);
-      res.redirect("/users/login");
+      res.redirect("/login");
+      return;
+
+    }
+    
+    res.render("users/profile", {
+      user,
+    });
+  },
+
+  editProfile: async (req, res) => {
+    // let user = null;
+    //if someone tries to go edit page straight
+    if (!req.body) {
+      res.redirect("/users/prodile");
       return;
     }
+    console.log(req.body)
 
-    res.render("users/profile", { user });
+    res.render("users/profile-edit", {
+      user: req.body,
+    });
   },
 
   logout: async (req, res) => {

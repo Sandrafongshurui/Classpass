@@ -34,63 +34,86 @@
 
     
    </div>
-   <%if(authUser === null ){%>
+<%if(authUser === null ){%>
     <!-- not login dun see credits -->
-        <% lessons.forEach(item=> { %>            
+    <%if(lessons.length>0){%>
+        <% lessons.forEach(item=> { %>    
+                  
             <div class="border-bottom d-flex">
                 <div class="d-flex view-lessons pt-3 pb-5">
                     <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
                     <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                    <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" ><a href = "/login">Login To Book</a></button>
-            
+                    <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" 
+                        onClick="window.location.href='/login'">
+                        Login To Book                     
+                    </button> 
                     </div>
                 </div>         
             </div>
+           
         <% }) %>
+    <%}else{%> 
+            <div class="border-bottom d-flex">
+                <div class="d-flex view-lessons pt-3 pb-5">
+                    <p class="text-center">There are no scheduled classes today</p>
+                </div>         
+            </div>
+
+    <%}%>
         <!-- is log in -->
-    <% }else{ %>
-        <% lessons.forEach(item=> { %>
-           <!-- user had already booked this class-->
-            <% if (item.hasBooked) {%>
+<% }else{ %>
+        <%if(lessons.length>0){%>
+            <% lessons.forEach(item=> { %>           
+                <!-- user had already booked this class-->
+                <% if (item.hasBooked) {%>
+                    <div class="border-bottom d-flex">
+                        <div class="d-flex view-lessons pt-3 pb-5">
+                            <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
+                            <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
+                            <div class="w-50">  <button type="button" disabled class="w-100 btn btn-outline-secondary" 
+                                onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
+                                <%= item.credits %> credits                       
+                            </button>           
+                            <span>Booked</span>
+                            </div>
+                        </div>         
+                    </div>
+                    <!-- class is full -->
+                <% }else if(item.capacity == 10 ){ %>
+                        <div class="border-bottom d-flex">
+                            <div class="d-flex view-lessons pt-3 pb-5">
+                                <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
+                                <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
+                                <div class="w-50">  <button type="button" disabled class="w-100 btn btn-outline-secondary" 
+                                    onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
+                                    <%= item.credits %> credits                       
+                                </button> 
+                                <span>Full</span>
+                                </div>       
+                            </div>         
+                        </div>
+                 <% }else {%>
+                        <div class="border-bottom d-flex">
+                            <div class="d-flex view-lessons pt-3 pb-5">
+                                <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
+                                <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
+                                <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" 
+                                    onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
+                                    <%= item.credits %> credits                       
+                                </button> 
+                                <span> <%= item.capacity %>/10 pax</span>
+                                </div>       
+                            </div>         
+                        </div>
+                <% }%>
+            <% }) %>
+        <%}else{%> 
             <div class="border-bottom d-flex">
                 <div class="d-flex view-lessons pt-3 pb-5">
-                    <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
-                    <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                    <div class="w-50">  <button type="button" disabled class="w-100 btn btn-outline-secondary" 
-                        onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
-                        <%= item.credits %> credits                       
-                    </button>           
-                    <span>Booked</span>
-                    </div>
+                    <p class="text-center">There are no scheduled classes today</p>
                 </div>         
-            </div>
-              <!-- class is full -->
-            <% }else if(item.capacity == 10 ){ %>
-                <div class="border-bottom d-flex">
-                    <div class="d-flex view-lessons pt-3 pb-5">
-                        <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
-                        <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                        <div class="w-50">  <button type="button" disabled class="w-100 btn btn-outline-secondary" 
-                            onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
-                            <%= item.credits %> credits                       
-                        </button> 
-                        <span>Full</span>
-                        </div>       
-                    </div>         
-                </div>
-            <% }else {%>
-                <div class="border-bottom d-flex">
-                    <div class="d-flex view-lessons pt-3 pb-5">
-                        <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
-                        <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                        <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" >
-                            <a href = "/users/shoppingcart/<%= item._id %>" class="text-warning"><%= item.credits %> credits</a>
-                        </button>
-                        <span> <%= item.capacity %>/10 pax</span>
-                        </div>       
-                    </div>         
-                </div>
-            <% }%>
-        <% }) %>
-    <% }%>
+            </div>        
+        <%}%>      
+    
+<% }%>
 </div>
