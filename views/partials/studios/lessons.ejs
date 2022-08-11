@@ -1,39 +1,74 @@
-<div>
-   <div> <p><%= selectedDate %></p>
+<div >
+    <!-- next button -->
+   <div class="d-flex" > 
+    <% if(new Date(selectedDate).toDateString() === todaysDate.toDateString() || selectedDate === todaysDate ){%>
+         <!-- reset -->
+        <div>
+            <form>
+                <input type="hidden" value="<%= todaysDate %>" name="date">
+                <button  class="border-0 bg-white p-0" type="submit" disabled><img class="arrow-image opacity-25"src="/img/Arrow_reset.png"></button>
+             
+            </form>
+        </div>
+        <!-- prev -->
+        <div>
+            <form>
+                <input type="hidden" value="<%= dates.getPreviousDay(selectedDate)%>" name="date">
+                <button class="border-0 bg-white p-0"  type="submit" disabled><img class="arrow-image-flip opacity-25"src="/img/Arrow.png"></button>       
+            </form>
+         </div>
+        <!-- date title -->
+        <div class="w-100 text-center">       
+            <p class="h5"><%= todaysDate.toDateString()%></p>
+        </div>
+        <% }else { %>
+        <!-- reset -->
+        <div>
+            <form>
+                <input type="hidden" >
+                <button class="border-0 bg-white p-0" onClick="window.location.href='/studios/<%= studio._id %>/lessons'"><img class="arrow-image opacity-50"src="/img/Arrow_reset.png"></button>
+             
+            </form>
+        </div>
+        <!-- prev -->
+        <div>
+            <form>
+                <input type="hidden" value="<%= dates.getPreviousDay(selectedDate) %>" name="date">
+                <button class="border-0 bg-white p-0"  type="submit"><img class="arrow-image-flip"src="/img/Arrow.png"></button>         
+            </form>
+        </div>
+        <!-- date title -->
+        <div class="w-100 text-center">
+            <p class="h5"><%= dates.getDateFromDateString(selectedDate) %></p>
+            </div>     
+            
+        <% } %>
+       
     
+    <div>
+      
+    <% if (new Date(selectedDate).toDateString() === oneWeekLaterDate ) { %>
     <form>
         <input type="hidden" value="<%= dates.getNextDay(selectedDate) %>" name="date">
-        <button type="submit">get next day</button>
+        <button type="submit" class="border-0 bg-white"  disabled ><img class="arrow-image opacity-25"src="/img/Arrow.png"></button>
      
     </form>
-    <!-- selected dat will be the rteurn string format, 
-    so need to iso it, to date string, so can compare without time -->
-
-    <% if(new Date(selectedDate).toDateString() === todaysDate.toDateString() || selectedDate === todaysDate ){%>
+    <% }else { %>
         <form>
-            <input type="hidden" value="<%= todaysDate %>" name="date">
-            <button type="submit" disabled>reset</button>
+            <input type="hidden" value="<%= dates.getNextDay(selectedDate) %>" name="date">
+            <button class="border-0 bg-white"  type="submit"><img class="arrow-image"src="/img/Arrow.png"></img></button>
          
-        </form>
-        <form>
-            <input type="hidden" value="<%= dates.getPreviousDay(selectedDate)%>" name="date">
-            <button type="submit" disabled>get prev day</button>       
-        </form>
-    <% }else{ %>
-        <form>
-            <input type="hidden" value="<%= todaysDate %>" name="date">
-            <button type="submit">reset</button>
-         
-        </form>
-        <form>
-            <input type="hidden" value="<%= dates.getPreviousDay(selectedDate) %>" name="date">
-            <button type="submit">get prev day</button>         
         </form>
     <% } %>
-   
-
+    </div>
     
+    <!-- selected dat will be the rteurn string format, 
+    so need to iso it, to date string, so can compare without time -->
+ <!-- reset and prev button -->
+   
+   
    </div>
+   <hr>
 <%if(authUser === null ){%>
     <!-- not login dun see credits -->
     <%if(lessons.length>0){%>
@@ -54,7 +89,7 @@
         <% }) %>
     <%}else{%> 
             <div class="border-bottom d-flex">
-                <div class="d-flex view-lessons pt-3 pb-5">
+                <div class="d-flex view-lessons pt-3 pb-5 justify-content-center">
                     <p class="text-center">There are no scheduled classes today</p>
                 </div>         
             </div>
@@ -109,7 +144,7 @@
             <% }) %>
         <%}else{%> 
             <div class="border-bottom d-flex">
-                <div class="d-flex view-lessons pt-3 pb-5">
+                <div class="d-flex view-lessons pt-3 pb-5 justify-content-center">
                     <p class="text-center">There are no scheduled classes today</p>
                 </div>         
             </div>        

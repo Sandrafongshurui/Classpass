@@ -4,7 +4,7 @@
         <section class="view-studio">
             <div>
                 <div>
-                    <figure><img src="<%= studio.img %>" /></figure>
+                    <figure><img class="view-studio-img"src="<%= studio.img %>" /></figure>
                 </div>
                 <nav class="nav info-nav">
                     <%if(tab==="info" ){%>
@@ -102,14 +102,14 @@
             <div class="view-studio-tab border-top py-3">
                 <div>
                     <h2>
-                        All lessons at <%= studio.name %>
+                        All classes at <%= studio.name %>
                     </h2>
                     <div>
                         <!-- searach nar of lesson types pf the studios -->
                         <%if(selectedDate!==todaysDate){%>
-                            <form id="filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/?date=<%= selectedDate %>">
+                            <form class="text-center" id="filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/?date=<%= selectedDate %>">
                         <% }else{ %>
-                            <form id="filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/">
+                            <form class="text-center" id="filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/">
                         <% } %>
                         
                             <select id="lessons-select" name="options" onchange="submitForm()">

@@ -51,7 +51,7 @@ const controller = {
         studios = await studioModel.find();
       } else {
         console.log("has location query");
-        console.log(req.body)
+        console.log(req.body);
         // console.log(req.path)
         // let urlPath = req.originalUrl || req.path
         // console.log("http://localhost:3000/" +  urlPath)
@@ -68,16 +68,23 @@ const controller = {
         //     activities:{ $in: req.body.activities}, },
         //     );
         // }else if
+        const filterConditions = {};
 
-        studios = await studioModel.find(
-          {location: { $in: req.body.location},
-          amenities: { $all: req.body.amenities},
-          activities:{ $in: req.body.activities}, },
-          );
-     
+        Object.entries(req.body).forEach(([key, value]) => {
+          filterConditions[key] = {
+            [key === "amenities" ? "$all" : "$in"]: value,
+          };
+        });
+        console.log(filterConditions )
+
+        // studios = await studioModel.find({
+        //   location: { $in: req.body.location },
+        //   amenities: { $all: req.body.amenities },
+        //   activities: { $in: req.body.activities },
+        // });
+        studios = await studioModel.find(filterConditions);
 
         // studios = await studioModel.find({location: { $in: req.body.location}});
-      
       }
       // if(req.query.amenities){
       //   studios = await studioModel.find(

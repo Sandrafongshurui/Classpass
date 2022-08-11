@@ -61,6 +61,12 @@ const dates = {
     return prevDay;
   },
 
+  getOneWeekLater: (currentDate) => {
+    const nextWeek = new Date(currentDate); //get iso format
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    return nextWeek;
+  },
+
   // getPreviousDay: (currentDate) => {
   //   const date = new Date();
   //   const currentDateArray =  currentDate.split("/")

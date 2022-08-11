@@ -3,7 +3,6 @@ const lessonModel = require("../../models/lessons/lessons");
 const studioModel = require("../../models/studios/studios");
 const { dates } = require("../../utils/helper");
 
-
 const storeSelection = {
   filter: "All Classes",
 };
@@ -55,12 +54,12 @@ const controller = {
   },
 
   getLessons: async (req, res, next) => {
-   
     let selectedDate = new Date();
     let todaysDate = new Date();
     let filterOptions = "All Classes";
     let lessons = [];
-
+    let oneWeekLaterDate = dates.getOneWeekLater(todaysDate).toDateString()
+    console.log(oneWeekLaterDate)
     //check if user selected a lesson type, it is submited by a form
     //if no body, means user went next date(page refresh), so we want to retain his previous filter
     if (req.body.options) {
@@ -71,9 +70,9 @@ const controller = {
     }
 
     //check if date queries is present
-    if (req.query.date) {
-      selectedDate = req.query.date;
-    }
+    // if (req.query.date) {
+    //   selectedDate = req.query.date;
+    // }
 
     const studio = await studioModel
       .findById(req.params.studio_id)
@@ -83,96 +82,83 @@ const controller = {
       });
 
     //get lessons on the selected date, canot match in .populate cos iso timing is always diff
-    const matchedLessons = [];
+    let matchedLessons = [];
     studio.lessons.forEach((item) => {
       if (req.query.date) {
-        //selected date is the query,
-        //selected date will be in date string format, just get the date oyt with time
-        if (item.lessonDate.toDateString() == dates.getDateFromDateString(selectedDate)) {
+        //back to today
+        //console.log(dates.getDateFromDateString(req.query.date), todaysDate.toDateString())
+        
+          selectedDate = req.query.date;
+      
+        if (
+          item.lessonDate.toDateString() ==
+          dates.getDateFromDateString(selectedDate)
+        ) {
           matchedLessons.push(item);
         }
       } else {
         //if its todays date is not in datestring format
-        console.log("todays date")
-        console.log(item.lessonDate.toDateString(), selectedDate.toDateString())
+        console.log("todays date");
+        //console.log(item.lessonDate.toDateString(), selectedDate.toDateString())
         if (item.lessonDate.toDateString() === selectedDate.toDateString()) {
-          
           matchedLessons.push(item);
         }
+        //if its today
+        //check if the timing of teh lesson is over
+        let timeNow = new Date().toTimeString();
+        //console.log(timeNow)
+        timeNow = timeNow.split(":")[0] + ":" + timeNow.split(":")[1];
+        //console.log(timeNow)
+        matchedLessons = matchedLessons.filter(
+          (lesson) => lesson.time > timeNow
+        );
       }
     });
 
     //check for filtered lessons, not the default means user has selected a lesson type
     if (filterOptions !== "All Classes") {
-      lessons = matchedLessons.filter((lesson) => lesson.name === filterOptions);
+      lessons = matchedLessons.filter(
+        (lesson) => lesson.name === filterOptions
+      );
     } else {
       lessons = matchedLessons;
     }
 
     //add new filed to each lesson , check if user_id is inside the lesson.students
-   lessons.forEach(lesson => {
-    if(lesson.students.some((studentObj)=>{ return studentObj.equals(req.session.user)})){
-      lesson.hasBooked = true
-    }else{
-      lesson.hasBooked = false
-    }
-   
-   })
+    lessons.forEach((lesson) => {
+      if (
+        lesson.students.some((studentObj) => {
+          return studentObj.equals(req.session.user);
+        })
+      ) {
+        lesson.hasBooked = true;
+      } else {
+        lesson.hasBooked = false;
+      }
+    });
 
- //sort accrouding to timing
-   let sortedLessons= lessons.sort((a, b) => {
-    //-1 means first go before second, 1 means it goes after, 0 means the same
-    return (a.time > b.time) ? 1 : ((a.time < b.time) ? -1 : 0)
-  });
-
-    //check if the timing of teh lesson is over
-    let timeNow = new Date().toTimeString()
-    console.log(timeNow)
-    timeNow =timeNow.split(":")[0] + ":" + timeNow.split(":")[1]
-    console.log(timeNow)
-    sortedLessons = sortedLessons.filter((lesson) => lesson.time > timeNow)
-
+    //sort accrouding to timing
+    let sortedLessons = lessons.sort((a, b) => {
+      //-1 means first go before second, 1 means it goes after, 0 means the same
+      return a.time > b.time ? 1 : a.time < b.time ? -1 : 0;
+    });
 
     //add all classes as the first item in lessonNames
     studio.lessonNames.unshift("All Classes");
 
     res.render("studios/show", {
-      timeNow,
+      oneWeekLaterDate,
       filterOptions,
       studio,
       tab: "lessons",
       lessonNames: studio.lessonNames,
-      lessons : sortedLessons,
+      lessons: sortedLessons,
       todaysDate,
       selectedDate,
       dates,
       // user : req.session.user
     });
-
-    
   },
-
-  //for sandra
-  // editDateOfLesson: async (req, res) => {
-  //   const doc = await lessonModel.updateMany(
-  //     {},
-  //     {$set: { lessonDate: '2022-08-20'}},
-  //     { upsert: true } //new means it will return teh update doc, if not it will return doc b4 updates
-  //   )},
-
-  // addStudents: async (req, res) => {
-  //   try{
-  //     const doc = await lessonModel.updateMany(
-  //       {lessonDate: {$lte : Date.now()}},
-  //       {$push: {students: req.params.user_id }},
-  //       { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
-  //     )
-  //     console.log(doc)
-  //   }catch(err){
-  //     res.send(err)
-  //   }
-
-  // }
 };
 
 module.exports = controller;

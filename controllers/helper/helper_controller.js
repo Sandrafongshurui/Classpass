@@ -52,6 +52,19 @@ const controller = {
       res.send(err);
     }
   },
+
+  addLessons: async (req, res) => {
+    try {
+      const doc = await studioModel.findAndUpdateOne(
+        { name: "Barre 2 Barre" },
+        { $push: { lessons: req.params.user_id } },
+        { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
+      );
+      console.log(doc);
+    } catch (err) {
+      res.send(err);
+    }
+  },
 };
 
 module.exports = controller;

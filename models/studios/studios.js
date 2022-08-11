@@ -41,6 +41,10 @@ const studiosSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  contact:{
+    type: String,
+    required: true,
+  },
   amenities: [{
     type: String,
     emnum: ["Showers", "Lockers", "Mats", "Parking"]
@@ -71,7 +75,7 @@ const studiosSchema = new mongoose.Schema({
       "Outdoors"
       ],
   }],
-  contacts:[{
+  socials:[{
     type: String,
     required: true
   }],
