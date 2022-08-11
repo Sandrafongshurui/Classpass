@@ -1,7 +1,53 @@
 <%- include('../partials/header'); %>
-<%- include('../partials/filters'); %>
-        <div class="row my-5 d-block">
-            
+<div class="studio-filters d-flex justify-content-evenly align-items-center border-bottom py-3 w-50">
+    <!--  filter -->
+    <form method="POST" action="/studios" id="location-filter-form">
+        <div class="dropdown ">
+            <a class="nav-link dropdown-toggle px-3 " type="button" 
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Location | Amenitites | Activities
+            </a>
+            <div class="dropdown-menu " id="location-filter-list" aria-labelledby="dropdownMenuButton">
+                <div> <!-- loaction filter -->
+                    <input class="location-filter" type="checkbox" value="North" name="location">North
+                    <input class="location-filter" type="checkbox" value="South" name="location">South
+                    <input class="location-filter" type="checkbox" value="East" name="location" >East
+                    <input class="location-filter" type="checkbox" value="West" name="location">West
+                    <input class="location-filter" type="checkbox" value="Central" name="location">Central
+                </div>
+                <hr><!-- amenities filter -->
+                <div>
+                    <input type="checkbox" class="amenities-filter" name="amenities" value="Showers"> >Showers
+                    <input type="checkbox" class="amenities-filter" name="amenities" value="Lockers">Lockers
+                    <input type="checkbox" class="amenities-filter" name="amenities" value="Mats">Mats
+                    <input type="checkbox" class="amenities-filter" name="amenities" value="Parking">Parking
+                </div>
+                <hr>  <!-- activites filter -->
+                <div>
+                    <input type="checkbox" class="activities-filter" name="activities" value="Yoga">Yoga
+                    <input type="checkbox" class="activities-filter" name="activities" value="Hiit">Hiit
+                    <input type="checkbox" class="activities-filter" name="activities" value="Martial Arts">Martial Arts
+                    <input type="checkbox" class="activities-filter" name="activities" value="Running">Running
+                    <input type="checkbox" class="activities-filter" name="activities" value="Pilates">Pilates
+                    <input type="checkbox" class="activities-filter" name="activities" value="Boxing">Boxing
+                    <input type="checkbox" class="activities-filter" name="activities" value="Barre">Barre
+                    <input type="checkbox" class="activities-filter" name="activities" value="Cycling">Cycling
+                    <input type="checkbox" class="activities-filter" name="activities" value="Dance">Dance
+                    <input type="checkbox" class="activities-filter" name="activities" value="Outdoors">Outdoors
+                </div>
+                <button type="submit">Apply</button>
+                <!-- <button type="button" onclick="storeLocationValues()">Apply</button> -->
+                <button type="button" disabled id="location-clear-btn" onclick="clearFilters('location-filter')"> Clear</button>
+            </div>
+
+        </div>
+   
+    </form>
+
+</div>
+    <section id="class-list-section">
+        <div class="row my-5 d-block" id="class-list">
+            <% if(studios.length > 0){%>
             <% studios.forEach(item=> { %>
                 <div class="col card w-75 mx-auto">
                     <div class=" d-flex">
@@ -21,8 +67,11 @@
                     </div>
                 </div>
                 <% }) %>
+                <%}else{%>
+                <h2>No search Results Found</h2>
+                <%}%>
             
         </div>
-        
-    </div>
+    </section>
+    <script src="/filters.js"></script>
     <%- include('../partials/footer'); %>

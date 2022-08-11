@@ -22,6 +22,24 @@ const controller = {
     );
   },
 
+  editField: async (req, res) => {
+    try {
+    const doc = await studioModel.updateMany(
+      {},
+      { $set: { contacts: [
+      "contact",
+      "website",
+      "instagram",
+      "facebook"]} },
+      { upsert: true } 
+      
+    );
+    console.log(doc);
+  } catch (err) {
+    res.send(err);
+  }
+  },
+
   addStudents: async (req, res) => {
     try {
       const doc = await lessonModel.updateMany(
@@ -37,3 +55,8 @@ const controller = {
 };
 
 module.exports = controller;
+
+
+
+
+

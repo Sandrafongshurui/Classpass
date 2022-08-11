@@ -56,7 +56,7 @@ const studiosSchema = new mongoose.Schema({
       ],
     required: true,
   }],
-  activites:[{
+  activities:[{
     type: String,
     enum: [///at create, the location has to be one of these if not will erroor
       "Yoga",
@@ -70,6 +70,10 @@ const studiosSchema = new mongoose.Schema({
       "Dance",
       "Outdoors"
       ],
+  }],
+  contacts:[{
+    type: String,
+    required: true
   }],
   createdBy: {
     type: Schema.Types.ObjectId, //this would be the array of the students dbs

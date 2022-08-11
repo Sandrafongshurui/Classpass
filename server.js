@@ -8,7 +8,7 @@ const session = require('express-session')
 //include the method-override package
 const methodOverride = require('method-override');
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 // const connStr = "mongodb://172.18.175.7:27017"
 const connStr = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@classpass.by0wzf8.mongodb.net/test`
 
@@ -51,7 +51,7 @@ app.get('/', redirectMiddleware.setRedirectPath, pageController.showHome)
 // app.post('/', userController.login)
 // //shows studios list
 app.get('/studios', redirectMiddleware.setRedirectPath, studiosController.showListOfStudios)
-// app.post('/studios', userController.login)
+app.post('/studios', studiosController.showListOfStudios)
 app.get('/studios/:studio_id',redirectMiddleware.setRedirectPath, studiosController.getStudio)
 // //shows studio's classes, need authetication then can
 app.get('/studios/:studio_id/lessons', redirectMiddleware.setRedirectPath, lessonsController.getLessons)
@@ -109,6 +109,7 @@ app.post('/lessons', lessonsController.createLesson)
 app.get('/editLessons', helperController.editDateOfLesson)
 app.get('/editAmenities', helperController.editStudiosAmenities)
 app.get('/addStudents/:user_id', helperController.addStudents)
+app.get('/editField', helperController.editField)
 
 app.listen(port, async () => {
     try {

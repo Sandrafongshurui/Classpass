@@ -1,3 +1,4 @@
+<%- include('../partials/header'); %>
 <div class="studio-filters d-flex justify-content-evenly align-items-center border-bottom py-3 w-50">
     <!-- loaction filter -->
     <form method="POST" action="/studios" id="location-filter-form">
@@ -8,10 +9,8 @@
             </a>
             <div class="dropdown-menu " id="location-filter-list" aria-labelledby="dropdownMenuButton">
                 <div>
-                   
-
-                     <input class="location-filter" type="checkbox" value="North" name="location">North
-                   <input class="location-filter" type="checkbox" value="South" name="location">South
+                    <input class="location-filter" type="checkbox" value="North" name="location">North
+                    <input class="location-filter" type="checkbox" value="South" name="location">South
                     <input class="location-filter" type="checkbox" value="East" name="location" >East
                     <input class="location-filter" type="checkbox" value="West" name="location">West
                     <input class="location-filter" type="checkbox" value="Central" name="location">Central
@@ -70,5 +69,30 @@
     </form>
 
 </div>
-
-<script src="/filters.js"></script>
+    <section id="class-list-section">
+        <div class="row my-5 d-block" id="class-list">
+            
+            <% studios.forEach(item=> { %>
+                <div class="col card w-75 mx-auto">
+                    <div class=" d-flex">
+                        <div class="studio-item-img"><a href="/studios/<%= item._id %>">
+                        <img src="<%= item.img %>" class="card-img-top"></a>
+                        </div>
+                        <div class="card-body studio-item-details">
+                            <p class="card-text">
+                                    <%= item.name %>
+                                </a></p>
+                        </div>
+                        <div class="card-body studio-item-description">
+                            <p class="card-text">
+                                    <%= item.description %>
+                                </a></p>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+            
+        </div>
+    </section>
+    <script src="/filters.js"></script>
+    <%- include('../partials/footer'); %>

@@ -27,54 +27,100 @@ const controller = {
     res.send("studio created");
   },
 
-  showListOfStudios: async (req, res, next) => {   
-   
-    console.log
-    let studios = null
-    try{
-      if(!req.query.location){
-        studios = await studioModel.find();
-         
-       }else{
-        //user slected location checkboxes, 
-        //find if the selected location is inside the array of locations of a studio
-        console.log(req.query.location)
-        console.log(req.query)
-        //studios = await studioModel.find({location : {$all : req.query.location }});
-        studios = await studioModel.find({location : { $in: req.query.location }});
-        console.log(studios)
-       }
-      // console.log(studios);
-    }catch(err){
-      console.log(err)
-      res.send(err)
-      return
-    }
-  
-    res.render("studios/index", { studios});
-   
-   next()
+  getStudioData: async (req, res, next) => {
+    console.log("----->", req.body);
+    //let response = await fetch('/readme.txt');
+    // let data = await response.text();
 
+    const studios = await studioModel.find({
+      location: { $in: req.body.location },
+    });
+
+    return res.json();
+  },
+
+  showListOfStudios: async (req, res, next) => {
+    let location = null;
+    let amenities = null;
+    let activities = null;
+    let queryUrl = null;
+    let studios = null;
+    try {
+      if (Object.keys(req.body).length === 0) {
+        console.log("no location query");
+        studios = await studioModel.find();
+      } else {
+        console.log("has location query");
+        console.log(req.body)
+        // console.log(req.path)
+        // let urlPath = req.originalUrl || req.path
+        // console.log("http://localhost:3000/" +  urlPath)
+        // const url = new URL("http://localhost:3000/" + urlPath);
+        // //add this params to the next request
+        // const params = new URLSearchParams(url.search);
+        // console.log(params.toString())
+        //user slected location checkboxes,
+        //find if the selected location is inside the array of locations of a studio
+        // if(req.body.location && req.body.amenities && req.body.activities){
+        //   studios = await studioModel.find(
+        //     {location: { $in: req.body.location},
+        //     amenities: { $all: req.body.amenities},
+        //     activities:{ $in: req.body.activities}, },
+        //     );
+        // }else if
+
+        studios = await studioModel.find(
+          {location: { $in: req.body.location},
+          amenities: { $all: req.body.amenities},
+          activities:{ $in: req.body.activities}, },
+          );
+     
+
+        // studios = await studioModel.find({location: { $in: req.body.location}});
+      
+      }
+      // if(req.query.amenities){
+      //   studios = await studioModel.find(
+      //     {amenities: { $in: req.query.amenities}},
+      //     );
+      //     req.session.studios = studios
+      // }
+
+      // console.log(studios);
+    } catch (err) {
+      console.log(err);
+      res.send(err);
+      return;
+    }
+    // console.log(studios)
+
+    res.render("studios/index", {
+      studios,
+    });
+
+    next();
   },
 
   //the  studio_id would be in the index(showing list of studios, in the ahref link)
   //"/studios/studio_id"
   getStudio: async (req, res, next) => {
-    
     //lean makes it a plain js object, so i can add properties, mongoose obj cant add
-    const studio = await studioModel.findById(req.params.studio_id).lean().populate({
-      path: "lessons", //poppulate the lessons field
-      select: "reviews instructor name", // only get these fields for the lessons
-      populate: {
-        //populate again for the reviews,
-        path: "reviews",
+    const studio = await studioModel
+      .findById(req.params.studio_id)
+      .lean()
+      .populate({
+        path: "lessons", //poppulate the lessons field
+        select: "reviews instructor name", // only get these fields for the lessons
         populate: {
-          //populate again for the users, and only get the firstname lastname
-          path: "user",
-          select: "firstname lastname",
+          //populate again for the reviews,
+          path: "reviews",
+          populate: {
+            //populate again for the users, and only get the firstname lastname
+            path: "user",
+            select: "firstname lastname",
+          },
         },
-      },
-    });
+      });
 
     //filter for lessons with reviews only
     const lessonWithReviews = studio.lessons.filter(
@@ -93,23 +139,26 @@ const controller = {
     });
 
     //sort the dates
-    const sortedTotalReviews= totalReviews.sort((a, b) => {
+    const sortedTotalReviews = totalReviews.sort((a, b) => {
       //-1 means first go before second, 1 means it goes after, 0 means the same
-      return (a.dateCreated < b.dateCreated) ? 1 : ((a.dateCreated > b.dateCreated) ? -1 : 0)
+      return a.dateCreated < b.dateCreated
+        ? 1
+        : a.dateCreated > b.dateCreated
+        ? -1
+        : 0;
     });
-    console.log("------>", sortedTotalReviews)
+    console.log("------>", sortedTotalReviews);
 
     // todo: aggregation of ratings
 
     res.render("studios/show", {
       studio,
-      sortedTotalReviews, 
+      sortedTotalReviews,
       tab: "info",
     });
 
-    next()
+    next();
   },
-
 };
 
 module.exports = controller;

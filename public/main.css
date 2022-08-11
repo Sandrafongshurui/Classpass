@@ -476,7 +476,7 @@ a, u {
 
 
 .hidden{
-  display: block;
+  display: none;
 }
 
 /* search bar */
