@@ -49,25 +49,17 @@ const controller = {
       if (Object.keys(req.body).length === 0) {
         console.log("no location query");
         studios = await studioModel.find();
+
+        res.render("studios/index", {
+          location: "",
+          amenities: "",
+          activities: "",
+          studios,
+        });
+        return
       } else {
         console.log("has location query");
         console.log(req.body);
-        // console.log(req.path)
-        // let urlPath = req.originalUrl || req.path
-        // console.log("http://localhost:3000/" +  urlPath)
-        // const url = new URL("http://localhost:3000/" + urlPath);
-        // //add this params to the next request
-        // const params = new URLSearchParams(url.search);
-        // console.log(params.toString())
-        //user slected location checkboxes,
-        //find if the selected location is inside the array of locations of a studio
-        // if(req.body.location && req.body.amenities && req.body.activities){
-        //   studios = await studioModel.find(
-        //     {location: { $in: req.body.location},
-        //     amenities: { $all: req.body.amenities},
-        //     activities:{ $in: req.body.activities}, },
-        //     );
-        // }else if
         const filterConditions = {};
 
         Object.entries(req.body).forEach(([key, value]) => {
@@ -84,7 +76,7 @@ const controller = {
         // });
         studios = await studioModel.find(filterConditions);
 
-        // studios = await studioModel.find({location: { $in: req.body.location}});
+        
       }
       // if(req.query.amenities){
       //   studios = await studioModel.find(
@@ -102,6 +94,7 @@ const controller = {
     // console.log(studios)
 
     res.render("studios/index", {
+      ...req.body,
       studios,
     });
 

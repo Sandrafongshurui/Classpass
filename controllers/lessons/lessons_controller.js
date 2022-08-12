@@ -86,20 +86,12 @@ const controller = {
     studio.lessons.forEach((item) => {
       if (req.query.date) {
         //back to today
-        //console.log(dates.getDateFromDateString(req.query.date), todaysDate.toDateString())
-        
-          selectedDate = req.query.date;
-      
-        if (
-          item.lessonDate.toDateString() ==
-          dates.getDateFromDateString(selectedDate)
-        ) {
+         selectedDate = req.query.date;
+        if (item.lessonDate.toDateString() == dates.getDateFromDateString(selectedDate)) {
           matchedLessons.push(item);
         }
       } else {
         //if its todays date is not in datestring format
-        console.log("todays date");
-        //console.log(item.lessonDate.toDateString(), selectedDate.toDateString())
         if (item.lessonDate.toDateString() === selectedDate.toDateString()) {
           matchedLessons.push(item);
         }
@@ -109,8 +101,7 @@ const controller = {
         //console.log(timeNow)
         timeNow = timeNow.split(":")[0] + ":" + timeNow.split(":")[1];
         //console.log(timeNow)
-        matchedLessons = matchedLessons.filter(
-          (lesson) => lesson.time > timeNow
+        matchedLessons = matchedLessons.filter((lesson) => lesson.time > timeNow
         );
       }
     });
@@ -127,8 +118,7 @@ const controller = {
     //add new filed to each lesson , check if user_id is inside the lesson.students
     lessons.forEach((lesson) => {
       if (
-        lesson.students.some((studentObj) => {
-          return studentObj.equals(req.session.user);
+        lesson.students.some((studentObj) => {return studentObj.equals(req.session.user);
         })
       ) {
         lesson.hasBooked = true;
