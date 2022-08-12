@@ -1,32 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
-// enum: [///at create, the location has to be one of these if not will erroor
-//       "Woodlands",
-//       "Yishun",
-//       "Ang Mo Kio",
-//       "Hougang",
-//       "Punggol",
-//       "Sengkang",
-//       "Serangoon",
-//       "Bedok",
-//       "Pasir Ris",
-//       "Tampines",
-//       "Bukit Batok",
-//       "Bukit Panjang",
-//       "Choa Chu Kang",
-//       "Clementi",
-//       "Jurong",
-//       "Bishan",
-//      "Bukit Merah",
-//      "Bukit Timah",
-//      "Central Area",
-//       "Geylang",
-//       "Kallang",
-//       "Marine Parade",
-//       "Queenstown",
-//       "Toa Payoh"],
-
 //user post man to post back this manner to make sure its working befor using the form
 const studiosSchema = new mongoose.Schema({
   name: {

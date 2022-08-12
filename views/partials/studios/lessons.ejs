@@ -1,154 +1,218 @@
-<div >
+<div>
     <!-- next button -->
-   <div class="d-flex" > 
-    <% if(new Date(selectedDate).toDateString() === todaysDate.toDateString() || selectedDate === todaysDate ){%>
-         <!-- reset -->
-        <div>
-            <form>
-                <input type="hidden" value="<%= todaysDate %>" name="date">
-                <button  class="border-0 bg-white p-0" type="submit" disabled><img class="arrow-image opacity-25"src="/img/Arrow_reset.png"></button>
-             
-            </form>
-        </div>
-        <!-- prev -->
-        <div>
-            <form>
-                <input type="hidden" value="<%= dates.getPreviousDay(selectedDate)%>" name="date">
-                <button class="border-0 bg-white p-0"  type="submit" disabled><img class="arrow-image-flip opacity-25"src="/img/Arrow.png"></button>       
-            </form>
-         </div>
-        <!-- date title -->
-        <div class="w-100 text-center">       
-            <p class="h5"><%= todaysDate.toDateString()%></p>
-        </div>
-        <% }else { %>
-        <!-- reset -->
-        <div>
-            <form>
-                <input type="hidden" >
-                <button class="border-0 bg-white p-0" onClick="window.location.href='/studios/<%= studio._id %>/lessons'"><img class="arrow-image opacity-50"src="/img/Arrow_reset.png"></button>
-             
-            </form>
-        </div>
-        <!-- prev -->
-        <div>
-            <form>
-                <input type="hidden" value="<%= dates.getPreviousDay(selectedDate) %>" name="date">
-                <button class="border-0 bg-white p-0"  type="submit"><img class="arrow-image-flip"src="/img/Arrow.png"></button>         
-            </form>
-        </div>
-        <!-- date title -->
-        <div class="w-100 text-center">
-            <p class="h5"><%= dates.getDateFromDateString(selectedDate) %></p>
-            </div>     
-            
-        <% } %>
-       
-    
-    <div>
-      
-    <% if (new Date(selectedDate).toDateString() === oneWeekLaterDate ) { %>
-    <form>
-        <input type="hidden" value="<%= dates.getNextDay(selectedDate) %>" name="date">
-        <button type="submit" class="border-0 bg-white"  disabled ><img class="arrow-image opacity-25"src="/img/Arrow.png"></button>
-     
-    </form>
-    <% }else { %>
-        <form>
-            <input type="hidden" value="<%= dates.getNextDay(selectedDate) %>" name="date">
-            <button class="border-0 bg-white"  type="submit"><img class="arrow-image"src="/img/Arrow.png"></img></button>
-         
-        </form>
-    <% } %>
-    </div>
-    
-    <!-- selected dat will be the rteurn string format, 
-    so need to iso it, to date string, so can compare without time -->
- <!-- reset and prev button -->
-   
-   
-   </div>
-   <hr>
-<%if(authUser === null ){%>
-    <!-- not login dun see credits -->
-    <%if(lessons.length>0){%>
-        <% lessons.forEach(item=> { %>    
-                  
-            <div class="border-bottom d-flex">
-                <div class="d-flex view-lessons pt-3 pb-5">
-                    <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
-                    <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                    <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" 
-                        onClick="window.location.href='/login'">
-                        Login To Book                     
-                    </button> 
-                    </div>
-                </div>         
+    <div class="d-flex">
+        <% if(new Date(selectedDate).toDateString()===todaysDate.toDateString() || selectedDate===todaysDate ){%>
+            <!-- reset -->
+            <div>
+                <form>
+                    <input type="hidden" value="<%= todaysDate %>" name="date">
+                    <button class="border-0 bg-white p-0" type="submit" disabled><img class="arrow-image opacity-25"
+                            src="/img/Arrow_reset.png"></button>
+                </form>
             </div>
-           
-        <% }) %>
-    <%}else{%> 
-            <div class="border-bottom d-flex">
-                <div class="d-flex view-lessons pt-3 pb-5 justify-content-center">
-                    <p class="text-center">There are no scheduled classes today</p>
-                </div>         
+            <!-- prev -->
+            <div>
+                <form>
+                    <input type="hidden" value="<%= dates.getPreviousDay(selectedDate)%>" name="date">
+                    <button class="border-0 bg-white p-0" type="submit" disabled><img
+                            class="arrow-image-flip opacity-25" src="/img/Arrow.png"></button>
+                </form>
             </div>
+            <!-- date title -->
+            <div class="w-100 text-center">
+                <p class="h5">
+                    <%= todaysDate.toDateString()%>
+                </p>
+            </div>
+            <% }else { %>
+                <!-- reset -->
+                <div>
+                    <form>
+                        <input type="hidden">
+                        <button class="border-0 bg-white p-0"
+                            onClick="window.location.href='/studios/<%= studio._id %>/lessons'"><img
+                                class="arrow-image opacity-50" src="/img/Arrow_reset.png"></button>
+                    </form>
+                </div>
+                <!-- prev -->
+                <div>
+                    <form>
+                        <input type="hidden" value="<%= dates.getPreviousDay(selectedDate) %>" name="date">
+                        <button class="border-0 bg-white p-0" type="submit"><img class="arrow-image-flip"
+                                src="/img/Arrow.png"></button>
+                    </form>
+                </div>
+                <!-- date title -->
+                <div class="w-100 text-center">
+                    <p class="h5">
+                        <%= dates.getDateFromDateString(selectedDate) %>
+                    </p>
+                </div>
 
-    <%}%>
-        <!-- is log in -->
-<% }else{ %>
-        <%if(lessons.length>0){%>
-            <% lessons.forEach(item=> { %>           
-                <!-- user had already booked this class-->
-                <% if (item.hasBooked) {%>
-                    <div class="border-bottom d-flex">
-                        <div class="d-flex view-lessons pt-3 pb-5">
-                            <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
-                            <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                            <div class="w-50">  <button type="button" disabled class="w-100 btn btn-outline-secondary" 
-                                onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
-                                <%= item.credits %> credits                       
-                            </button>           
-                            <span>Booked</span>
-                            </div>
-                        </div>         
+                <% } %>
+
+
+                    <div>
+
+                        <% if (new Date(selectedDate).toDateString()===oneWeekLaterDate ) { %>
+                            <form>
+                                <input type="hidden" value="<%= dates.getNextDay(selectedDate) %>" name="date">
+                                <button type="submit" class="border-0 bg-white" disabled><img
+                                        class="arrow-image opacity-25" src="/img/Arrow.png"></button>
+
+                            </form>
+                            <% }else { %>
+                                <form>
+                                    <input type="hidden" value="<%= dates.getNextDay(selectedDate) %>" name="date">
+                                    <button class="border-0 bg-white" type="submit"><img class="arrow-image"
+                                            src="/img/Arrow.png"></img></button>
+
+                                </form>
+                                <% } %>
                     </div>
-                    <!-- class is full -->
-                <% }else if(item.capacity == 10 ){ %>
-                        <div class="border-bottom d-flex">
-                            <div class="d-flex view-lessons pt-3 pb-5">
-                                <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
-                                <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                                <div class="w-50">  <button type="button" disabled class="w-100 btn btn-outline-secondary" 
-                                    onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
-                                    <%= item.credits %> credits                       
-                                </button> 
-                                <span>Full</span>
-                                </div>       
-                            </div>         
+
+                    <!-- selected dat will be the rteurn string format, 
+    so need to iso it, to date string, so can compare without time -->
+                    <!-- reset and prev button -->
+
+
+    </div>
+    <hr>
+    <%if(authUser===null ){%>
+        <!-- not login dun see credits -->
+        <%if(lessons.length>0){%>
+            <% lessons.forEach(item=> { %>
+
+                <div class="border-bottom d-flex">
+                    <div class="d-flex view-lessons pt-3 pb-5">
+                        <div class="w-50">
+                            <p>
+                                <%= item.time %> <br><span>
+                                        <%= item.duration %> min
+                                    </span>
+                            </p>
                         </div>
-                 <% }else {%>
-                        <div class="border-bottom d-flex">
-                            <div class="d-flex view-lessons pt-3 pb-5">
-                                <div class="w-50"> <p><%= item.time %>  <br><span><%= item.duration %> min</span></p> </div>
-                                <div class="w-100"> <p><%= item.name %>  <br><span><%= item.instructor %></span></p> </div>
-                                <div class="w-50">  <button type="button" class="w-100 btn btn-outline-warning" 
-                                    onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
-                                    <%= item.credits %> credits                       
-                                </button> 
-                                <span> <%= item.capacity %>/10 pax</span>
-                                </div>       
-                            </div>         
+                        <div class="w-100">
+                            <p>
+                                <%= item.name %> <br><span>
+                                        <%= item.instructor %>
+                                    </span>
+                            </p>
                         </div>
-                <% }%>
-            <% }) %>
-        <%}else{%> 
-            <div class="border-bottom d-flex">
-                <div class="d-flex view-lessons pt-3 pb-5 justify-content-center">
-                    <p class="text-center">There are no scheduled classes today</p>
-                </div>         
-            </div>        
-        <%}%>      
-    
-<% }%>
+                        <div class="w-50"> <button type="button" class="w-100 btn btn-outline-warning"
+                                onClick="window.location.href='/login'">
+                                Login To Book
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <% }) %>
+                    <%}else{%>
+                        <div class="border-bottom d-flex">
+                            <div class="d-flex view-lessons pt-3 pb-5 justify-content-center">
+                                <p class="text-center">There are no scheduled classes today</p>
+                            </div>
+                        </div>
+
+                        <%}%>
+                            <!-- is log in -->
+                            <% }else{ %>
+                                <%if(lessons.length>0){%>
+                                    <% lessons.forEach(item=> { %>
+                                        <!-- user had already booked this class-->
+                                        <% if (item.hasBooked) {%>
+                                            <div class="border-bottom d-flex">
+                                                <div class="d-flex view-lessons pt-3 pb-5">
+                                                    <div class="w-50">
+                                                        <p>
+                                                            <%= item.time %> <br><span>
+                                                                    <%= item.duration %> min
+                                                                </span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="w-100">
+                                                        <p>
+                                                            <%= item.name %> <br><span>
+                                                                    <%= item.instructor %>
+                                                                </span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="w-50"> <button type="button" disabled
+                                                            class="w-100 btn btn-outline-secondary"
+                                                            onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
+                                                            <%= item.credits %> credits
+                                                        </button>
+                                                        <span>Booked</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- class is full -->
+                                            <% }else if(item.capacity==10 ){ %>
+                                                <div class="border-bottom d-flex">
+                                                    <div class="d-flex view-lessons pt-3 pb-5">
+                                                        <div class="w-50">
+                                                            <p>
+                                                                <%= item.time %> <br><span>
+                                                                        <%= item.duration %> min
+                                                                    </span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="w-100">
+                                                            <p>
+                                                                <%= item.name %> <br><span>
+                                                                        <%= item.instructor %>
+                                                                    </span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="w-50"> <button type="button" disabled
+                                                                class="w-100 btn btn-outline-secondary"
+                                                                onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
+                                                                <%= item.credits %> credits
+                                                            </button>
+                                                            <span>Full</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% }else {%>
+                                                    <div class="border-bottom d-flex">
+                                                        <div class="d-flex view-lessons pt-3 pb-5">
+                                                            <div class="w-50">
+                                                                <p>
+                                                                    <%= item.time %> <br><span>
+                                                                            <%= item.duration %> min
+                                                                        </span>
+                                                                </p>
+                                                            </div>
+                                                            <div class="w-100">
+                                                                <p>
+                                                                    <%= item.name %> <br><span>
+                                                                            <%= item.instructor %>
+                                                                        </span>
+                                                                </p>
+                                                            </div>
+                                                            <div class="w-50"> <button type="button"
+                                                                    class="w-100 btn btn-outline-warning"
+                                                                    onClick="window.location.href='/users/shoppingcart/<%= item._id %>'">
+                                                                    <%= item.credits %> credits
+                                                                </button>
+                                                                <span>
+                                                                    <%= item.capacity %>/10 pax
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% }%>
+                                                        <% }) %>
+                                                            <%}else{%>
+                                                                <div class="border-bottom d-flex">
+                                                                    <div
+                                                                        class="d-flex view-lessons pt-3 pb-5 justify-content-center">
+                                                                        <p class="text-center">There are no scheduled
+                                                                            classes today</p>
+                                                                    </div>
+                                                                </div>
+                                                                <%}%>
+
+                                                                    <% }%>
 </div>

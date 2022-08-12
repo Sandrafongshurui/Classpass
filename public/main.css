@@ -46,25 +46,41 @@ body {
 #signup-page-cover,
 #loginpage-cover, 
 #homepage-cover {
-    height: 100%;
-    background: url(./img/homepage-cover.png);
+  height: 100%;
+    background: url(/img/bg.png);
     background-repeat: no-repeat;
     background-size: cover;
-    /* padding-top: 80px; */
+   
+
+}
+
+.blur {
+  background: rgb(0 0 0 / 15%);
+  backdrop-filter: blur(7px);
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  margin: 0;
 }
 
 #homepage-cover h1 {
     color: white;
-    font-size: 32px;
-    font-weight: 100;
+    font-size: 25px;
+    font-weight: 400;
     margin-bottom: 30px;
+    width: 70%;
+    text-align: center;
+    margin: auto
 }
 
 #homepage-cover button {
-    background: #EAEAEA;
-    font-size: 16px;
-    font-weight: 100;
-    padding: 10px 20px;
+    border-radius: var(--bs-border-radius-pill)!important;
+    width: 90%;
+    padding: 0.4em;
+    margin-top: 2em;
+    color: white;
+    font-size: 25px;
+  
 }
 #page-signup,
 #page-login, 
@@ -480,10 +496,12 @@ a, u {
 
 .page-login-card{
   height: 522px;
+  width: 500px;
 }
 
 .page-signup-card{
   height: 570px;
+  width: 661px;
 }
 
 
@@ -529,10 +547,9 @@ a, a:hover{
 
 }
 
-
-
-
-
+.studio-filters input{
+  accent-color: orange;
+}
 
 
 

@@ -1,58 +1,58 @@
 <%- include('../partials/header'); %>
-<div class="studio-filters d-flex align-items-center shadow-sm py-4 w-100 ps-5">
-    <!--  filter -->
-    <form method="POST" action="/studios" id="studio-filters-options-form">
-        <div class="dropdown ">
-            <a class="nav-link dropdown-toggle px-3 p-2" type="button" 
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Location | Amenities | Activities
-            </a>
-            <div class="dropdown-menu " id="studio-filters-list" aria-labelledby="dropdownMenuButton">
-                <div> <!-- loaction filter -->                    
-                    <input class="studio-filters-options" type="checkbox" value="North" name="location" >North
-                    <input class="studio-filters-options" type="checkbox" value="South" name="location">South
-                    <input class="studio-filters-options" type="checkbox" value="East" name="location" >East
-                    <input class="studio-filters-options" type="checkbox" value="West" name="location">West
-                    <input class="studio-filters-options" type="checkbox" value="Central" name="location">Central
+    <div class="studio-filters d-flex align-items-center  py-4 w-100 ps-5">
+        <!--  filter -->
+        <form method="POST" action="/studios" id="studio-filters-options-form" >
+            <div class="dropdown ">
+                <a class="nav-link dropdown-toggle px-3 p-2 text-center" type="button" 
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Location  |  Amenities  |  Activities
+                </a>
+                <div class="dropdown-menu " id="studio-filters-list" aria-labelledby="dropdownMenuButton">
+                    <div class="p-1"> <!-- loaction filter -->                    
+                        <input class="studio-filters-options mx-1" type="checkbox" value="North" name="location" >North
+                        <input class="studio-filters-options mx-1" type="checkbox" value="South" name="location">South
+                        <input class="studio-filters-options mx-1" type="checkbox" value="East" name="location" >East
+                        <input class="studio-filters-options mx-1" type="checkbox" value="West" name="location">West
+                        <input class="studio-filters-options mx-1" type="checkbox" value="Central" name="location">Central
+                    </div>
+                    <hr><!-- amenities filter -->
+                    <div class="p-1">
+                        <input type="checkbox" class="studio-filters-options mx-1" name="amenities" value="Showers">Showers
+                        <input type="checkbox" class="studio-filters-options mx-1" name="amenities" value="Lockers">Lockers
+                        <input type="checkbox" class="studio-filters-options mx-1" name="amenities" value="Mats">Mats
+                        <input type="checkbox" class="studio-filters-options mx-1" name="amenities" value="Parking">Parking
+                    </div>
+                    <hr>  <!-- activites filter -->
+                    <div class="p-1">
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="Yoga">Yoga
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="Hiit">Hiit
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="MartialArts">Martial Arts
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="Running">Running
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="Pilates">Pilates
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="Boxing">Boxing
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="Barre">Barre
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="Cycling">Cycling
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="Dance">Dance
+                        <input type="checkbox" class="studio-filters-options mx-1" name="activities" value="Outdoors">Outdoors
+                    </div>
+                    <button type="button" class="border-radius btn-secondary btn" onclick="storeCheckedItems()">Apply</button>
+                    <button type="button" disabled id="clear-btn" class="border-radius btn-secondary btn" onclick="clearFilters()"> Clear</button>
                 </div>
-                <hr><!-- amenities filter -->
-                <div>
-                    <input type="checkbox" class="studio-filters-options" name="amenities" value="Showers">Showers
-                    <input type="checkbox" class="studio-filters-options" name="amenities" value="Lockers">Lockers
-                    <input type="checkbox" class="studio-filters-options" name="amenities" value="Mats">Mats
-                    <input type="checkbox" class="studio-filters-options" name="amenities" value="Parking">Parking
-                </div>
-                <hr>  <!-- activites filter -->
-                <div>
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="Yoga">Yoga
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="Hiit">Hiit
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="MartialArts">Martial Arts
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="Running">Running
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="Pilates">Pilates
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="Boxing">Boxing
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="Barre">Barre
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="Cycling">Cycling
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="Dance">Dance
-                    <input type="checkbox" class="studio-filters-options" name="activities" value="Outdoors">Outdoors
-                </div>
-                <button type="button" onclick="storeCheckedItems()">Apply</button>
-                <button type="button" disabled id="clear-btn" onclick="clearFilters()"> Clear</button>
+
             </div>
+    
+        </form>
 
-        </div>
-   
-    </form>
-
-</div>
-    <section id="class-list-section ">
-        <div class="row my-5 d-block" id="class-list">
+    </div>
+    <div id="class-list-section ">
+        <div class="row mb-5 d-block" id="class-list">
             <% if(studios.length > 0){%>
             <% studios.forEach(item=> { %>
-                <div class="card w-75 mx-auto shadow-sm my-3">
+                <div class="card w-75 mx-auto shadow-sm my-3 p-1">
                     <a href="/studios/<%= item._id %>">
                     <div class=" d-flex">
                        
-                            <div class="studio-item-img my-auto">
+                            <div class="studio-item-img my-auto p-1">
                             
                                 <img src="<%= item.img %>" class="card-img-top">
                             </div>
@@ -77,6 +77,6 @@
                 <%}%>
             
         </div>
-    </section>
+    </div>
     <script src="/filters.js"></script>
     <%- include('../partials/footer'); %>

@@ -1,5 +1,5 @@
 const studioModel = require("../../models/studios/studios");
-const reviewModel = require("../../models/reviews/reviews");
+
 
 const controller = {
   createStudio: async (req, res) => {
@@ -27,23 +27,7 @@ const controller = {
     res.send("studio created");
   },
 
-  // getStudioData: async (req, res, next) => {
-  //   console.log("----->", req.body);
-  //   //let response = await fetch('/readme.txt');
-  //   // let data = await response.text();
-
-  //   const studios = await studioModel.find({
-  //     location: { $in: req.body.location },
-  //   });
-
-  //   return res.json();
-  // },
-
   showListOfStudios: async (req, res, next) => {
-    let location = null;
-    let amenities = null;
-    let activities = null;
-    let queryUrl = null;
     let studios = null;
     try {
       if (Object.keys(req.body).length === 0) {
@@ -58,8 +42,7 @@ const controller = {
         });
         return;
       } else {
-        console.log("has location query");
-        console.log(req.body);
+
         const filterConditions = {};
 
         Object.entries(req.body).forEach(([key, value]) => {
@@ -67,29 +50,14 @@ const controller = {
             [key === "amenities" ? "$all" : "$in"]: value,
           };
         });
-        console.log(filterConditions);
 
-        // studios = await studioModel.find({
-        //   location: { $in: req.body.location },
-        //   amenities: { $all: req.body.amenities },
-        //   activities: { $in: req.body.activities },
-        // });
         studios = await studioModel.find(filterConditions);
       }
-      // if(req.query.amenities){
-      //   studios = await studioModel.find(
-      //     {amenities: { $in: req.query.amenities}},
-      //     );
-      //     req.session.studios = studios
-      // }
-
-      // console.log(studios);
     } catch (err) {
       console.log(err);
       res.send(err);
       return;
     }
-    // console.log(studios)
 
     res.render("studios/index", {
       ...req.body,

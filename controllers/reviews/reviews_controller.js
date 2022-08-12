@@ -1,13 +1,10 @@
 const reviewModel = require("../../models/reviews/reviews");
 const lessonModel = require("../../models/lessons/lessons");
 
-// const userModel = require("../../models/users/users");
-// const { date } = require("joi");
-
 const controller = {
   createReview: async (req, res) => {
     let lesson = null
-    //create reviw add in in teh lessons
+    //create reveiw add in in the lessons
     try {
       const newReview = await reviewModel.create({
         user: req.session.user,
@@ -21,10 +18,11 @@ const controller = {
       lesson = await lessonModel.findOneAndUpdate(
         { _id: req.params.lesson_id },
         { $push: { reviews: newReview._id } },
-        { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
+        { new: true } //new means it will return the updated doc
       );
       console.log(lesson .reviews);
     } catch (err) {
+      
       res.send("failed to create review");
       return;
     }
@@ -34,7 +32,6 @@ const controller = {
 
   showReviewForm: async (req, res) => {
     res.render("users/review-form", {
-      // user: req.session.user,
       lesson: req.params.lesson_id
     });
   },

@@ -64,35 +64,12 @@ const controller = {
       res.send("failed to create user");
       return;
     }
-    res.redirect("/login");
-
-    // // log the user in by creating a session
-    // //guard against sessions fixations
-    // req.session.regenerate(function (err) {
-    //   if (err) {
-    //     res.send("unable to regenerate session");
-    //     return;
-    //   }
-
-    //   // store user information in session, typically a user id
-    //   req.session.user = user._id;
-    //   req.session.username = user.firstname;
-
-    //   // backend send -> s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
-    //   // front saves as cookie
-    //   // subsequent req. to backend -> included the cookie in request: s%3A2v3yqeOSO-bgFCRHfk3KeVF90M84M0_a.IV4EbakG06Zakhhe3p1GR9FD%2FiFpFv9tDxYKgYwx6Qo
-
-    //   // save the session before redirection to ensure page
-    //   // load does not happen before session is saved
-    //   req.session.save(function (err) {
-    //     if (err) {
-    //       return next(err);
-    //     }
-    //     // console.log(req.session)
-    //     console.log("log in sucessfully");
-    //     res.redirect("/");
-    //   });
-    // });
+    res.render("pages/login", {
+      signUpMsg: "Your sign up is successfull, please log in to continue.",
+      email: "",
+      password: "",
+      errorObject: {},
+    });
   },
 
   login: async (req, res, next) => {
@@ -188,7 +165,7 @@ const controller = {
   showLoginForm: (req, res) => {
     console.log(req.path);
     res.render("pages/login", {
-      signUpMsg: "Your sign up is successfull, please log in to continue.",
+      signUpMsg: "",
       email: "",
       password: "",
       errorObject: {},
@@ -344,7 +321,7 @@ const controller = {
     try {
       lesson = await lessonModel.findByIdAndUpdate(
         { _id: req.params.lesson_id },
-        { $pull: { students: req.session.user }, $inc: { capacity: -1 }},
+        { $pull: { students: req.session.user }, $inc: { capacity: -1 } },
         { new: true }
       );
 
@@ -384,7 +361,7 @@ const controller = {
     res.render("users/shopping-cart-message", {
       message: "Your shopping cart is currently empty, book some classes now!",
       buttonText: "Find Classes",
-      buttonLink: "/studios"
+      buttonLink: "/studios",
       // user: req.session.user
     });
   },
@@ -397,9 +374,9 @@ const controller = {
 
     try {
       lesson = await lessonModel.findOneAndUpdate(
-        //make sure that the lesson has capacity, ppl might book while user stays on the page
-        { _id: req.params.lesson_id, capacity: {$lte : 9 } },
-        { $push: { students: req.session.user },  $inc: { capacity: 1 } },
+        //make sure that the lesson has capacity, people might book while user stays on the page
+        { _id: req.params.lesson_id, capacity: { $lte: 9 } },
+        { $push: { students: req.session.user }, $inc: { capacity: 1 } },
         { new: true }
       );
       console.log(lesson);
@@ -410,13 +387,12 @@ const controller = {
         { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
       ); //depends on wad u save in your login for user
       console.log(user);
-
     } catch (err) {
       console.log(err);
-      res.redirect("users/shopping-cart-message",{
+      res.redirect("users/shopping-cart-message", {
         message: "An error has occured! you may try to book your class again.",
         buttonText: "Find Classes",
-        buttonLink: "/studios"
+        buttonLink: "/studios",
       });
       return;
     }
@@ -424,31 +400,29 @@ const controller = {
     res.render("users/shopping-cart-message", {
       message: "Thank you! View You upcoming lessons!",
       buttonText: "View Upcoming",
-      buttonLink: "/users/upcoming"
-      
+      buttonLink: "/users/upcoming",
     });
   },
 
   showProfile: async (req, res) => {
     let user = null;
     try {
-      if (req.body){
+      if (req.body) {
         user = await userModel.findByIdAndUpdate(
           { _id: req.session.user },
           { $set: { ...req.body } },
-          {new: true}
+          { new: true }
         );
         req.session.username = user.firstname;
-      }else{
+      } else {
         user = await userModel.findById({ _id: req.session.user });
       }
     } catch (err) {
       console.log(err);
       res.redirect("/login");
       return;
-
     }
-    
+
     res.render("users/profile", {
       user,
     });
@@ -461,7 +435,7 @@ const controller = {
       res.redirect("/users/prodile");
       return;
     }
-    console.log(req.body)
+    console.log(req.body);
 
     res.render("users/profile-edit", {
       user: req.body,

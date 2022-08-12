@@ -2,32 +2,31 @@
     <!-- loaction filter -->
     <form method="POST" action="/studios" id="location-filter-form">
         <div class="dropdown ">
-            <a class="nav-link dropdown-toggle px-3 " type="button" 
-                data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle px-3 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Locations
             </a>
             <div class="dropdown-menu " id="location-filter-list" aria-labelledby="dropdownMenuButton">
                 <div>
-                   
 
-                     <input class="location-filter" type="checkbox" value="North" name="location">North
-                   <input class="location-filter" type="checkbox" value="South" name="location">South
-                    <input class="location-filter" type="checkbox" value="East" name="location" >East
+
+                    <input class="location-filter" type="checkbox" value="North" name="location">North
+                    <input class="location-filter" type="checkbox" value="South" name="location">South
+                    <input class="location-filter" type="checkbox" value="East" name="location">East
                     <input class="location-filter" type="checkbox" value="West" name="location">West
                     <input class="location-filter" type="checkbox" value="Central" name="location">Central
                 </div>
                 <button onclick="storeLocationValues()">Apply</button>
                 <!-- <button type="button" onclick="storeLocationValues()">Apply</button> -->
-                <button type="button" disabled id="location-clear-btn" onclick="clearFilters('location-filter')"> Clear</button>
+                <button type="button" disabled id="location-clear-btn" onclick="clearFilters('location-filter')">
+                    Clear</button>
             </div>
 
         </div>
-       
-    <!-- amenities filter -->
-   
+
+        <!-- amenities filter -->
+
         <div class="dropdown ">
-            <a class="nav-link dropdown-toggle px-3"  type="button" 
-                data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Amenities
             </a>
             <div class="dropdown-menu " id="amenties-filter-list" aria-labelledby="dropdownMenuButton">
@@ -37,17 +36,16 @@
                     <input type="checkbox" class="amenties-filter" name="mats" value="Mats">Mats
                     <input type="checkbox" class="amenties-filter" name="parking" value="Parking">Parking
                 </div>
-                <button >Apply</button>
+                <button>Apply</button>
                 <button type="submit" disabled id="clear-btn"> Clear</button>
             </div>
 
         </div>
-    
-    <!-- activites filter -->
-    
+
+        <!-- activites filter -->
+
         <div class="dropdown ">
-            <a class="nav-link dropdown-toggle px-3" type="button" 
-                data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Activites
             </a>
             <div class="dropdown-menu " id="activity-filter-list" aria-labelledby="dropdownMenuButton">

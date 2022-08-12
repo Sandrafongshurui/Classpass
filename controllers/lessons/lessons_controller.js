@@ -69,11 +69,6 @@ const controller = {
       filterOptions = storeSelection.filter;
     }
 
-    //check if date queries is present
-    // if (req.query.date) {
-    //   selectedDate = req.query.date;
-    // }
-
     const studio = await studioModel
       .findById(req.params.studio_id)
       .lean() //lean makes it a plain js object, so i can add properties, mongoose obj cant edit
@@ -98,9 +93,7 @@ const controller = {
         //if its today
         //check if the timing of teh lesson is over
         let timeNow = new Date().toTimeString();
-        //console.log(timeNow)
         timeNow = timeNow.split(":")[0] + ":" + timeNow.split(":")[1];
-        //console.log(timeNow)
         matchedLessons = matchedLessons.filter((lesson) => lesson.time > timeNow
         );
       }
