@@ -1,18 +1,18 @@
 <%- include('../partials/header'); %>
  
-<section class="card shopping-cart d-flex align-items-center mx-auto">
+
     <!-- navigation tabs -->
-    <div>
+   
         <%- include('../partials/users/users-tabs.ejs'); %>
-    </div>
+    
     <div class="card-body w-100">
         <!-- tab contents -->
         <div>
-            <p>thank you</p>
+            <p><%=message%></p>
         </div>
         <div>
             <button type="submit" class="w-100 btn btn-warning btn-rounded btn-block mb-4 text-white"><a
-                href='/users/upcoming'>View Upcoming</a></button>
+                href='<%= buttonLink %>'><%= buttonText %></a></button>
         </div>
     </div>
 </section>

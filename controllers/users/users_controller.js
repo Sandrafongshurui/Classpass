@@ -344,8 +344,8 @@ const controller = {
     try {
       lesson = await lessonModel.findByIdAndUpdate(
         { _id: req.params.lesson_id },
-        { $pull: { students: req.session.user } },
-        { $inc: { capacity: -1 } }
+        { $pull: { students: req.session.user }, $inc: { capacity: -1 }},
+        { new: true }
       );
 
       user = await userModel.findOneAndUpdate(
@@ -381,9 +381,14 @@ const controller = {
   },
 
   showEmptyCart: async (req, res) => {
-    res.render("users/shopping-cart-empty", {});
+    res.render("users/shopping-cart-message", {
+      message: "Your shopping cart is currently empty, book some classes now!",
+      buttonText: "Find Classes",
+      buttonLink: "/studios"
+      // user: req.session.user
+    });
   },
-  showThankYouMessage: async (req, res) => {
+  confirmBooking: async (req, res) => {
     //front end authentication is the auth middle ware, authen the cookies is avail
     //add user to the students
     //decrease lesson capacity
@@ -392,9 +397,10 @@ const controller = {
 
     try {
       lesson = await lessonModel.findOneAndUpdate(
-        { _id: req.params.lesson_id },
-        { $push: { students: req.session.user } },
-        { $inc: { capacity: 1 } }
+        //make sure that the lesson has capacity, ppl might book while user stays on the page
+        { _id: req.params.lesson_id, capacity: {$lte : 9 } },
+        { $push: { students: req.session.user },  $inc: { capacity: 1 } },
+        { new: true }
       );
       console.log(lesson);
 
@@ -404,15 +410,22 @@ const controller = {
         { new: true } //new means it will return teh update doc, if not it will return doc b4 updates
       ); //depends on wad u save in your login for user
       console.log(user);
+
     } catch (err) {
       console.log(err);
-      res.redirect("/login", { user });
+      res.redirect("users/shopping-cart-message",{
+        message: "An error has occured! you may try to book your class again.",
+        buttonText: "Find Classes",
+        buttonLink: "/studios"
+      });
       return;
     }
 
     res.render("users/shopping-cart-message", {
-      lesson,
-      // user: req.session.user
+      message: "Thank you! View You upcoming lessons!",
+      buttonText: "View Upcoming",
+      buttonLink: "/users/upcoming"
+      
     });
   },
 

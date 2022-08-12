@@ -85,7 +85,7 @@ app.post('/users/history/:lesson_id/review', validationMiddleware.reviewIsValida
 // app.post('/users/:user_id/history/:lesson_id/review', validationMiddleware.reviewIsValidated, reviewsController.createReview)
 app.get('/users/shoppingcart/:lesson_id', authMiddleware.isAuthenticated, userController.showShoppingCartTab)
 // app.get('/users/:user_id/shoppingcart/:lesson_id', userController.showShoppingCartTab)
-app.get('/users/shoppingcart/:lesson_id/message', authMiddleware.isAuthenticated, userController.showThankYouMessage)
+app.get('/users/shoppingcart/:lesson_id/message', authMiddleware.isAuthenticated, userController.confirmBooking)
 app.get('/users/shoppingcart', authMiddleware.isAuthenticated, userController.showEmptyCart)
 // app.get('/users/:user_id/shoppingcart/:lesson_id/message', userController.showThankYouMessage)
 app.get('/users/upcoming',authMiddleware.isAuthenticated, userController.showUpcomingLessons)

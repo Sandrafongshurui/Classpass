@@ -1,7 +1,7 @@
 <%- include('../partials/header'); %>
     <!-- image and tabs, partial -->
-    <div class="my-5 d-flex w-75 mx-auto justify-content-center flex-wrap">
-        <section class="view-studio">
+    <div class="my-5 d-flex w-75 mx-auto flex-wrap">
+        <section class="view-studio justify-content-left ">
             <div>
                 <div>
                     <figure><img class="view-studio-img"src="<%= studio.img %>" /></figure>
@@ -42,7 +42,7 @@
                                     <%})%>  
                                 <% }else{ %>
                                     <li> 
-                                        
+                                       <P>No amenities available</P> 
                                     </li>
 
                                 <% } %>   
@@ -56,23 +56,28 @@
                         <div class="py-3">
                             <h4><%= studio.name %> Reviews</h4>
                             <div class="ratings d-flex">
-                                <span id="avg-rating-num"class="rating-num h4"><%= avgRating %></span>
-                                <div class="stars-main my-auto ms-2">
-                                   
-                                    <% for(let i = 1; i < avgRating; i++){%>
+                                
+                                   <%if(avgRating !== null){%>
+                                   <span id="avg-rating-num"class="rating-num h4"><%= avgRating %></span>
+                                    <div class="stars-main my-auto ms-2">
+                                        <% for(let i = 1; i < avgRating; i++){%>
                                         <i class="fa fa-star"></i>
                                         
-                                    <%}%>
-                                    <% for(let i = 0; i < (5-avgRating); i++){%>
+                                        <%}%>
+                                        <% for(let i = 0; i < (5-avgRating); i++){%>
                                         <i class="fa fa-star opacity-25"></i>
-                                    <%}%>
+                                        <%}%>
+                                    </div>
+                                   <%}%>
+                                 
                                     
-                                </div>
+                                
                             </div>
                         </div>
                         <!-- Actual REVIEWS -->
-                        <div class="py-3">
-                            <!-- only get lesson with reviews -->                                                                                     
+                        <div class="py-3 border-bottom">
+                            <!-- only get lesson with reviews -->      
+                            <%if(sortedTotalReviews.length > 0){%>                                                                               
                                      <% sortedTotalReviews.forEach(eachReview=> {%>
                                         <div class="reviews-content py-3 border-top">
                                             <div class=" py-1">
@@ -100,7 +105,16 @@
                                                 <%= eachReview.review %>
                                             </p>
                                         </div>
-                                    <%})%>                                                                                          
+                                    <%})%>
+                            <%}else{%>
+                                <div class="reviews-content py-3 ">
+                                    <p class="py-1">
+                                        No reviews available
+                                    </p>
+
+                                </div>
+                            <%}%>
+                                                                                                                                  
                         </div>
                     </div>
             </div>
@@ -109,7 +123,7 @@
             <div class="view-studio-tab border-top py-3">
                 <div>
                     <h2>
-                        All classes at <%= studio.name %>
+                        <%= filterOptions %> at <%= studio.name %>
                     </h2>
                     <div>
                         <!-- searach nar of lesson types pf the studios -->
@@ -144,13 +158,36 @@
         </section>    
         <%}%>
         
-        <!-- address contents, partial-->
-        <section>
-            <div class=" ">
+        
+        <section class="socials my-0 justify-content-right">
+        <div class="border-left position-fixed pb-2 border-left">
+            <div class="pb-2 ">
                 <p>
+                    <i class="fa fa-map-marker px-2" aria-hidden="true"></i>
                     <%= studio.address %>
                 </p>
             </div>
+            <div class="py-2">
+                <p>
+                    <i class="fa fa-phone px-2" aria-hidden="true"></i>
+                    <%= studio.contact %>
+                </p>
+            </div>
+                <div class="py-2"> 
+                    <i class="fa fa-wpforms px-2" aria-hidden="true"></i>
+                    <a href="<%= studio.socials[0].item %> "class="font-weight-bold"><%= studio.name %>.com</a>
+                </div>
+                <div class="py-2">
+                    <i class="fa fa-instagram px-2" aria-hidden="true"></i>
+                    <a href="<%= studio.socials[1].item %>">@<%= studio.name %></a>
+                </div>
+                <div class="py-2">
+                    <i class="fa fa-facebook px-2" aria-hidden="true"></i>
+                    <a href="<%= studio.socials[2].item %>">@<%= studio.name %></a>
+                </div>
+           
+
+        </div> 
         </section>
     </div>
 <script src="/show.js"></script>

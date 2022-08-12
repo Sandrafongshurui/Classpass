@@ -1,10 +1,10 @@
 <%- include('../partials/header'); %>
 
-    <section class="card shopping-cart d-flex align-items-center mx-auto">
+    
         <!-- navigation tabs -->
-        <div >
+       
             <%- include('../partials/users/users-tabs.ejs'); %>
-        </div>
+        
         <div class="card-body w-100">
             <!-- tab contents -->
             <div >
@@ -29,6 +29,7 @@
                             <form action="/users/upcoming/<%= item._id %>/cancel?_method=DELETE" method="POST">
                                 <input class="w-100 btn btn-outline-warning" type="submit" value="Cancel" >          
                             </form>
+                        </div>
                     </div>
                 </div>
                 <% }) %>

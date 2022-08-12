@@ -19,22 +19,17 @@
 
 <body class="d-flex flex-column min-vh-100">
 
-    <nav id="page-header" class="navbar navbar-expand-lg bg-light">
+    <nav id="page-header" class="navbar navbar-expand-lg bg-light fixed-top">
 
         <div class="container">
             <div>
-                <figure class="mr-3 d-flex">
+                <figure class="mr-3 d-flex" ><a href="/">
                     <img class="circular-image"src="/img/logo.png" />
                     <figcaption class="navbar-brand text-secondary my-auto">Classpass</figcaption>
+                </a>
                 </figure>
             </div>
-<!--           
-            <div class="input-group w-50">
-                <form class="d-flex" action="action_page.php">
-                    <input class="input-group search-bar" type="text" placeholder="Search.." name="search">
-                    <button class="background-none"type="submit"><i class="fa fa-search"></i></button>
-                </form>
-            </div>  -->
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -44,10 +39,6 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <!-- <div id="demo" >
-                        <p>Let AJAX change this text.</p>
-                        <button type="button" onclick="loadDoc()">Change Content</button>
-                    </div> -->
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/studios">Find Classes</a>
                     </li>
@@ -70,9 +61,9 @@
                         <% } else { %>
                             <li class="nav-item">
                                 <a class="nav-link" aria-current="page" href="/login">Login</a>
-                                <!-- <button class="nav-link" type="button" onclick="openLoginModal()">Login</button> -->
+                              
                             </li>
-                            <% } %>
+                        <% } %>
                 </ul>
             </div>
 
@@ -81,4 +72,4 @@
 
     </nav>
 
-    <main>
+    <main class="py-5">

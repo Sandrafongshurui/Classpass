@@ -14,7 +14,7 @@ const clearFilters = () => {
    filterCheckboxes.forEach(item =>{
     item.checked = false
    })   
-   submitForm()
+   storeCheckedItems()
 }
 
 // const enableClearButton = (IdName) => {

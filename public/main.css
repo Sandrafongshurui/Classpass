@@ -173,9 +173,15 @@ body ul {
 
 /* ratings */
 
+.amenities p,
 .reviews-content p {
     margin: 0;
     font-weight: 300;
+}
+
+.socials a, .socials p {
+  margin: 0;
+  font-weight: 500;
 }
 
 /* .ratings{
@@ -517,6 +523,11 @@ height: 36px;
   transform: scaleX(-1);
 }
 
+a, a:hover{
+  text-decoration: none;
+  color: #000000;
+
+}
 
 
 

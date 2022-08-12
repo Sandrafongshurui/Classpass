@@ -1,5 +1,5 @@
 <%- include('../partials/header'); %>
-<div class="studio-filters d-flex align-items-center border-bottom py-3 w-50">
+<div class="studio-filters d-flex align-items-center shadow-sm py-4 w-100 ps-5">
     <!--  filter -->
     <form method="POST" action="/studios" id="studio-filters-options-form">
         <div class="dropdown ">
@@ -8,8 +8,7 @@
                 Location | Amenities | Activities
             </a>
             <div class="dropdown-menu " id="studio-filters-list" aria-labelledby="dropdownMenuButton">
-                <div> <!-- loaction filter -->
-                    
+                <div> <!-- loaction filter -->                    
                     <input class="studio-filters-options" type="checkbox" value="North" name="location" >North
                     <input class="studio-filters-options" type="checkbox" value="South" name="location">South
                     <input class="studio-filters-options" type="checkbox" value="East" name="location" >East
@@ -37,7 +36,6 @@
                     <input type="checkbox" class="studio-filters-options" name="activities" value="Outdoors">Outdoors
                 </div>
                 <button type="button" onclick="storeCheckedItems()">Apply</button>
-                <!-- <button type="button" onclick="storeLocationValues()">Apply</button> -->
                 <button type="button" disabled id="clear-btn" onclick="clearFilters()"> Clear</button>
             </div>
 
@@ -46,30 +44,36 @@
     </form>
 
 </div>
-    <section id="class-list-section">
+    <section id="class-list-section ">
         <div class="row my-5 d-block" id="class-list">
             <% if(studios.length > 0){%>
             <% studios.forEach(item=> { %>
-                <div class="col card w-75 mx-auto">
+                <div class="card w-75 mx-auto shadow-sm my-3">
+                    <a href="/studios/<%= item._id %>">
                     <div class=" d-flex">
-                        <div class="studio-item-img"><a href="/studios/<%= item._id %>">
-                        <img src="<%= item.img %>" class="card-img-top"></a>
-                        </div>
-                        <div class="card-body studio-item-details">
-                            <p class="card-text">
-                                    <%= item.name %>
-                                </a></p>
-                        </div>
-                        <div class="card-body studio-item-description">
-                            <p class="card-text">
-                                    <%= item.description %>
-                                </a></p>
-                        </div>
+                       
+                            <div class="studio-item-img my-auto">
+                            
+                                <img src="<%= item.img %>" class="card-img-top">
+                            </div>
+                            <div class="card-body studio-item-details my-auto">
+                                <h5 class="card-text">
+                                        <%= item.name %>
+                                </h5>
+                            </div>
+                            <div class="card-body studio-item-description">
+                                <p class="card-text">
+                                        <%= item.description %>
+                                </p>
+                        
+                            </div>
+                       
                     </div>
+                </a>
                 </div>
                 <% }) %>
                 <%}else{%>
-                <h2>No search Results Found</h2>
+                <h2 class="text-center">No search results found</h2>
                 <%}%>
             
         </div>

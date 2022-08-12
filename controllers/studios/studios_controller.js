@@ -56,7 +56,7 @@ const controller = {
           activities: "",
           studios,
         });
-        return
+        return;
       } else {
         console.log("has location query");
         console.log(req.body);
@@ -67,7 +67,7 @@ const controller = {
             [key === "amenities" ? "$all" : "$in"]: value,
           };
         });
-        console.log(filterConditions )
+        console.log(filterConditions);
 
         // studios = await studioModel.find({
         //   location: { $in: req.body.location },
@@ -75,8 +75,6 @@ const controller = {
         //   activities: { $in: req.body.activities },
         // });
         studios = await studioModel.find(filterConditions);
-
-        
       }
       // if(req.query.amenities){
       //   studios = await studioModel.find(
@@ -120,46 +118,39 @@ const controller = {
             select: "firstname lastname",
           },
         },
-      })
-    
+      });
 
     //filter for lessons with reviews only
-    const lessonWithReviews = studio.lessons.filter(
+    let lessonWithReviews = [];
+    let sortedTotalReviews = [];
+    let totalRatings = null;
+    let totalReviews = [];
+    let avgRating = null;
+
+    lessonWithReviews = studio.lessons.filter(
       (eachLesson) => eachLesson.reviews.length !== 0
     );
 
-    // // const newavgRating = studio.lessons.aggregate([ {$addFields : {lessonsAvgRating : {$avg : "$reviews.rating"}}} ])
-    // console.log("----->",studio )
-    //combine all reviews from each lesson
-    //get ratinsg as well
-    let totalRatings = 0
-    let totalReviews = [];
-    lessonWithReviews.forEach((eachLesson) => {
-      eachLesson.reviews.forEach((eachReview) => {
-        //get ratings
-        totalRatings += eachReview.rating
-        //add lesson name and  instructor to each review
-        eachReview.name = eachLesson.name;
-        eachReview.instructor = eachLesson.instructor;
-        totalReviews.push(eachReview);
+    if (lessonWithReviews.length > 0) {
+      lessonWithReviews.forEach((eachLesson) => {
+        eachLesson.reviews.forEach((eachReview) => {
+          //get ratings
+          totalRatings += eachReview.rating;
+          //add lesson name and  instructor to each review
+          eachReview.name = eachLesson.name;
+          eachReview.instructor = eachLesson.instructor;
+          totalReviews.push(eachReview);
+        });
       });
-    });
-    
-    let avgRating = Math.round((totalRatings/totalReviews.length)* 10) / 10;
-    console.log(avgRating)
-
-
-    //sort the dates
-    const sortedTotalReviews = totalReviews.sort((a, b) => {
-      //-1 means first go before second, 1 means it goes after, 0 means the same
-      return a.dateCreated < b.dateCreated
-        ? 1
-        : a.dateCreated > b.dateCreated
-        ? -1
-        : 0;
-    });
-    //console.log("------>", sortedTotalReviews);
-
+      //get avg ratings
+      avgRating = Math.round((totalRatings / totalReviews.length) * 10) / 10;
+      console.log(avgRating);
+      //sort the dates
+      sortedTotalReviews = totalReviews.sort((a, b) => {
+        //-1 means first go before second, 1 means it goes after, 0 means the same
+        return a.dateCreated < b.dateCreated? 1: a.dateCreated > b.dateCreated? -1: 0;
+      });
+    }
 
     res.render("studios/show", {
       avgRating,
