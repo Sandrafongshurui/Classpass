@@ -81,7 +81,7 @@ app.delete('/users/upcoming/:lesson_id/cancel', authMiddleware.isAuthenticated, 
 
 //for sandra
 // app.post('/studios', studiosController.createStudio)
-// app.post('/lessons', lessonsController.createLesson)
+app.post('/lessons', lessonsController.createLesson)
 // app.get('/editLessons', helperController.editDateOfLesson)
 // app.get('/editAmenities', helperController.editStudiosAmenities)
 // app.get('/addStudents/:user_id', helperController.addStudents)

@@ -14,19 +14,7 @@ const controller = {
     let newLessonId = null;
     try {
       const newLesson = await lessonModel.create({
-        name: req.body.name,
-        credits: req.body.credits,
-        instructor: req.body.instructor,
-        capacity: req.body.capacity,
-        time: req.body.time,
-        duration: req.body.duration,
-        lessonDate: req.body.lessonDate,
-        details: req.body.details,
-        studio: req.body.studio,
-        reviews: req.body.reviews,
-        students: req.body.students,
-        createdBy: req.body.createdBy, //shle be res.session.adminuser
-        dateCreated: req.body.dateCreated,
+       ...req.body
       });
       newLessonId = newLesson._id;
     } catch (err) {

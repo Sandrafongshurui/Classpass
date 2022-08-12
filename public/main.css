@@ -35,6 +35,8 @@ body {
     border-right: 1px solid #707070;
 }
 
+
+
 #page-header .nav-item:last-of-type a {
     border: none;
     padding-right: 0;
@@ -551,7 +553,12 @@ a, a:hover{
   accent-color: orange;
 }
 
-
+.user-tabs .nav-item a{
+  font-size: 18px;
+  color: #707070;
+  padding: 0 20px;
+  border-right: 1px solid #707070;
+}
 
 
 

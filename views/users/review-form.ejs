@@ -4,6 +4,27 @@
         <!-- navigation tabs -->
         
             <%- include('../partials/users/users-tabs.ejs'); %>
+            
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto user-tabs">
+                <li class="nav-item">
+                    <a class="nav-link " aria-current="page" href="/users/profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/users/shoppingcart">Shopping Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/users/upcoming">Upcoming</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-warning font-weight-bold" aria-current="page" href="/users/history">History</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+</div>
         
         
         <div class="card-body w-100">
@@ -17,11 +38,21 @@
                         <input type="radio" name="rating" value="3"><i></i>
                         <input type="radio" name="rating" value="4"><i></i>
                         <input type="radio" name="rating" value="5"><i></i>
-                    </span>                    
-                    <!-- Password input -->
+                    </span>                     
+                    <% if(errorObject.rating) {%>
+                    <span class="errors"><%= errorObject.rating %></span>
+                    <%}else{%>
+                    <span></span>
+                    <%}%>                  
+                    <!-- reviews input -->
                     <div class="form-outline mb-4">
-                      <input type="text"  class="form-control review-input-box" name= "review"/>
-                      <label class="form-label" >review</label>
+                    <% if(errorObject.review) {%>
+                      <input type="text"  class="form-control review-input-box my-border" name= "review"/>
+                      <label class="form-label errors" ><%= errorObject.review %></label>
+                      <% }else{ %>
+                        <input type="text"  class="form-control review-input-box" name= "review"/>
+                        <label class="form-label " ></label>
+                    <% } %>
                     </div>                           
                     <!-- Submit button -->
                     <div>

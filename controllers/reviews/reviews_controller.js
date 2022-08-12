@@ -32,7 +32,8 @@ const controller = {
 
   showReviewForm: async (req, res) => {
     res.render("users/review-form", {
-      lesson: req.params.lesson_id
+      lesson: req.params.lesson_id,
+      errorObject:{}
     });
   },
 };

@@ -76,7 +76,7 @@ const controller = {
       .lean()
       .populate({
         path: "lessons", //poppulate the lessons field
-        select: "reviews instructor name", // only get these fields for the lessons
+        select: "reviews instructor name details", // only get these fields for the lessons
         populate: {
           //populate again for the reviews,
           path: "reviews",
