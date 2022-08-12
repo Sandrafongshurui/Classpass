@@ -82,3 +82,5 @@ Future Features
 3) To show the lessons details when user filter by classes
 
 4) Search Bar to serach for studios and classes 
+
+5) Save the shopping cart bookings 
