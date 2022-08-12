@@ -27,17 +27,17 @@ const controller = {
     res.send("studio created");
   },
 
-  getStudioData: async (req, res, next) => {
-    console.log("----->", req.body);
-    //let response = await fetch('/readme.txt');
-    // let data = await response.text();
+  // getStudioData: async (req, res, next) => {
+  //   console.log("----->", req.body);
+  //   //let response = await fetch('/readme.txt');
+  //   // let data = await response.text();
 
-    const studios = await studioModel.find({
-      location: { $in: req.body.location },
-    });
+  //   const studios = await studioModel.find({
+  //     location: { $in: req.body.location },
+  //   });
 
-    return res.json();
-  },
+  //   return res.json();
+  // },
 
   showListOfStudios: async (req, res, next) => {
     let location = null;
@@ -120,23 +120,34 @@ const controller = {
             select: "firstname lastname",
           },
         },
-      });
+      })
+    
 
     //filter for lessons with reviews only
     const lessonWithReviews = studio.lessons.filter(
       (eachLesson) => eachLesson.reviews.length !== 0
     );
 
+    // // const newavgRating = studio.lessons.aggregate([ {$addFields : {lessonsAvgRating : {$avg : "$reviews.rating"}}} ])
+    // console.log("----->",studio )
     //combine all reviews from each lesson
+    //get ratinsg as well
+    let totalRatings = 0
     let totalReviews = [];
     lessonWithReviews.forEach((eachLesson) => {
       eachLesson.reviews.forEach((eachReview) => {
+        //get ratings
+        totalRatings += eachReview.rating
         //add lesson name and  instructor to each review
         eachReview.name = eachLesson.name;
         eachReview.instructor = eachLesson.instructor;
         totalReviews.push(eachReview);
       });
     });
+    
+    let avgRating = Math.round((totalRatings/totalReviews.length)* 10) / 10;
+    console.log(avgRating)
+
 
     //sort the dates
     const sortedTotalReviews = totalReviews.sort((a, b) => {
@@ -147,11 +158,11 @@ const controller = {
         ? -1
         : 0;
     });
-    console.log("------>", sortedTotalReviews);
+    //console.log("------>", sortedTotalReviews);
 
-    // todo: aggregation of ratings
 
     res.render("studios/show", {
+      avgRating,
       studio,
       sortedTotalReviews,
       tab: "info",

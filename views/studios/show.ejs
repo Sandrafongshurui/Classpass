@@ -54,15 +54,19 @@
                     <div class="border-top">
                         <!-- rating -->
                         <div class="py-3">
-                            <h4>Reviews</h4>
-                            <div class="ratings">
-                                <span class="rating-num">4.6</span>
-                                <div class="stars">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
+                            <h4><%= studio.name %> Reviews</h4>
+                            <div class="ratings d-flex">
+                                <span id="avg-rating-num"class="rating-num h4"><%= avgRating %></span>
+                                <div class="stars-main my-auto ms-2">
+                                   
+                                    <% for(let i = 1; i < avgRating; i++){%>
+                                        <i class="fa fa-star"></i>
+                                        
+                                    <%}%>
+                                    <% for(let i = 0; i < (5-avgRating); i++){%>
+                                        <i class="fa fa-star opacity-25"></i>
+                                    <%}%>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -70,29 +74,32 @@
                         <div class="py-3">
                             <!-- only get lesson with reviews -->                                                                                     
                                      <% sortedTotalReviews.forEach(eachReview=> {%>
-                                            <div class="reviews-content border-top py-3">
-                                                <p class="reviews-content">
-                                                    <%= eachReview.name %> with <%= eachReview.instructor %>
-                                                </p>
+                                        <div class="reviews-content py-3 border-top">
+                                            <div class=" py-1">
+                                                <h6 >
+                                                    <span class="font-weight-bold"> <%= eachReview.name %></span> with <%= eachReview.instructor %>
+                                                </h6>
                                             </div>
-                                            <div class="d-flex">
+                                            <div class="d-flex py-1">
                                                 <div class="stars">
-                                                    <p>
-                                                        <%= eachReview.rating %>
-                                                    </p>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
+                            
+                                                    <% for(let i = 0; i < eachReview.rating; i++){%>
+                                                        <i class="fa fa-star"></i>
+                                                    <%}%>
+                                                    <% for(let i = 0; i < (5-eachReview.rating); i++){%>
+                                                        <i class="fa fa-star opacity-25"></i>
+                                                    <%}%>
                                                 </div>
-                                                <p class="reviews-content mx-2 ">
-                                                    <%= eachReview.dateCreated.toLocaleString().split(",")[0] %>
-                                                </p>
+                                                <div>
+                                                <p class="mx-2 font-small"><small>
+                                                    <%= eachReview.dateCreated.toDateString()%>
+                                                </small></p>
+                                                </div>
                                             </div>
-                                            <p class="reviews-content">
+                                            <p class="py-1">
                                                 <%= eachReview.review %>
                                             </p>
+                                        </div>
                                     <%})%>                                                                                          
                         </div>
                     </div>
