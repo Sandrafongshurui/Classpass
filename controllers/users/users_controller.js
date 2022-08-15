@@ -432,7 +432,7 @@ const controller = {
     // let user = null;
     //if someone tries to go edit page straight
     if (!req.body) {
-      res.redirect("/users/prodile");
+      res.redirect("/users/profile");
       return;
     }
     console.log(req.body);
