@@ -128,12 +128,19 @@
                     <div>
                         <!-- searach nar of lesson types pf the studios -->
                         <%if(selectedDate!==todaysDate){%>
-                            <form class="text-center" id="filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/?date=<%= selectedDate %>">
+                            <form class="text-center" id="lesson-filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/?date=<%= selectedDate %>">
                         <% }else{ %>
-                            <form class="text-center" id="filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/">
+                            <form class="text-center" id="lesson-filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/">
                         <% } %>
-                        
-                            <select id="lessons-select" name="options" onchange="submitForm()">
+                        <select id="lessons-select" name="options" onchange="storeSelectedOption()">
+                              
+                            <% for(let i = 0; i < lessonNames.length; i++){%>
+                                <option  class="lesson-option"value="<%= lessonNames[i]%>" >
+                                    <%= lessonNames[i]%>
+                                </option>                          
+                            <%}%>
+                    </select>        
+                            <!-- <select id="lessons-select" name="options" onchange="submitForm()">
                               
                                     <% for(let i = 0; i < lessonNames.length; i++){%>
                                         <% if(filterOptions !== lessonNames[i]) {%>  
@@ -146,7 +153,7 @@
                                             </option>
                                         <%}%>
                                     <%}%>
-                            </select>                          
+                            </select>                           -->
                         </form>
                     </div>
                 </div>

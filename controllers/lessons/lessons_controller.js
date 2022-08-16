@@ -52,9 +52,6 @@ const controller = {
     //if no body, means user went next date(page refresh), so we want to retain his previous filter
     if (req.body.options) {
       filterOptions = req.body.options;
-      storeSelection.filter = req.body.options;
-    } else {
-      filterOptions = storeSelection.filter;
     }
 
     const studio = await studioModel
