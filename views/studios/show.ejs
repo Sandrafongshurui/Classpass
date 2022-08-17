@@ -120,48 +120,7 @@
             </div>
        </section>
         <%}else{%>
-            <div class="view-studio-tab border-top py-3">
-                <div>
-                    <h2 >
-                        <%= filterOptions %> at <%= studio.name %>
-                    </h2>   
-                    <div>
-                        <!-- searach nar of lesson types pf the studios -->
-                        <%if(selectedDate!==todaysDate){%>
-                            <form class="text-center" id="lesson-filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/?date=<%= selectedDate %>">
-                        <% }else{ %>
-                            <form class="text-center" id="lesson-filter-form" method="POST" action="/studios/<%= studio._id %>/lessons/">
-                        <% } %>
-                        <select id="lessons-select" name="options" onchange="storeSelectedOption()">
-                              
-                            <% for(let i = 0; i < lessonNames.length; i++){%>
-                                <option  class="lesson-option"value="<%= lessonNames[i]%>" >
-                                    <%= lessonNames[i]%>
-                                </option>                          
-                            <%}%>
-                    </select>        
-                            <!-- <select id="lessons-select" name="options" onchange="submitForm()">
-                              
-                                    <% for(let i = 0; i < lessonNames.length; i++){%>
-                                        <% if(filterOptions !== lessonNames[i]) {%>  
-                                            <option  value="<%= lessonNames[i]%>" >
-                                                <%= lessonNames[i]%>
-                                            </option>
-                                        <%}else{%>                                          
-                                            <option selected value="<%= lessonNames[i]%>">
-                                                <%= lessonNames[i]%>
-                                            </option>
-                                        <%}%>
-                                    <%}%>
-                            </select>                           -->
-                        </form>
-                    </div>
-                </div>
-                <div class="calander border-top py-3">               
-                    <!-- lesson section -->
-                    <%- include('../partials/studios/lessons'); %>        
-                </div>  
-            </div>
+            <%- include('../partials/studios/lessons'); %>  
         </section>    
         <%}%>
         
@@ -192,10 +151,8 @@
                     <i class="fa fa-facebook px-2" aria-hidden="true"></i>
                     <a href="<%= studio.socials[2].item %>">@<%= studio.name %></a>
                 </div>
-           
-
         </div> 
         </section>
     </div>
-<script src="/show.js"></script>
+
 <%- include('../partials/footer'); %>
