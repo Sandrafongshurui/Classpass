@@ -3,9 +3,6 @@ const lessonModel = require("../../models/lessons/lessons");
 const studioModel = require("../../models/studios/studios");
 const { dates } = require("../../utils/helper");
 
-const storeSelection = {
-  filter: "All Classes",
-};
 
 const controller = {
   createLesson: async (req, res) => {

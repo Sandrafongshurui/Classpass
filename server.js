@@ -67,9 +67,11 @@ app.post('/signup', userController.signUp)
 
 //users routes
 app.get('/users/history', authMiddleware.isAuthenticated, userController.showHistory)
+
 app.get('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
 app.post('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
-app.post('/users/profile-edit', authMiddleware.isAuthenticated, userController.editProfile)
+app.put('/users/profile', authMiddleware.isAuthenticated, userController.showProfile)
+
 app.get('/users/history/:lesson_id/review', authMiddleware.isAuthenticated, reviewsController.showReviewForm)
 app.post('/users/history/:lesson_id/review', authMiddleware.isAuthenticated, validationMiddleware.reviewIsValidated, reviewsController.createReview)
 app.get('/users/shoppingcart/:lesson_id', authMiddleware.isAuthenticated, userController.showShoppingCartTab)

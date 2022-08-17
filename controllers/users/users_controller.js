@@ -37,7 +37,7 @@ const controller = {
       });
 
       res.render("pages/signup", {
-        ...req.body,
+        ...req.body,//render the inputs as well
         errorObject,
       });
       return;
@@ -406,15 +406,26 @@ const controller = {
 
   showProfile: async (req, res) => {
     let user = null;
+    let showProfile = true;
+    let editProfile = false;
+    //let saveProfile = false;
     try {
       if (req.body) {
-        user = await userModel.findByIdAndUpdate(
-          { _id: req.session.user },
-          { $set: { ...req.body } },
-          { new: true }
-        );
-        req.session.username = user.firstname;
-      } else {
+        if(!req.body.credits){//this is the put req, click save button
+          user = await userModel.findByIdAndUpdate(
+            { _id: req.session.user },
+            { $set: { ...req.body } },//set the input from my body
+            { new: true }
+          )
+          req.session.username = user.firstname;
+          //editProfile = true
+          showProfile = true;
+        
+        }else{//ths is the post req, click edit button, has credits
+          showProfile = false;
+          user= req.body;
+        }
+      } else{
         user = await userModel.findById({ _id: req.session.user });
       }
     } catch (err) {
@@ -424,6 +435,8 @@ const controller = {
     }
 
     res.render("users/profile", {
+      showProfile,
+      //editProfile,
       user,
     });
   },
