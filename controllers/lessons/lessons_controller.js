@@ -39,8 +39,10 @@ const controller = {
   },
 
   getLessons: async (req, res, next) => {
-    let selectedDate = new Date();
-    let todaysDate = new Date();
+    let selectedDate = new Date("2022-08-13");
+    // let todaysDate = new Date();
+    let todaysDate = new Date("2022-08-13");
+    console.log(todaysDate)
     let filterOptions = "All Classes";
     let lessons = [];
     let oneWeekLaterDate = dates.getOneWeekLater(todaysDate).toDateString()

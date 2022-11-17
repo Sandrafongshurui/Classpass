@@ -297,7 +297,7 @@ const controller = {
     try {
       lessons = await lessonModel.find({
         students: req.session.user,
-        lessonDate: { $gte: new Date() },
+        lessonDate: { $gte: new Date("2022-08-13") },
       });
       console.log(lessons);
     } catch (err) {
